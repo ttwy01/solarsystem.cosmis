@@ -1,0 +1,3894 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>ห้องเรียนระบบสุริยะ - เปรียบเทียบดวงดาว (Celestial Comparison Deck)</title>
+  <!-- Google Fonts: Kanit & Orbitron -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css?v=21">
+
+  <style>
+    /* ============================================================
+       Styles for Celestial Comparison Deck (c.html)
+       ============================================================ */
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #e2e8f0;
+    }
+
+    .compare-container {
+      flex: 1 0 auto;
+      max-width: 1360px;
+      width: 100%;
+      margin: 35px auto 60px;
+      padding: 0 1.75rem;
+      position: relative;
+      z-index: 5;
+    }
+
+    .footer {
+      margin-top: auto;
+      width: 100%;
+    }
+
+    /* 1. Header Guide / Explanation Section */
+    .compare-guide-card {
+      background: rgba(10, 16, 40, 0.75);
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      border-radius: 20px;
+      padding: 30px 35px;
+      margin-bottom: 35px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), inset 0 0 25px rgba(0, 240, 255, 0.05);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .compare-guide-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #00f0ff, #a855f7, transparent);
+    }
+
+    .guide-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(0, 240, 255, 0.12);
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      border-radius: 20px;
+      color: #00f0ff;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+    }
+
+    .guide-title {
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .guide-title .highlight-text {
+      background: linear-gradient(135deg, #00f0ff 0%, #38bdf8 50%, #c084fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .guide-description {
+      font-size: 1.05rem;
+      color: #cbd5e1;
+      line-height: 1.7;
+      margin-bottom: 25px;
+      max-width: 1050px;
+    }
+
+    .guide-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .guide-step-item {
+      background: rgba(5, 10, 26, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .guide-step-item:hover {
+      border-color: rgba(0, 240, 255, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 240, 255, 0.1);
+    }
+
+    .step-number {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.25), rgba(168, 85, 247, 0.25));
+      border: 1px solid rgba(0, 240, 255, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      color: #00f0ff;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .step-text h4 {
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+
+    .step-text p {
+      font-size: 0.88rem;
+      color: #94a3b8;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    /* 2. Master Selection Box (สี่เหลี่ยมรวมดวงดาวที่คลิกเลือกได้) */
+    .master-selector-box {
+      background: rgba(10, 16, 40, 0.7);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 24px;
+      padding: 30px;
+      margin-bottom: 40px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), inset 0 0 30px rgba(0, 240, 255, 0.04);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      position: relative;
+    }
+
+    .selector-box-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 25px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .selector-title-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .selector-title {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0;
+    }
+
+    .selection-counter-badge {
+      background: rgba(0, 240, 255, 0.15);
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.85rem;
+      color: #00f0ff;
+      font-weight: 600;
+    }
+
+    /* The 9 Planets Grid */
+    .planets-pick-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(122px, 1fr));
+      gap: 15px;
+      margin-bottom: 28px;
+    }
+
+    @media (min-width: 992px) {
+      .planets-pick-grid {
+        grid-template-columns: repeat(9, 1fr);
+      }
+    }
+
+    .planet-pick-square {
+      background: rgba(14, 22, 54, 0.55);
+      border: 2px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 16px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+      min-height: 150px;
+    }
+
+    .planet-pick-square:hover {
+      background: rgba(22, 36, 85, 0.75);
+      border-color: rgba(0, 240, 255, 0.6);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 240, 255, 0.25);
+    }
+
+    .planet-pick-square.selected-a {
+      border-color: #00f0ff;
+      background: rgba(0, 240, 255, 0.18);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.4), inset 0 0 15px rgba(0, 240, 255, 0.2);
+      transform: translateY(-4px);
+    }
+
+    .planet-pick-square.selected-b {
+      border-color: #ffaa00;
+      background: rgba(255, 170, 0, 0.18);
+      box-shadow: 0 0 20px rgba(255, 170, 0, 0.4), inset 0 0 15px rgba(255, 170, 0, 0.2);
+      transform: translateY(-4px);
+    }
+
+    .pick-slot-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: none;
+    }
+
+    .planet-pick-square.selected-a .pick-slot-badge {
+      display: block;
+      background: #00f0ff;
+      color: #000;
+      box-shadow: 0 0 8px #00f0ff;
+    }
+
+    .planet-pick-square.selected-b .pick-slot-badge {
+      display: block;
+      background: #ffaa00;
+      color: #000;
+      box-shadow: 0 0 8px #ffaa00;
+    }
+
+    .pick-planet-preview {
+      width: 65px;
+      height: 65px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .pick-planet-preview .planet-body {
+      transform: scale(0.65);
+      pointer-events: none;
+      flex-shrink: 0 !important;
+      aspect-ratio: 1 / 1 !important;
+      border-radius: 50% !important;
+    }
+
+    .pick-planet-preview .saturn-wrapper {
+      flex-shrink: 0 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    .pick-planet-name-th {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 2px;
+      white-space: nowrap;
+    }
+
+    .pick-planet-name-en {
+      font-size: 0.72rem;
+      color: #94a3b8;
+      font-family: 'Orbitron', monospace;
+      text-align: center;
+    }
+
+    .pick-planet-type {
+      font-size: 0.68rem;
+      color: #38bdf8;
+      margin-top: 5px;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    /* Selected Planets Control / Confirm Bar */
+    .selection-action-bar {
+      background: rgba(5, 10, 26, 0.85);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      border-radius: 18px;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .selected-matchup-display {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .matchup-planet-pill {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(15, 23, 50, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.18);
+      border-radius: 30px;
+      padding: 8px 18px;
+      min-width: 185px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+      outline: none;
+    }
+
+    .matchup-planet-pill:hover {
+      background: rgba(22, 35, 78, 0.95);
+      transform: translateY(-3px);
+    }
+
+    .matchup-planet-pill:focus-visible {
+      outline: 2px solid #00f0ff;
+      outline-offset: 3px;
+    }
+
+    .matchup-planet-pill:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .matchup-planet-pill.slot-a {
+      border-color: rgba(0, 240, 255, 0.6);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.18);
+    }
+
+    .matchup-planet-pill.slot-a:hover {
+      border-color: #00f0ff;
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.5), inset 0 0 12px rgba(0, 240, 255, 0.2);
+    }
+
+    .matchup-planet-pill.slot-b {
+      border-color: rgba(255, 170, 0, 0.6);
+      box-shadow: 0 0 15px rgba(255, 170, 0, 0.18);
+    }
+
+    .matchup-planet-pill.slot-b:hover {
+      border-color: #ffaa00;
+      box-shadow: 0 0 25px rgba(255, 170, 0, 0.5), inset 0 0 12px rgba(255, 170, 0, 0.2);
+    }
+
+    .pill-dropdown-icon {
+      margin-left: auto;
+      font-size: 0.78rem;
+      opacity: 0.65;
+      transition: transform 0.25s ease, opacity 0.25s ease, color 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      flex-shrink: 0;
+    }
+
+    .matchup-planet-pill:hover .pill-dropdown-icon {
+      opacity: 1;
+      transform: translateY(2px);
+    }
+
+    .slot-a .pill-dropdown-icon {
+      color: #00f0ff;
+    }
+
+    .slot-b .pill-dropdown-icon {
+      color: #ffaa00;
+    }
+
+    .pill-indicator {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .slot-a .pill-indicator {
+      background: #00f0ff;
+      color: #000;
+    }
+
+    .slot-b .pill-indicator {
+      background: #ffaa00;
+      color: #000;
+    }
+
+    .pill-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pill-label {
+      font-size: 0.72rem;
+      color: #94a3b8;
+    }
+
+    .pill-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .matchup-vs-badge {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: #ff0055;
+      text-shadow: 0 0 10px #ff0055;
+      background: rgba(255, 0, 85, 0.1);
+      border: 1px solid rgba(255, 0, 85, 0.35);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulseVs 2s infinite ease-in-out;
+    }
+
+    @keyframes pulseVs {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 0, 85, 0.3); }
+      50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(255, 0, 85, 0.7); }
+    }
+
+    .action-buttons-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-confirm-compare {
+      background: linear-gradient(135deg, #00f0ff 0%, #0284c7 100%);
+      border: none;
+      color: #031024;
+      padding: 12px 28px;
+      border-radius: 12px;
+      font-family: 'Kanit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .btn-confirm-compare:hover {
+      background: linear-gradient(135deg, #38bdf8 0%, #00f0ff 100%);
+      box-shadow: 0 0 35px rgba(0, 240, 255, 0.7);
+      transform: translateY(-2px);
+    }
+
+    .btn-random-pick, .btn-reset-pick {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #e2e8f0;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-family: 'Kanit', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-random-pick:hover {
+      background: rgba(168, 85, 247, 0.2);
+      border-color: #a855f7;
+      color: #d8b4fe;
+    }
+
+    .btn-reset-pick:hover {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: #ef4444;
+      color: #fca5a5;
+    }
+
+    /* 3. Dual Comparison Display (สี่เหลี่ยมเปรียบเทียบ 2 ดวง แยกกัน) */
+    .compare-results-section {
+      margin-bottom: 50px;
+      scroll-margin-top: 100px;
+    }
+
+    .compare-insight-banner {
+      background: linear-gradient(135deg, rgba(16, 26, 62, 0.85) 0%, rgba(26, 16, 52, 0.85) 100%);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      border-radius: 18px;
+      padding: 22px 28px;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .insight-text-group h3 {
+      font-size: 1.35rem;
+      color: #fff;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .insight-text-group p {
+      font-size: 0.95rem;
+      color: #cbd5e1;
+      margin: 0;
+      max-width: 850px;
+    }
+
+    .insight-tags {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .insight-tag {
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      color: #00f0ff;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    /* The 2 Side-by-Side Comparison Boxes */
+    .dual-compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      width: 100%;
+    }
+
+    /* เมื่อหน้าจอเล็กลง ให้คงรูปแบบช่อง 2 ช่องคู่กันไว้ตามเดิม และเลื่อนด้านข้างได้ */
+    @media (max-width: 991px) {
+      .dual-compare-grid {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+        padding-bottom: 20px;
+        padding-top: 6px;
+        padding-left: 4px;
+        padding-right: 4px;
+        scrollbar-width: thin;
+        scrollbar-color: #00f0ff rgba(5, 10, 26, 0.8);
+      }
+
+      .compare-planet-box {
+        flex: 0 0 min(440px, 86vw);
+        min-width: 290px;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+      }
+    }
+
+    @media (min-width: 768px) and (max-width: 991px) {
+      .compare-planet-box {
+        flex: 0 0 calc(50% - 10px);
+        min-width: 330px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .compare-planet-box {
+        padding: 22px 18px;
+        border-radius: 18px;
+      }
+
+      .box-planet-name-th {
+        font-size: 1.7rem;
+      }
+
+      .box-header-row {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+    }
+
+    /* Cyberpunk Scrollbar for Horizontal Scroll */
+    .dual-compare-grid::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .dual-compare-grid::-webkit-scrollbar-track {
+      background: rgba(5, 10, 26, 0.8);
+      border-radius: 10px;
+      border: 1px solid rgba(0, 240, 255, 0.15);
+    }
+
+    .dual-compare-grid::-webkit-scrollbar-thumb {
+      background: linear-gradient(90deg, #00f0ff, #a855f7, #ffaa00);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+    }
+
+    .dual-compare-grid::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(90deg, #38bdf8, #c084fc, #fbbf24);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.7);
+    }
+
+    /* Mobile Scroll Hint Badge */
+    .dual-scroll-hint {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding: 10px 18px;
+      background: rgba(0, 240, 255, 0.08);
+      border: 1px dashed rgba(0, 240, 255, 0.35);
+      border-radius: 24px;
+      color: #00f0ff;
+      font-size: 0.88rem;
+      font-weight: 500;
+      backdrop-filter: blur(8px);
+    }
+
+    .dual-scroll-hint .hint-text {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-align: center;
+    }
+
+    @media (max-width: 991px) {
+      .dual-scroll-hint {
+        display: flex;
+      }
+    }
+
+    .dual-scroll-btn {
+      background: rgba(0, 240, 255, 0.15);
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      color: #00f0ff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .dual-scroll-btn:hover {
+      background: #00f0ff;
+      color: #000;
+      box-shadow: 0 0 10px #00f0ff;
+    }
+
+    .compare-planet-box {
+      background: rgba(10, 16, 40, 0.8);
+      border: 2px solid rgba(0, 240, 255, 0.3);
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6), inset 0 0 25px rgba(0, 240, 255, 0.05);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .compare-planet-box.box-slot-a {
+      border-color: rgba(0, 240, 255, 0.5);
+      border-top: 4px solid #00f0ff;
+    }
+
+    .compare-planet-box.box-slot-b {
+      border-color: rgba(255, 170, 0, 0.5);
+      border-top: 4px solid #ffaa00;
+    }
+
+    .box-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .box-slot-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .box-slot-a .box-slot-badge {
+      background: rgba(0, 240, 255, 0.2);
+      color: #00f0ff;
+      border: 1px solid #00f0ff;
+    }
+
+    .box-slot-b .box-slot-badge {
+      background: rgba(255, 170, 0, 0.2);
+      color: #ffaa00;
+      border: 1px solid #ffaa00;
+    }
+
+    .box-planet-type-badge {
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 4px 12px;
+      border-radius: 12px;
+    }
+
+    .box-visual-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 25px 0 20px;
+      position: relative;
+      min-height: 200px;
+    }
+
+    .visual-glow-ring {
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+      animation: pulseVisualGlow 4s infinite alternate ease-in-out;
+    }
+
+    @keyframes pulseVisualGlow {
+      0% { transform: scale(0.9); opacity: 0.4; }
+      100% { transform: scale(1.15); opacity: 0.8; }
+    }
+
+    .box-planet-render {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .box-planet-render .planet-body {
+      box-shadow: 0 0 35px rgba(0, 240, 255, 0.3);
+      flex-shrink: 0 !important;
+      aspect-ratio: 1 / 1 !important;
+      border-radius: 50% !important;
+    }
+
+    .box-planet-render .saturn-wrapper {
+      flex-shrink: 0 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    .box-planet-identity {
+      text-align: center;
+      margin-top: 15px;
+      margin-bottom: 20px;
+    }
+
+    .box-planet-name-th {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+
+    .box-planet-name-en {
+      font-size: 1rem;
+      color: #94a3b8;
+      font-family: 'Orbitron', monospace;
+      letter-spacing: 2px;
+    }
+
+    .box-planet-desc {
+      font-size: 0.92rem;
+      color: #cbd5e1;
+      line-height: 1.6;
+      background: rgba(5, 10, 26, 0.5);
+      padding: 14px 18px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      border-left: 3px solid rgba(0, 240, 255, 0.5);
+    }
+
+    /* Metrics List */
+    .compare-metrics-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .metric-row {
+      background: rgba(14, 22, 54, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: background 0.2s ease;
+    }
+
+    .metric-row:hover {
+      background: rgba(20, 32, 75, 0.7);
+    }
+
+    .metric-top-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .metric-label {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .metric-label i {
+      color: #00f0ff;
+      width: 16px;
+    }
+
+    .metric-value {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      font-family: 'Kanit', sans-serif;
+      text-align: right;
+    }
+
+    .metric-bar-container {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .metric-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .box-slot-a .metric-bar-fill {
+      background: linear-gradient(90deg, #0284c7, #00f0ff);
+    }
+
+    .box-slot-b .metric-bar-fill {
+      background: linear-gradient(90deg, #d97706, #ffaa00);
+    }
+
+    /* 4. Comprehensive Table Section (ตารางเปรียบเทียบดาวทุกดวง) */
+    .table-section {
+      background: rgba(10, 16, 40, 0.75);
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      border-radius: 24px;
+      padding: 32px;
+      margin-bottom: 50px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), inset 0 0 25px rgba(0, 240, 255, 0.04);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      position: relative;
+    }
+
+    .table-header-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 25px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .table-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .table-filter-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #cbd5e1;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-family: 'Kanit', sans-serif;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: rgba(0, 240, 255, 0.2);
+      border-color: #00f0ff;
+      color: #00f0ff;
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+    }
+
+    .responsive-table-wrapper {
+      overflow-x: auto;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .celestial-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    .celestial-table th {
+      background: rgba(5, 10, 26, 0.9);
+      color: #00f0ff;
+      font-family: 'Kanit', sans-serif;
+      font-weight: 600;
+      padding: 14px 18px;
+      border-bottom: 2px solid rgba(0, 240, 255, 0.3);
+      letter-spacing: 0.5px;
+    }
+
+    .celestial-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      color: #cbd5e1;
+      vertical-align: middle;
+      transition: background 0.2s ease;
+    }
+
+    .celestial-table tbody tr {
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .celestial-table tbody tr:hover {
+      background: rgba(0, 240, 255, 0.08);
+    }
+
+    /* Highlighted table rows matching selected planets */
+    .celestial-table tbody tr.row-selected-a {
+      background: rgba(0, 240, 255, 0.15) !important;
+      border-left: 4px solid #00f0ff;
+    }
+
+    .celestial-table tbody tr.row-selected-b {
+      background: rgba(255, 170, 0, 0.15) !important;
+      border-left: 4px solid #ffaa00;
+    }
+
+    .table-planet-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .table-planet-mini-sphere {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .table-planet-mini-sphere .planet-body {
+      transform: scale(0.28);
+      flex-shrink: 0 !important;
+      aspect-ratio: 1 / 1 !important;
+      border-radius: 50% !important;
+    }
+
+    .type-pill {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
+    }
+
+    /* Notification Toast */
+    #toast-msg {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: rgba(10, 16, 40, 0.95);
+      border: 1px solid #00f0ff;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.4);
+      z-index: 1000;
+      font-family: 'Kanit', sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+
+    #toast-msg.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Mobile & Tablet Responsiveness for c.html */
+    @media (max-width: 991px) {
+      .planets-pick-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+      }
+      .compare-planet-box {
+        padding: 22px 18px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .compare-page-container {
+        padding: 0 12px;
+        margin-top: 85px;
+      }
+      .planets-pick-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+      .planet-pick-square {
+        padding: 10px 4px;
+        min-height: 110px;
+        border-radius: 12px;
+      }
+      .planet-pick-square .planet-icon-avatar {
+        width: 44px;
+        height: 44px;
+      }
+      .planet-pick-name {
+        font-size: 0.85rem;
+      }
+      .planet-pick-type {
+        font-size: 0.68rem;
+      }
+      .compare-planet-box {
+        padding: 18px 14px;
+        border-radius: 18px;
+      }
+      .table-section {
+        padding: 18px 12px;
+        border-radius: 18px;
+      }
+      .table-title {
+        font-size: 1.25rem;
+      }
+      .metric-label {
+        font-size: 0.84rem;
+      }
+      .metric-value {
+        font-size: 0.88rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .compare-title-main {
+        font-size: clamp(1.6rem, 6vw, 2.2rem);
+      }
+      .master-selector-box {
+        padding: 16px 10px;
+        border-radius: 16px;
+      }
+      .selector-title {
+        font-size: 1.15rem;
+      }
+      .box-planet-name-th {
+        font-size: 1.6rem;
+      }
+      .box-planet-name-en {
+        font-size: 0.85rem;
+      }
+      .metric-row {
+        padding: 10px 12px;
+      }
+      .metric-label {
+        font-size: 0.82rem;
+      }
+      .metric-value {
+        font-size: 0.84rem;
+      }
+    }
+
+    /* ============================================================
+       Planet Picker Modal Overlay & Box (สำหรับคลิกเลือกดาวที่ Slot A & B)
+       ============================================================ */
+    .modal-overlay.active,
+    .modal-overlay.show {
+      opacity: 1 !important;
+      pointer-events: auto !important;
+    }
+
+    .modal-overlay.active .modal-box,
+    .modal-overlay.show .modal-box {
+      transform: translateY(0) scale(1) !important;
+    }
+
+    .planet-picker-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 20, 0.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      z-index: 2500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .planet-picker-box {
+      background: linear-gradient(145deg, rgba(10, 18, 48, 0.98), rgba(4, 9, 28, 0.99));
+      border: 1.5px solid rgba(0, 240, 255, 0.4);
+      border-radius: 26px;
+      max-width: 980px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 30px 32px;
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85), 0 0 50px rgba(0, 240, 255, 0.25);
+      transform: translateY(25px) scale(0.97);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .planet-picker-box.theme-slot-a {
+      border-color: rgba(0, 240, 255, 0.55);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85), 0 0 50px rgba(0, 240, 255, 0.25);
+    }
+
+    .planet-picker-box.theme-slot-b {
+      border-color: rgba(255, 170, 0, 0.55);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85), 0 0 50px rgba(255, 170, 0, 0.25);
+    }
+
+    .planet-picker-header {
+      margin-bottom: 22px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .picker-header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .picker-slot-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      font-family: 'Orbitron', monospace;
+      letter-spacing: 1px;
+    }
+
+    .theme-slot-a .picker-slot-tag {
+      background: rgba(0, 240, 255, 0.15);
+      border: 1px solid rgba(0, 240, 255, 0.5);
+      color: #00f0ff;
+    }
+
+    .theme-slot-b .picker-slot-tag {
+      background: rgba(255, 170, 0, 0.15);
+      border: 1px solid rgba(255, 170, 0, 0.5);
+      color: #ffaa00;
+    }
+
+    .tag-letter {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 900;
+      color: #000;
+    }
+
+    .theme-slot-a .tag-letter {
+      background: #00f0ff;
+    }
+
+    .theme-slot-b .tag-letter {
+      background: #ffaa00;
+    }
+
+    .picker-slot-switch {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(5, 10, 26, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 30px;
+      padding: 3px;
+      gap: 4px;
+    }
+
+    .picker-switch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: none;
+      background: transparent;
+      color: #94a3b8;
+      font-family: 'Kanit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .picker-switch-btn:hover {
+      color: #fff;
+    }
+
+    .picker-switch-btn .badge-mini {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: #000;
+    }
+
+    .picker-switch-btn .badge-mini.a {
+      background: #00f0ff;
+    }
+    .picker-switch-btn .badge-mini.b {
+      background: #ffaa00;
+    }
+
+    .picker-switch-btn.active#pickerSwitchA {
+      background: rgba(0, 240, 255, 0.2);
+      color: #00f0ff;
+      border: 1px solid rgba(0, 240, 255, 0.5);
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.25);
+    }
+
+    .picker-switch-btn.active#pickerSwitchB {
+      background: rgba(255, 170, 0, 0.2);
+      color: #ffaa00;
+      border: 1px solid rgba(255, 170, 0, 0.5);
+      box-shadow: 0 0 10px rgba(255, 170, 0, 0.25);
+    }
+
+    .planet-picker-title {
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0 0 6px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .highlight-slot.slot-a-text {
+      color: #00f0ff;
+      text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+    }
+
+    .highlight-slot.slot-b-text {
+      color: #ffaa00;
+      text-shadow: 0 0 10px rgba(255, 170, 0, 0.5);
+    }
+
+    .planet-picker-subtitle {
+      font-size: 0.92rem;
+      color: #94a3b8;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* Grid of 9 Planets in Picker */
+    .planet-picker-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .picker-planet-card {
+      background: rgba(14, 23, 56, 0.65);
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      padding: 18px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+      outline: none;
+    }
+
+    .picker-planet-card:hover,
+    .picker-planet-card:focus-visible {
+      background: rgba(22, 38, 92, 0.85);
+      transform: translateY(-4px);
+    }
+
+    .theme-slot-a .picker-planet-card:hover,
+    .theme-slot-a .picker-planet-card:focus-visible {
+      border-color: rgba(0, 240, 255, 0.6);
+      box-shadow: 0 10px 25px rgba(0, 240, 255, 0.2);
+    }
+
+    .theme-slot-b .picker-planet-card:hover,
+    .theme-slot-b .picker-planet-card:focus-visible {
+      border-color: rgba(255, 170, 0, 0.6);
+      box-shadow: 0 10px 25px rgba(255, 170, 0, 0.2);
+    }
+
+    .picker-planet-card.is-selected-current {
+      background: rgba(0, 240, 255, 0.15);
+      border-color: #00f0ff;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.35), inset 0 0 12px rgba(0, 240, 255, 0.15);
+    }
+
+    .theme-slot-b .picker-planet-card.is-selected-current {
+      background: rgba(255, 170, 0, 0.15);
+      border-color: #ffaa00;
+      box-shadow: 0 0 20px rgba(255, 170, 0, 0.35), inset 0 0 12px rgba(255, 170, 0, 0.15);
+    }
+
+    .picker-planet-card.is-selected-other {
+      border-color: rgba(255, 255, 255, 0.3);
+      opacity: 0.88;
+    }
+
+    .picker-card-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 3px 8px;
+      border-radius: 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .picker-card-badge.is-current {
+      background: #00f0ff;
+      color: #000;
+      box-shadow: 0 0 8px #00f0ff;
+    }
+
+    .theme-slot-b .picker-card-badge.is-current {
+      background: #ffaa00;
+      color: #000;
+      box-shadow: 0 0 8px #ffaa00;
+    }
+
+    .picker-card-badge.is-other {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #cbd5e1;
+    }
+
+    .picker-planet-preview {
+      width: 80px;
+      height: 80px;
+      min-width: 80px;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 4px 0 10px;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .picker-planet-preview .planet-body {
+      transform: scale(0.5);
+      transform-origin: center center;
+      pointer-events: none;
+      flex-shrink: 0 !important;
+      aspect-ratio: 1 / 1 !important;
+      border-radius: 50% !important;
+    }
+
+    .picker-planet-preview .saturn-wrapper {
+      flex-shrink: 0 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transform: scale(0.4);
+      transform-origin: center center;
+      pointer-events: none;
+    }
+
+    .picker-planet-preview .saturn-wrapper .planet-body {
+      transform: none !important;
+    }
+
+    .picker-planet-name-th {
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+
+    .picker-planet-name-en {
+      font-size: 0.78rem;
+      font-family: 'Orbitron', monospace;
+      color: #94a3b8;
+      margin-bottom: 6px;
+    }
+
+    .picker-planet-type {
+      font-size: 0.72rem;
+      color: #38bdf8;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+    }
+
+    .picker-planet-spec {
+      font-size: 0.74rem;
+      color: #94a3b8;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .picker-choose-btn {
+      width: 100%;
+      padding: 7px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.06);
+      color: #e2e8f0;
+      font-family: 'Kanit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: auto;
+    }
+
+    .picker-planet-card:hover .picker-choose-btn {
+      background: #00f0ff;
+      border-color: #00f0ff;
+      color: #000;
+      font-weight: 700;
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.5);
+    }
+
+    .theme-slot-b .picker-planet-card:hover .picker-choose-btn {
+      background: #ffaa00;
+      border-color: #ffaa00;
+      color: #000;
+      box-shadow: 0 0 12px rgba(255, 170, 0, 0.5);
+    }
+
+    .picker-planet-card.is-selected-current .picker-choose-btn {
+      background: rgba(0, 240, 255, 0.25);
+      border-color: #00f0ff;
+      color: #00f0ff;
+    }
+
+    .theme-slot-b .picker-planet-card.is-selected-current .picker-choose-btn {
+      background: rgba(255, 170, 0, 0.25);
+      border-color: #ffaa00;
+      color: #ffaa00;
+    }
+
+    .planet-picker-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      flex-wrap: wrap;
+    }
+
+    .picker-footer-status {
+      font-size: 0.88rem;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .picker-cancel-btn {
+      padding: 8px 20px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+      font-family: 'Kanit', sans-serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .picker-cancel-btn:hover {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+    }
+
+    /* Pulse animation for confirm button when both planets ready */
+    .btn-confirm-compare.pulse-ready {
+      animation: pulseConfirmBtn 1s infinite alternate;
+    }
+
+    @keyframes pulseConfirmBtn {
+      from {
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+      }
+      to {
+        transform: scale(1.05);
+        box-shadow: 0 0 35px rgba(0, 240, 255, 0.9), 0 0 15px #00f0ff;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .planet-picker-box {
+        padding: 22px 18px;
+        border-radius: 20px;
+      }
+      .planet-picker-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .planet-picker-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      .picker-planet-card {
+        padding: 12px 8px;
+      }
+      .picker-planet-preview {
+        width: 58px;
+        height: 58px;
+      }
+      .picker-planet-preview .planet-body {
+        transform: scale(0.52);
+      }
+      .picker-planet-name-th {
+        font-size: 1rem;
+      }
+      .picker-planet-spec {
+        display: none;
+      }
+      .planet-picker-title {
+        font-size: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Canvas พื้นหลังดวงดาวอวกาศ (Background Stars) -->
+  <canvas id="space-canvas"></canvas>
+  <div class="cosmic-aura aura-1"></div>
+  <div class="cosmic-aura aura-2"></div>
+  <div class="cosmic-aura aura-3"></div>
+
+  <!-- แถบนำทาง (Navbar) ที่ตรงตามมาตรฐานของทุกหน้า -->
+  <header class="header">
+    <nav class="navbar" id="navbar">
+      <a href="index.html" class="brand">
+        <div class="brand-orbit-ring">
+          <div class="brand-planet-dot"></div>
+          <div class="brand-icon">
+            <i class="fa-solid fa-sun"></i>
+          </div>
+        </div>
+        <div class="brand-text">
+          <span class="brand-main">ระบบสุริยะ</span>
+          <span class="brand-sub">SOLAR SYSTEM OBSERVATORY</span>
+        </div>
+      </a>
+
+      <!-- ปุ่มเปิดปิดเมนูสำหรับมือถือ -->
+      <button class="mobile-toggle" id="mobileToggle" aria-label="เมนู">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <!-- เมนูนำทาง -->
+      <div class="nav-menu" id="navMenu">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="index.html#elements" class="nav-link">
+              <i class="fa-solid fa-layer-group"></i> องค์ประกอบ
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="a.html" class="nav-link">
+              <i class="fa-solid fa-book-open"></i> พื้นฐาน
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="b.html" class="nav-link">
+              <i class="fa-solid fa-atom"></i> จำลองโคจร
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="c.html" class="nav-link active">
+              <i class="fa-solid fa-scale-balanced"></i> เปรียบเทียบ
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="d.html" class="nav-link">
+              <i class="fa-solid fa-spell-check"></i> คำศัพท์
+            </a>
+          </li>
+          
+          <!-- เมนูดรอปดาวน์ แบบทดสอบ -->
+          <li class="nav-item dropdown" id="quizDropdown">
+            <button class="dropdown-trigger" id="dropdownTrigger" aria-expanded="false">
+              <i class="fa-solid fa-clipboard-question"></i> แบบทดสอบ
+              <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </button>
+            <ul class="dropdown-menu" id="dropdownMenu">
+              <li>
+                <a href="1.html" class="dropdown-item" data-quiz="pre">
+                  <span class="drop-badge">01</span>
+                  <span class="drop-text">ก่อนเรียน</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li>
+                <a href="2.html" class="dropdown-item" data-quiz="post">
+                  <span class="drop-badge">02</span>
+                  <span class="drop-text">หลังเรียน</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li>
+                <a href="3.html" class="dropdown-item" data-quiz="act1">
+                  <span class="drop-badge">03</span>
+                  <span class="drop-text">กิจกรรม 1</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li>
+                <a href="4.html" class="dropdown-item" data-quiz="act2">
+                  <span class="drop-badge">04</span>
+                  <span class="drop-text">กิจกรรม 2</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li class="dropdown-divider" style="margin: 6px 0; border-top: 1px solid rgba(255, 255, 255, 0.12);"></li>
+              <li>
+                <a href="javascript:void(0)" class="dropdown-item admin-dropdown-item" onclick="openAdminModal();">
+                  <span class="drop-badge" style="background: rgba(0, 240, 255, 0.2);"><i class="fa-solid fa-shield-halved"></i></span>
+                  <span class="drop-text" style="font-weight: 600; color: var(--neon-cyan);">ศูนย์แอดมิน (คะแนน 1-4)</span>
+                  <i class="fa-solid fa-lock drop-arrow"></i>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <!-- ปุ่มศูนย์แอดมิน -->
+          <li class="nav-item admin-nav-item">
+            <button class="admin-nav-btn" id="openAdminNavBtn" onclick="openAdminModal();" title="ศูนย์ควบคุมแอดมิน / ดูคะแนน 1, 2, 3, 4 (Alt+A)">
+              <i class="fa-solid fa-shield-halved"></i>
+              <span>แอดมิน</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- เนื้อหาหลัก (Main Content) -->
+  <main class="compare-container">
+
+    <!-- 1. คำอธิบายการเปรียบเทียบ (Comparison Guide Card) -->
+    <section class="compare-guide-card">
+      <span class="hud-corner corner-tl"></span>
+      <span class="hud-corner corner-tr"></span>
+      <span class="hud-corner corner-bl"></span>
+      <span class="hud-corner corner-br"></span>
+
+      <div class="guide-badge">
+        <i class="fa-solid fa-microchip"></i> CELESTIAL COMPARISON DECK // v2.5
+      </div>
+      <h1 class="guide-title">
+        ศูนย์วิเคราะห์และ<span class="highlight-text">เปรียบเทียบดวงดาว</span>ในระบบสุริยะ
+      </h1>
+      <p class="guide-description">
+        ยินดีต้อนรับสู่ระบบเปรียบเทียบข้อมูลทางฟิสิกส์ดาราศาสตร์ เครื่องมือนี้ช่วยให้นักเรียนและผู้สนใจสามารถเปรียบเทียบขนาด เส้นผ่านศูนย์กลาง ระยะห่างจากดวงอาทิตย์ อุณหภูมิ คาบการโคจร และจำนวนดวงจันทร์บริวารระหว่างวัตถุท้องฟ้า 2 ดวงได้อย่างชัดเจนแบบตัวต่อตัว (Side-by-Side Analysis) พร้อมตารางสรุปข้อมูลดวงดาวครบทุกดวงด้านล่าง
+      </p>
+
+      <!-- ขั้นตอนการใช้งาน 3 สเต็ป -->
+      <div class="guide-steps-grid">
+        <div class="guide-step-item">
+          <div class="step-number">1</div>
+          <div class="step-text">
+            <h4>คลิกเลือกดาว 2 ดวง</h4>
+            <p>คลิกเลือกดาวที่ต้องการจากสี่เหลี่ยมด้านล่าง โดยดาวที่เลือกจะถูกระบุเป็น Slot A และ Slot B</p>
+          </div>
+        </div>
+
+        <div class="guide-step-item">
+          <div class="step-number">2</div>
+          <div class="step-text">
+            <h4>กดปุ่มยืนยัน</h4>
+            <p>เมื่อเลือกดาวครบ 2 ดวงแล้ว ให้กดปุ่ม "ยืนยันการเปรียบเทียบ" เพื่อประมวลผลข้อมูลเปรียบเทียบ</p>
+          </div>
+        </div>
+
+        <div class="guide-step-item">
+          <div class="step-number">3</div>
+          <div class="step-text">
+            <h4>ดูผลการเปรียบเทียบ</h4>
+            <p>ระบบจะแสดงข้อมูลเจาะลึก รูปภาพ และกราฟเปรียบเทียบของดาวทั้ง 2 ดวงแยกกันในคนละสี่เหลี่ยม</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. สี่เหลี่ยมรวมดวงดาวที่คลิกเลือกได้ (Master Selection Box) -->
+    <section class="master-selector-box" id="selectorDeck">
+      <span class="hud-corner corner-tl"></span>
+      <span class="hud-corner corner-tr"></span>
+      <span class="hud-corner corner-bl"></span>
+      <span class="hud-corner corner-br"></span>
+
+      <div class="selector-box-header">
+        <div class="selector-title-group">
+          <div class="status-indicator">
+            <span class="status-dot"></span>
+            <span class="status-radar"></span>
+          </div>
+          <h2 class="selector-title">
+            <i class="fa-solid fa-hand-pointer"></i> คลิกเลือกดาว 2 ดวงที่ต้องการเปรียบเทียบ
+          </h2>
+        </div>
+        <div class="selection-counter-badge" id="selectionCountBadge">
+          เลือกแล้ว: 0 / 2 ดวง
+        </div>
+      </div>
+
+      <!-- สี่เหลี่ยมดวงดาวแต่ละดวงที่คลิกเลือกได้ (ทั้ง 9 ดวง) -->
+      <div class="planets-pick-grid" id="planetsPickGrid">
+        
+        <!-- ดวงอาทิตย์ -->
+        <div class="planet-pick-square" data-planet="sun">
+          <span class="pick-slot-badge">A</span>
+          <div class="pick-planet-preview">
+            <div class="planet-body planet-sun" style="width:70px;height:70px;">
+              <div class="sun-corona-outer"></div>
+            </div>
+          </div>
+          <div class="pick-planet-name-th">ดวงอาทิตย์</div>
+          <div class="pick-planet-name-en">The Sun</div>
+          <div class="pick-planet-type">ดาวฤกษ์</div>
+        </div>
+
+        <!-- ดาวพุธ -->
+        <div class="planet-pick-square" data-planet="mercury">
+          <span class="pick-slot-badge">A</span>
+          <div class="pick-planet-preview">
+            <div class="planet-body planet-mercury" style="width:52px;height:52px;">
+              <div class="mercury-texture"></div>
+            </div>
+          </div>
+          <div class="pick-planet-name-th">ดาวพุธ</div>
+          <div class="pick-planet-name-en">Mercury</div>
+          <div class="pick-planet-type">ดาวเคราะห์หิน</div>
+        </div>
+
+        <!-- ดาวศุกร์ -->
+        <div class="planet-pick-square" data-planet="venus">
+          <span class="pick-slot-badge">A</span>
+          <div class="pick-planet-preview">
+            <div class="planet-body planet-venus" style="width:58px;height:58px;">
+              <div class="venus-texture"></div>
+            </div>
+          </div>
+          <div class="pick-planet-name-th">ดาวศุกร์</div>
+          <div class="pick-planet-name-en">Venus</div>
+          <div class="pick-planet-type">ดาวเคราะห์หิน</div>
+        </div>
+
+        <!-- โลก -->
+        <div class="planet-pick-square" data-planet="earth">
+          <span class="pick-slot-badge">A</span>
+          <div class="pick-planet-preview">
+            <div class="planet-body planet-earth" style="width:60px;height:60px;">
+              <div class="earth-continents"></div>
+              <div class="earth-clouds-dynamic cloud-layer-1"></div>
+            </div>
+          </div>
+          <div class="pick-planet-name-th">โลก</div>
+          <div class="pick-planet-name-en">Earth</div>
+          <div class="pick-planet-type">ดาวเคราะห์หิน</div>
+        </div>
+
+        <!-- ดาวอังคาร -->
+        <div class="planet-pick-square" data-planet="mars">
+          <span class="pick-slot-badge">B</span>
+          <div class="pick-planet-preview">
+            <div class="planet-body planet-mars" style="width:54px;height:54px;">
+              <div class="mars-texture"></div>
+              <div class="mars-polar-cap"></div>
+            </div>
+          </div>
+          <div class="pick-planet-name-th">ดาวอังคาร</div>
+          <div class="pick-planet-name-en">Mars</div>
+          <div class="pick-planet-type">ดาวเคราะห์หิน</div>
+        </div>
+
+        <!-- ดาวพฤหัสบดี -->
+        <div class="planet-pick-square" data-planet="jupiter">
+          <span class="pick-slot-badge">B</span>
+          <div class="pick-planet-preview">
+            <div class="planet-body planet-jupiter" style="width:72px;height:72px;">
+              <div class="jupiter-clouds-bands"></div>
+              <div class="jupiter-great-red-spot" style="bottom:18px;right:15px;width:14px;height:10px;"></div>
+            </div>
+          </div>
+          <div class="pick-planet-name-th">ดาวพฤหัสบดี</div>
+          <div class="pick-planet-name-en">Jupiter</div>
+          <div class="pick-planet-type">ดาวยักษ์แก๊ส</div>
+        </div>
+
+        <!-- ดาวเสาร์ -->
+        <div class="planet-pick-square" data-planet="saturn">
+          <span class="pick-slot-badge">B</span>
+          <div class="pick-planet-preview">
+            <div class="saturn-wrapper" style="position:relative;display:inline-block;transform:scale(0.55);">
+              <div class="saturn-ring-system ring-back-layer" style="width:110px;height:34px;"></div>
+              <div class="planet-body planet-saturn" style="width:62px;height:62px;">
+                <div class="saturn-cloud-bands"></div>
+              </div>
+              <div class="saturn-ring-system ring-front-layer" style="width:110px;height:34px;"></div>
+            </div>
+          </div>
+          <div class="pick-planet-name-th">ดาวเสาร์</div>
+          <div class="pick-planet-name-en">Saturn</div>
+          <div class="pick-planet-type">ดาวยักษ์แก๊ส</div>
+        </div>
+
+        <!-- ดาวยูเรนัส -->
+        <div class="planet-pick-square" data-planet="uranus">
+          <span class="pick-slot-badge">B</span>
+          <div class="pick-planet-preview">
+            <div class="planet-body planet-uranus" style="width:58px;height:58px;">
+              <div class="uranus-vertical-ring" style="width:75px;height:75px;"></div>
+            </div>
+          </div>
+          <div class="pick-planet-name-th">ดาวยูเรนัส</div>
+          <div class="pick-planet-name-en">Uranus</div>
+          <div class="pick-planet-type">ดาวยักษ์น้ำแข็ง</div>
+        </div>
+
+        <!-- ดาวเนปจูน -->
+        <div class="planet-pick-square" data-planet="neptune">
+          <span class="pick-slot-badge">B</span>
+          <div class="pick-planet-preview">
+            <div class="planet-body planet-neptune" style="width:58px;height:58px;">
+              <div class="neptune-white-cirrus"></div>
+              <div class="neptune-dark-spot"></div>
+            </div>
+          </div>
+          <div class="pick-planet-name-th">ดาวเนปจูน</div>
+          <div class="pick-planet-name-en">Neptune</div>
+          <div class="pick-planet-type">ดาวยักษ์น้ำแข็ง</div>
+        </div>
+
+      </div>
+
+      <!-- แถบสรุปดวงดาวที่เลือก และปุ่มยืนยันการเปรียบเทียบ -->
+      <div class="selection-action-bar">
+        <div class="selected-matchup-display">
+          
+          <!-- ช่องแสดงดาวดวงที่ 1 -->
+          <div class="matchup-planet-pill slot-a" id="pillSlotA" role="button" tabindex="0" title="คลิกเพื่อเลือกดาวดวงที่ 1" aria-haspopup="dialog" style="opacity: 0.7;">
+            <div class="pill-indicator">A</div>
+            <div class="pill-info">
+              <span class="pill-label">ดาวดวงที่ 1:</span>
+              <span class="pill-name" id="pillNameA">ยังไม่ได้เลือก (คลิกเลือกดาว)</span>
+            </div>
+            <div class="pill-dropdown-icon" title="คลิกเลือกดาว">
+              <i class="fa-solid fa-chevron-down"></i>
+            </div>
+          </div>
+
+          <!-- สัญลักษณ์ VS -->
+          <div class="matchup-vs-badge">VS</div>
+
+          <!-- ช่องแสดงดาวดวงที่ 2 -->
+          <div class="matchup-planet-pill slot-b" id="pillSlotB" role="button" tabindex="0" title="คลิกเพื่อเลือกดาวดวงที่ 2" aria-haspopup="dialog" style="opacity: 0.7;">
+            <div class="pill-indicator">B</div>
+            <div class="pill-info">
+              <span class="pill-label">ดาวดวงที่ 2:</span>
+              <span class="pill-name" id="pillNameB">ยังไม่ได้เลือก (คลิกเลือกดาว)</span>
+            </div>
+            <div class="pill-dropdown-icon" title="คลิกเลือกดาว">
+              <i class="fa-solid fa-chevron-down"></i>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- กลุ่มปุ่มสั่งการ -->
+        <div class="action-buttons-group">
+          <button class="btn-random-pick" id="btnRandomPick" title="สุ่มคู่ดาว">
+            <i class="fa-solid fa-shuffle"></i> สุ่มเปรียบเทียบ
+          </button>
+          <button class="btn-reset-pick" id="btnResetPick" title="ล้างการเลือก">
+            <i class="fa-solid fa-arrow-rotate-left"></i> รีเซ็ต
+          </button>
+          
+          <!-- ปุ่มยืนยันการเปรียบเทียบ (ตามความต้องการของผู้ใช้) -->
+          <button class="btn-confirm-compare" id="btnConfirmCompare">
+            <i class="fa-solid fa-check-double"></i> ยืนยันการเปรียบเทียบ
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- กล่องแจ้งเตือนสถานะเมื่อยังไม่ได้เลือกเปรียบเทียบ (Reset State Placeholder) -->
+    <div class="compare-placeholder-card" id="comparePlaceholder" style="background: rgba(10, 16, 40, 0.65); border: 1px dashed rgba(0, 240, 255, 0.35); border-radius: 20px; padding: 45px 25px; text-align: center; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+      <div style="font-size: 2.8rem; color: #00f0ff; margin-bottom: 15px;">
+        <i class="fa-solid fa-scale-balanced"></i>
+      </div>
+      <h3 style="font-size: 1.5rem; color: #fff; margin-bottom: 10px; font-weight: 600;">ยังไม่มีการเลือกคู่ดาวเปรียบเทียบ</h3>
+      <p style="color: #94a3b8; font-size: 1rem; max-width: 620px; margin: 0 auto; line-height: 1.6;">
+        กรุณาคลิกเลือกดาว 2 ดวงจากกล่องด้านบน แล้วกดปุ่ม <strong style="color:#00f0ff;">"ยืนยันการเปรียบเทียบ"</strong> เพื่อดูข้อมูลและการเปรียบเทียบของดาวทั้ง 2 ดวงแยกกันในคนละสี่เหลี่ยม
+      </p>
+    </div>
+
+    <!-- 3. แสดงผลข้อมูลและรูปภาพใน 2 สี่เหลี่ยมแยกกัน (Dual Comparison Boxes) -->
+    <section class="compare-results-section" id="compareResultsSection" style="display: none;">
+      
+      <!-- กล่องสรุปการวิเคราะห์เชิงเปรียบเทียบ -->
+      <div class="compare-insight-banner" id="insightBanner">
+        <div class="insight-text-group">
+          <h3 id="insightTitle">
+            <i class="fa-solid fa-wand-magic-sparkles" style="color:#a855f7;"></i>
+            บทวิเคราะห์เปรียบเทียบ: โลก vs ดาวพฤหัสบดี
+          </h3>
+          <p id="insightSummary">
+            การเปรียบเทียบระหว่างดาวเคราะห์หินแห่งชีวิต (โลก) และดาวยักษ์แก๊สที่มีมวลมากที่สุดในระบบสุริยะ (ดาวพฤหัสบดี) โดยดาวพฤหัสบดีมีขนาดเส้นผ่านศูนย์กลางใหญ่กว่าโลกเกือบ 11 เท่า และมีดวงจันทร์บริวารมากกว่าถึง 94 ดวง
+          </p>
+        </div>
+        <div class="insight-tags" id="insightTags">
+          <span class="insight-tag"><i class="fa-solid fa-arrows-left-right"></i> ขนาดต่างกัน ~10.97 เท่า</span>
+          <span class="insight-tag"><i class="fa-solid fa-temperature-arrow-down"></i> พฤหัสฯ เย็นกว่า 125°C</span>
+          <span class="insight-tag"><i class="fa-solid fa-moon"></i> บริวาร: 1 vs 95 ดวง</span>
+        </div>
+      </div>
+
+      <!-- แถบแจ้งเตือนการเลื่อนซ้าย-ขวาสำหรับหน้าจอเล็ก (Mobile Horizontal Scroll Hint) -->
+      <div class="dual-scroll-hint" id="dualScrollHint">
+        <button type="button" class="dual-scroll-btn" id="scrollCompareLeft" title="เลื่อนไปดาวดวงแรก">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <span class="hint-text">
+          <i class="fa-solid fa-arrows-left-right fa-fade"></i> เลื่อนซ้าย-ขวาเพื่อเปรียบเทียบทั้ง 2 ช่อง
+        </span>
+        <button type="button" class="dual-scroll-btn" id="scrollCompareRight" title="เลื่อนไปดาวดวงที่สอง">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <!-- สี่เหลี่ยมเปรียบเทียบ 2 กล่องแยกกัน (Side-by-Side Boxes) -->
+      <div class="dual-compare-grid" id="dualCompareGrid">
+        
+        <!-- สี่เหลี่ยมที่ 1: ดาวดวงที่ 1 (Slot A) -->
+        <div class="compare-planet-box box-slot-a" id="compareBoxA">
+          <span class="hud-corner corner-tl"></span>
+          <span class="hud-corner corner-tr"></span>
+          <span class="hud-corner corner-bl"></span>
+          <span class="hud-corner corner-br"></span>
+
+          <div class="box-header-row">
+            <div class="box-slot-badge">
+              <i class="fa-solid fa-circle-dot"></i> ดาวที่เลือก [A]
+            </div>
+            <div class="box-planet-type-badge" id="boxTypeA">
+              ดาวเคราะห์หิน (Terrestrial Planet)
+            </div>
+          </div>
+
+          <!-- รูปภาพและโมเดลจำลองทรงกลม 3D ของดาวดวงที่ 1 -->
+          <div class="box-visual-container">
+            <div class="visual-glow-ring"></div>
+            <div class="box-planet-render" id="boxRenderA">
+              <div class="planet-body planet-earth" style="width:130px;height:130px;">
+                <div class="earth-continents"></div>
+                <div class="earth-clouds-dynamic cloud-layer-1"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="box-planet-identity">
+            <h3 class="box-planet-name-th" id="boxNameThA">โลก</h3>
+            <div class="box-planet-name-en" id="boxNameEnA">EARTH</div>
+          </div>
+
+          <div class="box-planet-desc" id="boxDescA">
+            อัญมณีสีน้ำเงินแห่งจักรวาลและบ้านเพียงหลังเดียวที่ทราบว่ามีสิ่งมีชีวิตอาศัยอยู่ พื้นผิวปกคลุมด้วยมหาสมุทรน้ำ 71% มีชั้นบรรยากาศออกซิเจนและสนามแม่เหล็กโลกที่ป้องกันรังสีอันตรายได้อย่างสมบูรณ์แบบ
+          </div>
+
+          <!-- พารามิเตอร์ข้อมูลเปรียบเทียบของดาวดวงที่ 1 -->
+          <div class="compare-metrics-list">
+            
+            <div class="metric-row">
+              <div class="metric-top-line">
+                <span class="metric-label"><i class="fa-solid fa-circle-notch"></i> เส้นผ่านศูนย์กลาง:</span>
+                <span class="metric-value" id="valDiameterA">12,742 กม.</span>
+              </div>
+              <div class="metric-bar-container">
+                <div class="metric-bar-fill" id="barDiameterA" style="width: 9%;"></div>
+              </div>
+            </div>
+
+            <div class="metric-row">
+              <div class="metric-top-line">
+                <span class="metric-label"><i class="fa-solid fa-route"></i> ระยะห่างจากดวงอาทิตย์:</span>
+                <span class="metric-value" id="valDistanceA">1.00 AU (149.6 ล้านกม.)</span>
+              </div>
+              <div class="metric-bar-container">
+                <div class="metric-bar-fill" id="barDistanceA" style="width: 3.3%;"></div>
+              </div>
+            </div>
+
+            <div class="metric-row">
+              <div class="metric-top-line">
+                <span class="metric-label"><i class="fa-solid fa-temperature-half"></i> อุณหภูมิเฉลี่ย:</span>
+                <span class="metric-value" id="valTempA">15 °C (-89 ถึง 58 °C)</span>
+              </div>
+            </div>
+
+            <div class="metric-row">
+              <div class="metric-top-line">
+                <span class="metric-label"><i class="fa-solid fa-rotate"></i> คาบการหมุนรอบตัวเอง:</span>
+                <span class="metric-value" id="valRotationA">23 ชม. 56 นาที</span>
+              </div>
+            </div>
+
+            <div class="metric-row">
+              <div class="metric-top-line">
+                <span class="metric-label"><i class="fa-solid fa-clock-rotate-left"></i> คาบการโคจรรอบดวงอาทิตย์:</span>
+                <span class="metric-value" id="valOrbitA">365.25 วัน (1 ปี)</span>
+              </div>
+            </div>
+
+            <div class="metric-row">
+              <div class="metric-top-line">
+                <span class="metric-label"><i class="fa-solid fa-moon"></i> ดวงจันทร์บริวาร:</span>
+                <span class="metric-value" id="valMoonsA">1 ดวง (ดวงจันทร์)</span>
+              </div>
+            </div>
+
+            <div class="metric-row">
+              <div class="metric-top-line">
+                <span class="metric-label"><i class="fa-solid fa-weight-hanging"></i> แรงโน้มถ่วงพื้นผิว:</span>
+                <span class="metric-value" id="valGravityA">9.81 m/s² (1.00 G)</span>
+              </div>
+            </div>
+
+            <div class="metric-row">
+              <div class="metric-top-line">
+                <span class="metric-label"><i class="fa-solid fa-smog"></i> องค์ประกอบบรรยากาศ:</span>
+                <span class="metric-value" id="valAtmoA">ไนโตรเจน 78%, ออกซิเจน 21%</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- สี่เหลี่ยมที่ 2: ดาวดวงที่ 2 (Slot B) -->
+        <div class="compare-planet-box box-slot-b" id="compareBoxB">
+          <span class="hud-corner corner-tl"></span>
+          <span class="hud-corner corner-tr"></span>
+          <span class="hud-corner corner-bl"></span>
+          <span class="hud-corner corner-br"></span>
+
+          <div class="box-header-row">
+            <div class="box-slot-badge">
+              <i class="fa-solid fa-circle-dot"></i> ดาวที่เลือก [B]
+            </div>
+            <div class="box-planet-type-badge" id="boxTypeB">
+              ดาวยักษ์แก๊ส (Gas Giant)
+            </div>
+          </div>
+
+          <!-- รูปภาพและโมเดลจำลองทรงกลม 3D ของดาวดวงที่ 2 -->
+          <div class="box-visual-container">
+            <div class="visual-glow-ring" style="background:radial-gradient(circle, rgba(255, 170, 0, 0.15) 0%, transparent 70%);"></div>
+            <div class="box-planet-render" id="boxRenderB">
+              <div class="planet-body planet-jupiter" style="width:145px;height:145px;">
+                <div class="jupiter-clouds-bands"></div>
+                <div class="jupiter-great-red-spot" style="bottom:35px;right:32px;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="box-planet-identity">
+            <h3 class="box-planet-name-th" id="boxNameThB">ดาวพฤหัสบดี</h3>
+            <div class="box-planet-name-en" id="boxNameEnB">JUPITER</div>
+          </div>
+
+          <div class="box-planet-desc" id="boxDescB">
+            ดาวเคราะห์ที่มีขนาดและมวลมหาศาลที่สุด หากนำดาวเคราะห์ดวงอื่นทั้งหมดมารวมกัน ดาวพฤหัสบดีก็ยังมีมวลมากกว่าถึง 2.5 เท่า มีจุดแดงใหญ่ที่เป็นพายุหมุนขนาดยักษ์ที่โหมกระหน่ำมานานหลายร้อยปี
+          </div>
+
+          <!-- พารามิเตอร์ข้อมูลเปรียบเทียบของดาวดวงที่ 2 -->
+          <div class="compare-metrics-list">
+            
+            <div class="metric-row">
+              <div class="metric-top-line">
+                <span class="metric-label"><i class="fa-solid fa-circle-notch"></i> เส้นผ่านศูนย์กลาง:</span>
+                <span class="metric-value" id="valDiameterB">139,820 กม.</span>
+              </div>
+              <div class="metric-bar-container">
+                <div class="metric-bar-fill" id="barDiameterB" style="width: 100%;"></div>
+              </div>
+            </div>
+
+            <div class="metric-row">
+              <div class="metric-top-line">
+                <span class="metric-label"><i class="fa-solid fa-route"></i> ระยะห่างจากดวงอาทิตย์:</span>
+                <span class="metric-value" id="valDistanceB">5.20 AU (778.5 ล้านกม.)</span>
+              </div>
+              <div class="metric-bar-container">
+                <div class="metric-bar-fill" id="barDistanceB" style="width: 17.3%;"></div>
+              </div>
+            </div>
+
+            <div class="metric-row">
+              <div class="metric-top-line">
+                <span class="metric-label"><i class="fa-solid fa-temperature-half"></i> อุณหภูมิเฉลี่ย:</span>
+                <span class="metric-value" id="valTempB">-110 °C</span>
+              </div>
+            </div>
+
+            <div class="metric-row">
+              <div class="metric-top-line">
+                <span class="metric-label"><i class="fa-solid fa-rotate"></i> คาบการหมุนรอบตัวเอง:</span>
+                <span class="metric-value" id="valRotationB">9 ชม. 55 นาที (เร็วที่สุด)</span>
+              </div>
+            </div>
+
+            <div class="metric-row">
+              <div class="metric-top-line">
+                <span class="metric-label"><i class="fa-solid fa-clock-rotate-left"></i> คาบการโคจรรอบดวงอาทิตย์:</span>
+                <span class="metric-value" id="valOrbitB">11.86 ปีบนโลก</span>
+              </div>
+            </div>
+
+            <div class="metric-row">
+              <div class="metric-top-line">
+                <span class="metric-label"><i class="fa-solid fa-moon"></i> ดวงจันทร์บริวาร:</span>
+                <span class="metric-value" id="valMoonsB">95 ดวง (แกนีมีด, ยูโรปา)</span>
+              </div>
+            </div>
+
+            <div class="metric-row">
+              <div class="metric-top-line">
+                <span class="metric-label"><i class="fa-solid fa-weight-hanging"></i> แรงโน้มถ่วงพื้นผิว:</span>
+                <span class="metric-value" id="valGravityB">24.79 m/s² (2.53 G)</span>
+              </div>
+            </div>
+
+            <div class="metric-row">
+              <div class="metric-top-line">
+                <span class="metric-label"><i class="fa-solid fa-smog"></i> องค์ประกอบบรรยากาศ:</span>
+                <span class="metric-value" id="valAtmoB">ไฮโดรเจน 89%, ฮีเลียม 10%</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4. ตารางเปรียบเทียบดาวทุกดวงไว้ (ข้างล่างตามความต้องการของผู้ใช้) -->
+    <section class="table-section" id="fullTableSection">
+      <span class="hud-corner corner-tl"></span>
+      <span class="hud-corner corner-tr"></span>
+      <span class="hud-corner corner-bl"></span>
+      <span class="hud-corner corner-br"></span>
+
+      <div class="table-header-group">
+        <h2 class="table-title">
+          <i class="fa-solid fa-table-cells"></i> ตารางเปรียบเทียบข้อมูลดวงดาวทุกดวงในระบบสุริยะ
+        </h2>
+        <div class="table-filter-group">
+          <button class="filter-btn active" data-filter="all">ทั้งหมด (9 วัตถุ)</button>
+          <button class="filter-btn" data-filter="terrestrial">ดาวเคราะห์หิน</button>
+          <button class="filter-btn" data-filter="giant">ดาวยักษ์แก๊ส/น้ำแข็ง</button>
+          <button class="filter-btn" data-filter="selected">เฉพาะคู่ที่เลือกเปรียบเทียบ</button>
+        </div>
+      </div>
+
+      <p style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 18px;">
+        <i class="fa-solid fa-circle-info"></i> สามารถคลิกที่แถวดวงดาวในตารางเพื่อเลือกดาวขึ้นมาเปรียบเทียบได้ทันที (แถวที่มีสัญลักษณ์เรืองแสงคือคู่ดาวที่กำลังเปรียบเทียบอยู่ในปัจจุบัน)
+      </p>
+
+      <div class="responsive-table-wrapper">
+        <table class="celestial-table" id="allPlanetsTable">
+          <thead>
+            <tr>
+              <th>วัตถุท้องฟ้า</th>
+              <th>ประเภท</th>
+              <th>เส้นผ่านศูนย์กลาง (กม.)</th>
+              <th>ระยะห่างจากดวงอาทิตย์</th>
+              <th>คาบการหมุนรอบตัวเอง</th>
+              <th>คาบการโคจรรอบดวงอาทิตย์</th>
+              <th>อุณหภูมิเฉลี่ย</th>
+              <th>บริวาร (ดวง)</th>
+              <th>จุดเด่นทางดาราศาสตร์</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- สร้างแถวด้วย JavaScript หรือ Static Markup -->
+            <tr data-planet="sun" data-category="star">
+              <td>
+                <div class="table-planet-cell">
+                  <span class="table-planet-mini-sphere">
+                    <div class="planet-body planet-sun" style="width:70px;height:70px;"></div>
+                  </span>
+                  <span>ดวงอาทิตย์ (The Sun)</span>
+                </div>
+              </td>
+              <td><span class="type-pill" style="color:#ffaa00;">ดาวฤกษ์</span></td>
+              <td><strong>1,392,700</strong> (~109 เท่า)</td>
+              <td>0.00 AU (ศูนย์กลาง)</td>
+              <td>~25 - 35 วัน</td>
+              <td>~230 ล้านปี (รอบกาแล็กซี)</td>
+              <td>5,500 °C / 15 ล้าน°C</td>
+              <td>ดาวเคราะห์ 8 ดวง</td>
+              <td>มวล 99.86% ของระบบสุริยะ ปฏิกิริยานิวเคลียร์ฟิวชัน</td>
+            </tr>
+
+            <tr data-planet="mercury" data-category="terrestrial">
+              <td>
+                <div class="table-planet-cell">
+                  <span class="table-planet-mini-sphere">
+                    <div class="planet-body planet-mercury" style="width:52px;height:52px;"></div>
+                  </span>
+                  <span>ดาวพุธ (Mercury)</span>
+                </div>
+              </td>
+              <td><span class="type-pill">ดาวเคราะห์หิน</span></td>
+              <td>4,879 (0.38 เท่า)</td>
+              <td>0.39 AU (57.9 ล้านกม.)</td>
+              <td>58.6 วันบนโลก</td>
+              <td>88 วัน (เร็วที่สุด)</td>
+              <td>-180 °C ถึง 430 °C</td>
+              <td>0</td>
+              <td>ฉายา "เตาไฟแช่แข็ง" อุณหภูมิต่างกันมากที่สุด</td>
+            </tr>
+
+            <tr data-planet="venus" data-category="terrestrial">
+              <td>
+                <div class="table-planet-cell">
+                  <span class="table-planet-mini-sphere">
+                    <div class="planet-body planet-venus" style="width:58px;height:58px;"></div>
+                  </span>
+                  <span>ดาวศุกร์ (Venus)</span>
+                </div>
+              </td>
+              <td><span class="type-pill">ดาวเคราะห์หิน</span></td>
+              <td>12,104 (0.95 เท่า)</td>
+              <td>0.72 AU (108.2 ล้านกม.)</td>
+              <td>243 วัน (หมุนตามเข็ม)</td>
+              <td>225 วัน</td>
+              <td>~465 °C (ร้อนที่สุด)</td>
+              <td>0</td>
+              <td>เรือนกระจกขั้นรุนแรง ความกดอากาศสูงกว่าโลก 92 เท่า</td>
+            </tr>
+
+            <tr data-planet="earth" data-category="terrestrial">
+              <td>
+                <div class="table-planet-cell">
+                  <span class="table-planet-mini-sphere">
+                    <div class="planet-body planet-earth" style="width:60px;height:60px;"></div>
+                  </span>
+                  <span>โลก (Earth)</span>
+                </div>
+              </td>
+              <td><span class="type-pill">ดาวเคราะห์หิน</span></td>
+              <td>12,742 (1.00 เท่า)</td>
+              <td>1.00 AU (149.6 ล้านกม.)</td>
+              <td>23 ชม. 56 นาที</td>
+              <td>365.25 วัน (1 ปี)</td>
+              <td>15 °C (-89 ถึง 58 °C)</td>
+              <td>1 (ดวงจันทร์)</td>
+              <td>ดาวเคราะห์แห่งชีวิต มีน้ำสถานะของเหลว 71%</td>
+            </tr>
+
+            <tr data-planet="mars" data-category="terrestrial">
+              <td>
+                <div class="table-planet-cell">
+                  <span class="table-planet-mini-sphere">
+                    <div class="planet-body planet-mars" style="width:54px;height:54px;"></div>
+                  </span>
+                  <span>ดาวอังคาร (Mars)</span>
+                </div>
+              </td>
+              <td><span class="type-pill">ดาวเคราะห์หิน</span></td>
+              <td>6,779 (0.53 เท่า)</td>
+              <td>1.52 AU (227.9 ล้านกม.)</td>
+              <td>24 ชม. 37 นาที</td>
+              <td>687 วัน (~1.88 ปี)</td>
+              <td>-125 °C ถึง 20 °C</td>
+              <td>2 (โฟบอส, ไดมอส)</td>
+              <td>ภูเขาไฟโอลิมปัสสูง 21 กม. และสนิมเหล็กสีแดง</td>
+            </tr>
+
+            <tr data-planet="jupiter" data-category="giant">
+              <td>
+                <div class="table-planet-cell">
+                  <span class="table-planet-mini-sphere">
+                    <div class="planet-body planet-jupiter" style="width:72px;height:72px;"></div>
+                  </span>
+                  <span>ดาวพฤหัสบดี (Jupiter)</span>
+                </div>
+              </td>
+              <td><span class="type-pill" style="color:#38bdf8;">ดาวยักษ์แก๊ส</span></td>
+              <td><strong>139,820</strong> (10.97 เท่า)</td>
+              <td>5.20 AU (778.5 ล้านกม.)</td>
+              <td>9 ชม. 55 นาที (เร็วสุด)</td>
+              <td>11.86 ปี</td>
+              <td>-110 °C</td>
+              <td>95 (แกนีมีด, ยูโรปา)</td>
+              <td>ดาวเคราะห์ใหญ่ที่สุดในระบบ มีจุดแดงใหญ่อันโด่งดัง</td>
+            </tr>
+
+            <tr data-planet="saturn" data-category="giant">
+              <td>
+                <div class="table-planet-cell">
+                  <span class="table-planet-mini-sphere">
+                    <div class="planet-body planet-saturn" style="width:62px;height:62px;"></div>
+                  </span>
+                  <span>ดาวเสาร์ (Saturn)</span>
+                </div>
+              </td>
+              <td><span class="type-pill" style="color:#38bdf8;">ดาวยักษ์แก๊ส</span></td>
+              <td>116,460 (9.14 เท่า)</td>
+              <td>9.58 AU (1.43 พันล้านกม.)</td>
+              <td>10 ชม. 33 นาที</td>
+              <td>29.45 ปี</td>
+              <td>-140 °C</td>
+              <td>146 (มากที่สุด)</td>
+              <td>ระบบวงแหวนน้ำแข็งตระการตา ความหนาแน่นน้อยกว่าน้ำ</td>
+            </tr>
+
+            <tr data-planet="uranus" data-category="giant">
+              <td>
+                <div class="table-planet-cell">
+                  <span class="table-planet-mini-sphere">
+                    <div class="planet-body planet-uranus" style="width:58px;height:58px;"></div>
+                  </span>
+                  <span>ดาวยูเรนัส (Uranus)</span>
+                </div>
+              </td>
+              <td><span class="type-pill" style="color:#a855f7;">ดาวยักษ์น้ำแข็ง</span></td>
+              <td>50,724 (3.98 เท่า)</td>
+              <td>19.2 AU (2.87 พันล้านกม.)</td>
+              <td>17 ชม. 14 นาที</td>
+              <td>84 ปี</td>
+              <td>-195 °C (ต่ำสุด -224 °C)</td>
+              <td>28</td>
+              <td>แกนหมุนเอียง 98 องศา กลิ้งไปบนระนาบวงโคจร</td>
+            </tr>
+
+            <tr data-planet="neptune" data-category="giant">
+              <td>
+                <div class="table-planet-cell">
+                  <span class="table-planet-mini-sphere">
+                    <div class="planet-body planet-neptune" style="width:58px;height:58px;"></div>
+                  </span>
+                  <span>ดาวเนปจูน (Neptune)</span>
+                </div>
+              </td>
+              <td><span class="type-pill" style="color:#a855f7;">ดาวยักษ์น้ำแข็ง</span></td>
+              <td>49,244 (3.86 เท่า)</td>
+              <td>30.1 AU (4.50 พันล้านกม.)</td>
+              <td>16 ชม. 6 นาที</td>
+              <td>164.8 ปี (ไกลที่สุด)</td>
+              <td>-200 °C</td>
+              <td>16 (ไทรทัน)</td>
+              <td>กระแสลมพายุเร็วที่สุดในระบบสุริยะ (> 2,100 กม./ชม.)</td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- โมดอลเลือกดวงดาวสำหรับเปรียบเทียบ (Planet Picker Modal for Slot A & Slot B) -->
+  <div class="modal-overlay planet-picker-overlay" id="planetPickerModal" aria-hidden="true" role="dialog" aria-labelledby="planetPickerTitle">
+    <div class="modal-box planet-picker-box theme-slot-a">
+      <!-- Sci-Fi HUD Corner Brackets -->
+      <span class="hud-corner corner-tl"></span>
+      <span class="hud-corner corner-tr"></span>
+      <span class="hud-corner corner-bl"></span>
+      <span class="hud-corner corner-br"></span>
+
+      <button class="modal-close" id="planetPickerCloseBtn" aria-label="ปิดหน้าต่างเลือกดาว">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="planet-picker-container">
+        <!-- Header -->
+        <div class="planet-picker-header">
+          <div class="picker-header-top">
+            <span class="picker-slot-tag" id="pickerSlotTag">
+              <span class="tag-letter" id="pickerTagLetter">A</span>
+              <span id="pickerTagText">ดาวดวงที่ 1</span>
+            </span>
+            <div class="picker-slot-switch" id="pickerSlotSwitch">
+              <button type="button" class="picker-switch-btn active" id="pickerSwitchA" title="สลับไปเลือกช่อง A">
+                <span class="badge-mini a">A</span> ดาวดวงที่ 1
+              </button>
+              <button type="button" class="picker-switch-btn" id="pickerSwitchB" title="สลับไปเลือกช่อง B">
+                <span class="badge-mini b">B</span> ดาวดวงที่ 2
+              </button>
+            </div>
+          </div>
+          <h2 class="planet-picker-title" id="planetPickerTitle">
+            <i class="fa-solid fa-satellite-dish"></i> เลือกดวงดาวสำหรับ <span class="highlight-slot slot-a-text" id="pickerTitleSlotName">ดาวดวงที่ 1 (ช่อง A)</span>
+          </h2>
+          <p class="planet-picker-subtitle">
+            คลิกเลือกดวงดาวที่ต้องการนำมาวิเคราะห์เปรียบเทียบ หรือคลิกสลับแท็บ A / B เพื่อเลือกดาวอีกช่อง
+          </p>
+        </div>
+
+        <!-- Body: Grid of all 9 Celestial Bodies -->
+        <div class="planet-picker-grid" id="planetPickerGrid">
+          <!-- Populated dynamically via JavaScript with exact 3D spherical models & specs -->
+        </div>
+
+        <!-- Footer -->
+        <div class="planet-picker-footer">
+          <div class="picker-footer-status" id="pickerFooterStatus">
+            <i class="fa-solid fa-hand-pointer"></i> คลิกที่ดวงดาวเพื่อเลือกและบรรจุลงในช่องทันที
+          </div>
+          <button type="button" class="picker-cancel-btn" id="pickerCancelBtn">
+            <i class="fa-solid fa-xmark"></i> ปิด
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- โมดอลแบบทดสอบ (Quiz & Activities Modal - ใช้งานร่วมกัน) -->
+  <div class="modal-overlay" id="quizModal" aria-hidden="true" role="dialog">
+    <div class="modal-box quiz-modal-box">
+      <!-- Sci-Fi HUD Corner Brackets -->
+      <span class="hud-corner corner-tl"></span>
+      <span class="hud-corner corner-tr"></span>
+      <span class="hud-corner corner-bl"></span>
+      <span class="hud-corner corner-br"></span>
+
+      <button class="modal-close" id="quizModalCloseBtn" aria-label="ปิดหน้าต่าง">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="quiz-container">
+        <div class="quiz-header">
+          <div class="quiz-type-badge" id="quizBadge">แบบทดสอบ</div>
+          <h2 class="quiz-title" id="quizTitle">หัวข้อแบบทดสอบ</h2>
+          <p class="quiz-desc" id="quizDesc">คำชี้แจงในการทำแบบทดสอบ</p>
+        </div>
+
+        <div class="quiz-body" id="quizQuestionsContainer">
+          <!-- คำถามแทรกด้วย JavaScript -->
+        </div>
+
+        <div class="quiz-footer" id="quizFooter">
+          <button class="quiz-submit-btn" id="quizSubmitBtn">
+            <i class="fa-solid fa-paper-plane"></i> ส่งคำตอบและประเมินผล
+          </button>
+          <div class="quiz-score-result" id="quizScoreResult" style="display: none;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ข้อความแจ้งเตือนด่วน (Toast Notification) -->
+  <div id="toast-msg">
+    <i class="fa-solid fa-circle-check" style="color:#00f0ff;"></i>
+    <span id="toastText">อัปเดตการเปรียบเทียบเรียบร้อย</span>
+  </div>
+
+  <!-- ส่วนท้ายเว็บ (Footer) -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="brand-orbit-ring" style="width:34px;height:34px;">
+          <div class="brand-icon" style="width:26px;height:26px;font-size:0.9rem;">
+            <i class="fa-solid fa-sun"></i>
+          </div>
+        </div>
+        <span>ห้องเรียนระบบสุริยะ (Solar System Observatory Classroom)</span>
+      </div>
+      <p class="footer-copy">
+        สื่อการเรียนรู้วิทยาศาสตร์ดาราศาสตร์เชิงโต้ตอบ 3 มิติ • ออกแบบเพื่อสร้างแรงบันดาลใจแห่งการสำรวจอวกาศ
+      </p>
+      <div class="footer-nav">
+        <a href="index.html#elements">องค์ประกอบ</a>
+        <a href="a.html">พื้นฐาน</a>
+        <a href="b.html">จำลองโคจร</a>
+        <a href="c.html">เปรียบเทียบ</a>
+        <a href="d.html">คำศัพท์</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- สคริปต์การทำงานของระบบเปรียบเทียบดวงดาวและแบบทดสอบ -->
+  <script>
+    /* ============================================================
+       1. Celestial Database (ฐานข้อมูลเปรียบเทียบ 9 วัตถุอวกาศหลัก)
+       ============================================================ */
+    const celestialData = {
+      sun: {
+        id: 'sun',
+        nameTh: 'ดวงอาทิตย์',
+        nameEn: 'The Sun',
+        category: 'star',
+        type: 'ดาวฤกษ์ศูนย์กลาง (G2V Yellow Dwarf)',
+        diameterVal: 1392700,
+        diameterText: '1,392,700 กม. (~109 เท่าของโลก)',
+        distanceVal: 0,
+        distanceText: '0.00 AU (ศูนย์กลางระบบสุริยะ)',
+        temp: '5,500 °C (พื้นผิว) / 15,000,000 °C (แกนกลาง)',
+        rotation: '~25 - 35 วัน (ตามละติจูด)',
+        orbit: '~230 ล้านปี (รอบใจกลางทางช้างเผือก)',
+        moons: 'ดาวเคราะห์ 8 ดวง + ดาวแคระนับล้าน',
+        gravity: '274.0 m/s² (28 เท่าของโลก)',
+        atmosphere: 'ไฮโดรเจน 73.46%, ฮีเลียม 24.85%',
+        desc: 'ดวงอาทิตย์คือหัวใจสำคัญและแหล่งกำเนิดพลังงานทั้งหมดในระบบสุริยะ มีมวลคิดเป็น 99.86% ของระบบสุริยะทั้งหมด ปลดปล่อยพลังงานจากปฏิกิริยานิวเคลียร์ฟิวชันที่แกนกลาง',
+        renderHtml: '<div class="planet-body planet-sun" style="width:140px;height:140px;"><div class="sun-corona-outer"></div></div>'
+      },
+      mercury: {
+        id: 'mercury',
+        nameTh: 'ดาวพุธ',
+        nameEn: 'Mercury',
+        category: 'terrestrial',
+        type: 'ดาวเคราะห์หิน (Terrestrial Planet)',
+        diameterVal: 4879,
+        diameterText: '4,879 กม. (0.38 เท่าของโลก)',
+        distanceVal: 0.39,
+        distanceText: '0.39 AU (57.9 ล้านกม.)',
+        temp: '-180 °C (กลางคืน) ถึง 430 °C (กลางวัน)',
+        rotation: '58.6 วันบนโลก',
+        orbit: '88 วันบนโลก (โคจรเร็วที่สุด)',
+        moons: '0 ดวง',
+        gravity: '3.70 m/s² (0.38 G)',
+        atmosphere: 'เบาบางมากจนถือเป็น Exosphere (ออกซิเจน, โซเดียม)',
+        desc: 'ดาวเคราะห์ที่อยู่ใกล้ดวงอาทิตย์ที่สุด ไม่มีชั้นบรรยากาศหนาแน่นคอยเก็บกักความร้อน อุณหภูมิกลางวันและกลางคืนต่างกันมากกว่า 600°C ได้รับฉายา "เตาไฟแช่แข็ง"',
+        renderHtml: '<div class="planet-body planet-mercury" style="width:95px;height:95px;"><div class="mercury-texture"></div></div>'
+      },
+      venus: {
+        id: 'venus',
+        nameTh: 'ดาวศุกร์',
+        nameEn: 'Venus',
+        category: 'terrestrial',
+        type: 'ดาวเคราะห์หิน (Terrestrial Planet)',
+        diameterVal: 12104,
+        diameterText: '12,104 กม. (0.95 เท่าของโลก - ฝาแฝดโลก)',
+        distanceVal: 0.72,
+        distanceText: '0.72 AU (108.2 ล้านกม.)',
+        temp: '~465 °C (ดาวเคราะห์ที่ร้อนที่สุด)',
+        rotation: '243 วัน (หมุนย้อนทางตามเข็มนาฬิกา)',
+        orbit: '225 วันบนโลก',
+        moons: '0 ดวง',
+        gravity: '8.87 m/s² (0.90 G)',
+        atmosphere: 'คาร์บอนไดออกไซด์ 96.5%, เมฆกรดกำมะถัน',
+        desc: 'ดาวเคราะห์ที่สว่างเป็นอันดับ 2 บนท้องฟ้า เกิดปรากฏการณ์เรือนกระจกขั้นรุนแรง (Runaway Greenhouse) จนร้อนพอจะหลอมละลายตะกั่วได้ และมีความกดอากาศสูงกว่าโลก 92 เท่า',
+        renderHtml: '<div class="planet-body planet-venus" style="width:115px;height:115px;"><div class="venus-texture"></div></div>'
+      },
+      earth: {
+        id: 'earth',
+        nameTh: 'โลก',
+        nameEn: 'Earth',
+        category: 'terrestrial',
+        type: 'ดาวเคราะห์หิน (The Living Blue Planet)',
+        diameterVal: 12742,
+        diameterText: '12,742 กม. (1.00 เท่า)',
+        distanceVal: 1.00,
+        distanceText: '1.00 AU (149.6 ล้านกม.)',
+        temp: 'เฉลี่ย 15 °C (-89.2 °C ถึง 56.7 °C)',
+        rotation: '23 ชม. 56 นาที 4 วินาที',
+        orbit: '365.25 วัน (1 ปีสุริยคติ)',
+        moons: '1 ดวง (ดวงจันทร์ / The Moon)',
+        gravity: '9.81 m/s² (1.00 G)',
+        atmosphere: 'ไนโตรเจน 78%, ออกซิเจน 21%, อาร์กอน 0.93%',
+        desc: 'อัญมณีสีน้ำเงินแห่งจักรวาลและบ้านเพียงหลังเดียวที่ทราบว่ามีสิ่งมีชีวิตอาศัยอยู่ พื้นผิวปกคลุมด้วยมหาสมุทรน้ำ 71% มีชั้นบรรยากาศออกซิเจนและสนามแม่เหล็กป้องกันพายุสุริยะ',
+        renderHtml: '<div class="planet-body planet-earth" style="width:125px;height:125px;"><div class="earth-continents"></div><div class="earth-clouds-dynamic cloud-layer-1"></div></div>'
+      },
+      mars: {
+        id: 'mars',
+        nameTh: 'ดาวอังคาร',
+        nameEn: 'Mars',
+        category: 'terrestrial',
+        type: 'ดาวเคราะห์หิน (The Red Planet)',
+        diameterVal: 6779,
+        diameterText: '6,779 กม. (0.53 เท่าของโลก)',
+        distanceVal: 1.52,
+        distanceText: '1.52 AU (227.9 ล้านกม.)',
+        temp: '-125 °C ถึง 20 °C (เฉลี่ย -60 °C)',
+        rotation: '24 ชม. 37 นาที (ใกล้เคียงโลกมาก)',
+        orbit: '687 วันบนโลก (~1.88 ปี)',
+        moons: '2 ดวง (โฟบอส และ ไดมอส)',
+        gravity: '3.72 m/s² (0.38 G)',
+        atmosphere: 'คาร์บอนไดออกไซด์ 95.3%, ไนโตรเจน 2.7%',
+        desc: 'ดาวเคราะห์สีแดงจากสนิมเหล็ก มีภูเขาไฟโอลิมปัส (Olympus Mons) สูง 21.9 กม. (สูงที่สุดในระบบสุริยะ) และหุบเหวลึก Valles Marineris ปัจจุบันเป็นเป้าหมายหลักในการสำรวจเพื่อตั้งถิ่นฐาน',
+        renderHtml: '<div class="planet-body planet-mars" style="width:105px;height:105px;"><div class="mars-texture"></div><div class="mars-polar-cap"></div></div>'
+      },
+      jupiter: {
+        id: 'jupiter',
+        nameTh: 'ดาวพฤหัสบดี',
+        nameEn: 'Jupiter',
+        category: 'giant',
+        type: 'ดาวยักษ์แก๊ส (Gas Giant - จอมราชันย์)',
+        diameterVal: 139820,
+        diameterText: '139,820 กม. (10.97 เท่าของโลก)',
+        distanceVal: 5.20,
+        distanceText: '5.20 AU (778.5 ล้านกม.)',
+        temp: '-110 °C (ชั้นบรรยากาศบน)',
+        rotation: '9 ชม. 55 นาที (หมุนเร็วที่สุด)',
+        orbit: '11.86 ปีบนโลก',
+        moons: '95 ดวง (แกนีมีด, ยูโรปา, ไอโอ, คัลลิสโต)',
+        gravity: '24.79 m/s² (2.53 G)',
+        atmosphere: 'ไฮโดรเจน 89%, ฮีเลียม 10%',
+        desc: 'ดาวเคราะห์ที่มีขนาดและมวลมากที่สุด หากนำดาวเคราะห์อื่นรวมกัน ดาวพฤหัสบดีก็ยังมีมวลมากกว่า 2.5 เท่า มี "จุดแดงใหญ่" พายุหมุนยักษ์ที่ใหญ่กว่าโลกทั้งใบและโหมกระหน่ำมาหลายร้อยปี',
+        renderHtml: '<div class="planet-body planet-jupiter" style="width:145px;height:145px;"><div class="jupiter-clouds-bands"></div><div class="jupiter-great-red-spot" style="bottom:35px;right:32px;"></div></div>'
+      },
+      saturn: {
+        id: 'saturn',
+        nameTh: 'ดาวเสาร์',
+        nameEn: 'Saturn',
+        category: 'giant',
+        type: 'ดาวยักษ์แก๊ส (The Ringed Jewel)',
+        diameterVal: 116460,
+        diameterText: '116,460 กม. (9.14 เท่าของโลก)',
+        distanceVal: 9.58,
+        distanceText: '9.58 AU (1.43 พันล้านกม.)',
+        temp: '-140 °C',
+        rotation: '10 ชม. 33 นาที',
+        orbit: '29.45 ปีบนโลก',
+        moons: '146 ดวง (มากที่สุดในระบบสุริยะ เช่น ไททัน)',
+        gravity: '10.44 m/s² (1.06 G)',
+        atmosphere: 'ไฮโดรเจน 96%, ฮีเลียม 3%',
+        desc: 'ดาวเคราะห์ที่มีระบบวงแหวนน้ำแข็งกว้างใหญ่และงดงามที่สุด มีความหนาแน่นเฉลี่ยต่ำที่สุด (น้อยกว่าน้ำ สามารถลอยน้ำได้) มีดวงจันทร์ "ไททัน" ที่มีทะเลมีเทนเหลวและชั้นบรรยากาศหนาแน่น',
+        renderHtml: '<div class="saturn-wrapper" style="position:relative;display:inline-block;"><div class="saturn-ring-system ring-back-layer" style="width:220px;height:68px;"></div><div class="planet-body planet-saturn" style="width:120px;height:120px;"><div class="saturn-cloud-bands"></div></div><div class="saturn-ring-system ring-front-layer" style="width:220px;height:68px;"></div></div>'
+      },
+      uranus: {
+        id: 'uranus',
+        nameTh: 'ดาวยูเรนัส',
+        nameEn: 'Uranus',
+        category: 'giant',
+        type: 'ดาวยักษ์น้ำแข็ง (Ice Giant - แกนเอียง 98°)',
+        diameterVal: 50724,
+        diameterText: '50,724 กม. (3.98 เท่าของโลก)',
+        distanceVal: 19.2,
+        distanceText: '19.2 AU (2.87 พันล้านกม.)',
+        temp: '-195 °C (ลดต่ำสุดถึง -224 °C)',
+        rotation: '17 ชม. 14 นาที (หมุนตะแคงข้าง)',
+        orbit: '84 ปีบนโลก',
+        moons: '28 ดวง (ไททาเนีย, โอเบรอน)',
+        gravity: '8.69 m/s² (0.89 G)',
+        atmosphere: 'ไฮโดรเจน 82.5%, ฮีเลียม 15.2%, มีเทน 2.3%',
+        desc: 'ดาวเคราะห์ก๊าซสีฟ้าอมเขียวจากมีเทน มีแกนหมุนเอียงถึง 98 องศาจนเกือบขนานกับระนาบวงโคจร ส่งผลให้เหมือนกลิ้งไปบนอวกาศ และเผชิญกับกลางวัน-กลางคืนขั้วละ 42 ปีบนโลก',
+        renderHtml: '<div class="planet-body planet-uranus" style="width:115px;height:115px;"><div class="uranus-vertical-ring" style="width:145px;height:145px;"></div></div>'
+      },
+      neptune: {
+        id: 'neptune',
+        nameTh: 'ดาวเนปจูน',
+        nameEn: 'Neptune',
+        category: 'giant',
+        type: 'ดาวยักษ์น้ำแข็ง (The Windy Giant)',
+        diameterVal: 49244,
+        diameterText: '49,244 กม. (3.86 เท่าของโลก)',
+        distanceVal: 30.1,
+        distanceText: '30.1 AU (4.50 พันล้านกม.)',
+        temp: '-200 °C',
+        rotation: '16 ชม. 6 นาที',
+        orbit: '164.8 ปีบนโลก (ไกลที่สุด)',
+        moons: '16 ดวง (ไทรทัน)',
+        gravity: '11.15 m/s² (1.14 G)',
+        atmosphere: 'ไฮโดรเจน 80%, ฮีเลียม 19%, มีเทน 1.5%',
+        desc: 'ดาวเคราะห์ดวงสุดท้ายที่อยู่ไกลที่สุด มีสีน้ำเงินครามเข้ม และมีกระแสลมพายุพัดเร็วและรุนแรงที่สุดในระบบสุริยะ (> 2,100 กม./ชม.) มีดวงจันทร์ "ไทรทัน" ที่มีภูเขาไฟน้ำแข็งพ่นก๊าซไนโตรเจน',
+        renderHtml: '<div class="planet-body planet-neptune" style="width:115px;height:115px;"><div class="neptune-white-cirrus"></div><div class="neptune-dark-spot"></div></div>'
+      }
+    };
+
+    /* ============================================================
+       2. Web Audio API SFX Synthesizer
+       ============================================================ */
+    let audioCtx = null;
+    let isSoundEnabled = true;
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) audioCtx = new AudioContext();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playHoverSound() {
+      if (!isSoundEnabled) return;
+      try {
+        initAudio();
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.12);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.12);
+      } catch (e) {}
+    }
+
+    function playClickSound() {
+      if (!isSoundEnabled) return;
+      try {
+        initAudio();
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(659.25, audioCtx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.15);
+      } catch (e) {}
+    }
+
+    function playWarpSound() {
+      if (!isSoundEnabled) return;
+      try {
+        initAudio();
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.22);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.3);
+      } catch (e) {}
+    }
+
+    function playSuccessSound() {
+      if (!isSoundEnabled) return;
+      try {
+        initAudio();
+        if (!audioCtx) return;
+        [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.09);
+          gain.gain.setValueAtTime(0.06, audioCtx.currentTime + idx * 0.09);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.09 + 0.25);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(audioCtx.currentTime + idx * 0.09);
+          osc.stop(audioCtx.currentTime + idx * 0.09 + 0.25);
+        });
+      } catch (e) {}
+    }
+
+    // Toggle Audio
+    const audioToggleBtn = document.getElementById('audioToggleBtn');
+    const audioIcon = document.getElementById('audioIcon');
+    if (audioToggleBtn) {
+      audioToggleBtn.addEventListener('click', () => {
+        isSoundEnabled = !isSoundEnabled;
+        if (isSoundEnabled) {
+          initAudio();
+          audioToggleBtn.classList.remove('muted');
+          audioIcon.className = 'fa-solid fa-volume-high';
+          showToast('เปิดเสียงเอฟเฟกต์แล้ว 🔊');
+        } else {
+          audioToggleBtn.classList.add('muted');
+          audioIcon.className = 'fa-solid fa-volume-xmark';
+          showToast('ปิดเสียงเอฟเฟกต์แล้ว 🔇');
+        }
+      });
+    }
+
+    /* ============================================================
+       3. Interactive Planet Selection Engine (Slot A & Slot B)
+       ============================================================ */
+    let selectedPlanetA = null;
+    let selectedPlanetB = null;
+
+    const planetPickSquares = document.querySelectorAll('.planet-pick-square');
+    const pillSlotA = document.getElementById('pillSlotA');
+    const pillSlotB = document.getElementById('pillSlotB');
+    const pillNameA = document.getElementById('pillNameA');
+    const pillNameB = document.getElementById('pillNameB');
+    const selectionCountBadge = document.getElementById('selectionCountBadge');
+    const btnConfirmCompare = document.getElementById('btnConfirmCompare');
+    const btnRandomPick = document.getElementById('btnRandomPick');
+    const btnResetPick = document.getElementById('btnResetPick');
+
+    function updateSelectionUI() {
+      let count = 0;
+      if (selectedPlanetA) count++;
+      if (selectedPlanetB) count++;
+      selectionCountBadge.textContent = `เลือกแล้ว: ${count} / 2 ดวง`;
+
+      planetPickSquares.forEach(card => {
+        const pKey = card.getAttribute('data-planet');
+        card.classList.remove('selected-a', 'selected-b');
+        const badge = card.querySelector('.pick-slot-badge');
+        if (badge) badge.style.display = 'none';
+
+        if (pKey === selectedPlanetA) {
+          card.classList.add('selected-a');
+          if (badge) {
+            badge.textContent = 'A';
+            badge.style.display = 'block';
+          }
+        } else if (pKey === selectedPlanetB) {
+          card.classList.add('selected-b');
+          if (badge) {
+            badge.textContent = 'B';
+            badge.style.display = 'block';
+          }
+        }
+      });
+
+      // Update pills
+      if (selectedPlanetA && celestialData[selectedPlanetA]) {
+        pillNameA.textContent = `${celestialData[selectedPlanetA].nameTh} (${celestialData[selectedPlanetA].nameEn})`;
+        pillSlotA.style.opacity = '1';
+        pillSlotA.title = `คลิกเพื่อเปลี่ยนดาวดวงที่ 1 (${celestialData[selectedPlanetA].nameTh})`;
+      } else {
+        pillNameA.textContent = 'ยังไม่ได้เลือก (คลิกเลือกดาว)';
+        pillSlotA.style.opacity = '0.7';
+        pillSlotA.title = 'คลิกเพื่อเลือกดาวดวงที่ 1';
+      }
+
+      if (selectedPlanetB && celestialData[selectedPlanetB]) {
+        pillNameB.textContent = `${celestialData[selectedPlanetB].nameTh} (${celestialData[selectedPlanetB].nameEn})`;
+        pillSlotB.style.opacity = '1';
+        pillSlotB.title = `คลิกเพื่อเปลี่ยนดาวดวงที่ 2 (${celestialData[selectedPlanetB].nameTh})`;
+      } else {
+        pillNameB.textContent = 'ยังไม่ได้เลือก (คลิกเลือกดาว)';
+        pillSlotB.style.opacity = '0.7';
+        pillSlotB.title = 'คลิกเพื่อเลือกดาวดวงที่ 2';
+      }
+
+      // Highlight rows in table
+      document.querySelectorAll('#allPlanetsTable tbody tr').forEach(row => {
+        const rowKey = row.getAttribute('data-planet');
+        row.classList.remove('row-selected-a', 'row-selected-b');
+        if (rowKey === selectedPlanetA) row.classList.add('row-selected-a');
+        if (rowKey === selectedPlanetB) row.classList.add('row-selected-b');
+      });
+    }
+
+    planetPickSquares.forEach(card => {
+      card.addEventListener('mouseenter', () => playHoverSound());
+
+      card.addEventListener('click', () => {
+        const planetKey = card.getAttribute('data-planet');
+        playClickSound();
+
+        // If already selected in A -> deselect A
+        if (selectedPlanetA === planetKey) {
+          selectedPlanetA = null;
+        }
+        // If already selected in B -> deselect B
+        else if (selectedPlanetB === planetKey) {
+          selectedPlanetB = null;
+        }
+        // If A is empty -> assign to A
+        else if (!selectedPlanetA) {
+          selectedPlanetA = planetKey;
+        }
+        // If B is empty -> assign to B
+        else if (!selectedPlanetB) {
+          selectedPlanetB = planetKey;
+        }
+        // If both filled -> replace B with new selection
+        else {
+          selectedPlanetB = planetKey;
+        }
+
+        updateSelectionUI();
+      });
+    });
+
+    /* ============================================================
+       Interactive Planet Picker Modal Controller (สำหรับคลิกเลือกดาวที่ Slot A และ Slot B)
+       ============================================================ */
+    let currentPickingSlot = 'A'; // 'A' or 'B'
+    const planetPickerModal = document.getElementById('planetPickerModal');
+    const planetPickerCloseBtn = document.getElementById('planetPickerCloseBtn');
+    const pickerCancelBtn = document.getElementById('pickerCancelBtn');
+    const pickerSwitchA = document.getElementById('pickerSwitchA');
+    const pickerSwitchB = document.getElementById('pickerSwitchB');
+    const pickerTagLetter = document.getElementById('pickerTagLetter');
+    const pickerTagText = document.getElementById('pickerTagText');
+    const pickerTitleSlotName = document.getElementById('pickerTitleSlotName');
+    const planetPickerGrid = document.getElementById('planetPickerGrid');
+    const planetPickerBox = document.querySelector('.planet-picker-box');
+
+    function openPlanetPicker(slot = 'A') {
+      currentPickingSlot = slot;
+      initAudio();
+      playWarpSound();
+      updatePickerModalView();
+      if (planetPickerModal) {
+        planetPickerModal.classList.add('active', 'show');
+        planetPickerModal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closePlanetPicker() {
+      if (planetPickerModal) {
+        planetPickerModal.classList.remove('active', 'show');
+        planetPickerModal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function updatePickerModalView() {
+      if (!planetPickerGrid) return;
+
+      const isA = currentPickingSlot === 'A';
+      if (pickerTagLetter) pickerTagLetter.textContent = isA ? 'A' : 'B';
+      if (pickerTagText) pickerTagText.textContent = isA ? 'ดาวดวงที่ 1' : 'ดาวดวงที่ 2';
+      if (pickerTitleSlotName) {
+        pickerTitleSlotName.textContent = isA ? 'ดาวดวงที่ 1 (ช่อง A)' : 'ดาวดวงที่ 2 (ช่อง B)';
+        pickerTitleSlotName.className = `highlight-slot ${isA ? 'slot-a-text' : 'slot-b-text'}`;
+      }
+
+      if (planetPickerBox) {
+        if (isA) {
+          planetPickerBox.classList.add('theme-slot-a');
+          planetPickerBox.classList.remove('theme-slot-b');
+        } else {
+          planetPickerBox.classList.add('theme-slot-b');
+          planetPickerBox.classList.remove('theme-slot-a');
+        }
+      }
+
+      if (pickerSwitchA) pickerSwitchA.classList.toggle('active', isA);
+      if (pickerSwitchB) pickerSwitchB.classList.toggle('active', !isA);
+
+      // Render cards for all 9 celestial bodies
+      const keys = ['sun', 'mercury', 'venus', 'earth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune'];
+      let html = '';
+      keys.forEach(key => {
+        const p = celestialData[key];
+        if (!p) return;
+
+        const isSelectedCurrent = (isA && selectedPlanetA === key) || (!isA && selectedPlanetB === key);
+        const isSelectedOther = (isA && selectedPlanetB === key) || (!isA && selectedPlanetA === key);
+        const otherSlotName = isA ? 'ช่อง B' : 'ช่อง A';
+
+        let cardClass = 'picker-planet-card';
+        if (isSelectedCurrent) cardClass += ' is-selected-current';
+        if (isSelectedOther) cardClass += ' is-selected-other';
+
+        let badgeHtml = '';
+        if (isSelectedCurrent) {
+          badgeHtml = `<span class="picker-card-badge is-current"><i class="fa-solid fa-check"></i> เลือกอยู่ในช่องนี้</span>`;
+        } else if (isSelectedOther) {
+          badgeHtml = `<span class="picker-card-badge is-other"><i class="fa-solid fa-arrows-rotate"></i> อยู่ใน ${otherSlotName}</span>`;
+        }
+
+        html += `
+          <div class="${cardClass}" data-planet="${key}" tabindex="0" role="button" title="คลิกเพื่อเลือก ${p.nameTh}">
+            ${badgeHtml}
+            <div class="picker-planet-preview">
+              ${p.renderHtml}
+            </div>
+            <div class="picker-planet-name-th">${p.nameTh}</div>
+            <div class="picker-planet-name-en">${p.nameEn}</div>
+            <div class="picker-planet-type">${p.type.split('(')[0].trim()}</div>
+            <div class="picker-planet-spec"><i class="fa-solid fa-ruler-horizontal"></i> ${p.diameterText.split('(')[0].trim()}</div>
+            <button type="button" class="picker-choose-btn">
+              ${isSelectedCurrent ? '<i class="fa-solid fa-circle-check"></i> กำลังเลือก' : '<i class="fa-solid fa-hand-pointer"></i> เลือกดาวดวงนี้'}
+            </button>
+          </div>
+        `;
+      });
+      planetPickerGrid.innerHTML = html;
+
+      // Event listeners for cards inside modal
+      planetPickerGrid.querySelectorAll('.picker-planet-card').forEach(card => {
+        card.addEventListener('mouseenter', () => playHoverSound());
+        card.addEventListener('click', () => {
+          const planetKey = card.getAttribute('data-planet');
+          selectPlanetFromPicker(currentPickingSlot, planetKey);
+        });
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            const planetKey = card.getAttribute('data-planet');
+            selectPlanetFromPicker(currentPickingSlot, planetKey);
+          }
+        });
+      });
+    }
+
+    function selectPlanetFromPicker(slot, planetKey) {
+      playClickSound();
+      const p = celestialData[planetKey];
+      if (!p) return;
+
+      if (slot === 'A') {
+        if (selectedPlanetB === planetKey) {
+          selectedPlanetB = selectedPlanetA; // swap if A had one, or null
+          showToast(`สลับ ${p.nameTh} มาไว้ที่ ดาวดวงที่ 1 (ช่อง A)`);
+        } else {
+          showToast(`เลือก ${p.nameTh} เป็นดาวดวงที่ 1 (ช่อง A) เรียบร้อย ✨`);
+        }
+        selectedPlanetA = planetKey;
+      } else {
+        if (selectedPlanetA === planetKey) {
+          selectedPlanetA = selectedPlanetB; // swap if B had one, or null
+          showToast(`สลับ ${p.nameTh} มาไว้ที่ ดาวดวงที่ 2 (ช่อง B)`);
+        } else {
+          showToast(`เลือก ${p.nameTh} เป็นดาวดวงที่ 2 (ช่อง B) เรียบร้อย ✨`);
+        }
+        selectedPlanetB = planetKey;
+      }
+
+      updateSelectionUI();
+      closePlanetPicker();
+
+      // If both planets are selected, highlight confirm button
+      if (selectedPlanetA && selectedPlanetB) {
+        if (btnConfirmCompare) {
+          btnConfirmCompare.classList.add('pulse-ready');
+          setTimeout(() => btnConfirmCompare.classList.remove('pulse-ready'), 2500);
+        }
+      }
+    }
+
+    // Modal switch tabs
+    if (pickerSwitchA) {
+      pickerSwitchA.addEventListener('click', () => {
+        playClickSound();
+        currentPickingSlot = 'A';
+        updatePickerModalView();
+      });
+    }
+    if (pickerSwitchB) {
+      pickerSwitchB.addEventListener('click', () => {
+        playClickSound();
+        currentPickingSlot = 'B';
+        updatePickerModalView();
+      });
+    }
+
+    // Modal close buttons
+    if (planetPickerCloseBtn) planetPickerCloseBtn.addEventListener('click', closePlanetPicker);
+    if (pickerCancelBtn) pickerCancelBtn.addEventListener('click', closePlanetPicker);
+    if (planetPickerModal) {
+      planetPickerModal.addEventListener('click', (e) => {
+        if (e.target === planetPickerModal) closePlanetPicker();
+      });
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && planetPickerModal && (planetPickerModal.classList.contains('active') || planetPickerModal.classList.contains('show'))) {
+        closePlanetPicker();
+      }
+    });
+
+    // Event listeners on pillSlotA and pillSlotB
+    if (pillSlotA) {
+      pillSlotA.addEventListener('mouseenter', () => playHoverSound());
+      pillSlotA.addEventListener('click', () => {
+        openPlanetPicker('A');
+      });
+      pillSlotA.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openPlanetPicker('A');
+        }
+      });
+    }
+
+    if (pillSlotB) {
+      pillSlotB.addEventListener('mouseenter', () => playHoverSound());
+      pillSlotB.addEventListener('click', () => {
+        openPlanetPicker('B');
+      });
+      pillSlotB.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openPlanetPicker('B');
+        }
+      });
+    }
+
+    // ปุ่มล้างการเลือก
+    if (btnResetPick) {
+      btnResetPick.addEventListener('click', () => {
+        playClickSound();
+        selectedPlanetA = null;
+        selectedPlanetB = null;
+        updateSelectionUI();
+        const resultsSection = document.getElementById('compareResultsSection');
+        const placeholder = document.getElementById('comparePlaceholder');
+        if (resultsSection) resultsSection.style.display = 'none';
+        if (placeholder) placeholder.style.display = 'block';
+        showToast('รีเซ็ตการเลือกดาวแล้ว กรุณาคลิกเลือกดาว 2 ดวง');
+      });
+    }
+
+    // ปุ่มสุ่มเลือกคู่ดาว
+    if (btnRandomPick) {
+      btnRandomPick.addEventListener('click', () => {
+        playClickSound();
+        const keys = Object.keys(celestialData);
+        const idx1 = Math.floor(Math.random() * keys.length);
+        let idx2 = Math.floor(Math.random() * (keys.length - 1));
+        if (idx2 >= idx1) idx2++;
+
+        selectedPlanetA = keys[idx1];
+        selectedPlanetB = keys[idx2];
+        updateSelectionUI();
+        renderComparisonResults();
+        showToast(`สุ่มคู่ดาว: ${celestialData[selectedPlanetA].nameTh} vs ${celestialData[selectedPlanetB].nameTh}`);
+      });
+    }
+
+    // ปุ่มยืนยันการเปรียบเทียบ (ตามความต้องการที่ระบุในคำสั่ง)
+    if (btnConfirmCompare) {
+      btnConfirmCompare.addEventListener('click', () => {
+        if (!selectedPlanetA || !selectedPlanetB) {
+          showToast('⚠️ กรุณาคลิกเลือกดาวให้ครบ 2 ดวงก่อนกดยืนยัน');
+          return;
+        }
+        playWarpSound();
+        renderComparisonResults();
+        showToast(`ยืนยันการเปรียบเทียบ: ${celestialData[selectedPlanetA].nameTh} vs ${celestialData[selectedPlanetB].nameTh} สำเร็จ!`);
+
+        // Smooth scroll to comparison results
+        const resultsSection = document.getElementById('compareResultsSection');
+        if (resultsSection) {
+          resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    }
+
+    /* ============================================================
+       4. Dual Comparison Results Render Function
+       ============================================================ */
+    function renderComparisonResults() {
+      const resultsSection = document.getElementById('compareResultsSection');
+      const placeholder = document.getElementById('comparePlaceholder');
+
+      if (!selectedPlanetA || !selectedPlanetB) {
+        if (resultsSection) resultsSection.style.display = 'none';
+        if (placeholder) placeholder.style.display = 'block';
+        return;
+      }
+
+      if (resultsSection) resultsSection.style.display = 'block';
+      if (placeholder) placeholder.style.display = 'none';
+
+      const dualGrid = document.getElementById('dualCompareGrid');
+      if (dualGrid) {
+        dualGrid.scrollTo({ left: 0, behavior: 'smooth' });
+      }
+
+      const dataA = celestialData[selectedPlanetA];
+      const dataB = celestialData[selectedPlanetB];
+      if (!dataA || !dataB) return;
+
+      // Update Box A
+      document.getElementById('boxTypeA').textContent = dataA.type;
+      document.getElementById('boxRenderA').innerHTML = dataA.renderHtml;
+      document.getElementById('boxNameThA').textContent = dataA.nameTh;
+      document.getElementById('boxNameEnA').textContent = dataA.nameEn.toUpperCase();
+      document.getElementById('boxDescA').textContent = dataA.desc;
+      document.getElementById('valDiameterA').textContent = dataA.diameterText;
+      document.getElementById('valDistanceA').textContent = dataA.distanceText;
+      document.getElementById('valTempA').textContent = dataA.temp;
+      document.getElementById('valRotationA').textContent = dataA.rotation;
+      document.getElementById('valOrbitA').textContent = dataA.orbit;
+      document.getElementById('valMoonsA').textContent = dataA.moons;
+      document.getElementById('valGravityA').textContent = dataA.gravity;
+      document.getElementById('valAtmoA').textContent = dataA.atmosphere;
+
+      // Update Box B
+      document.getElementById('boxTypeB').textContent = dataB.type;
+      document.getElementById('boxRenderB').innerHTML = dataB.renderHtml;
+      document.getElementById('boxNameThB').textContent = dataB.nameTh;
+      document.getElementById('boxNameEnB').textContent = dataB.nameEn.toUpperCase();
+      document.getElementById('boxDescB').textContent = dataB.desc;
+      document.getElementById('valDiameterB').textContent = dataB.diameterText;
+      document.getElementById('valDistanceB').textContent = dataB.distanceText;
+      document.getElementById('valTempB').textContent = dataB.temp;
+      document.getElementById('valRotationB').textContent = dataB.rotation;
+      document.getElementById('valOrbitB').textContent = dataB.orbit;
+      document.getElementById('valMoonsB').textContent = dataB.moons;
+      document.getElementById('valGravityB').textContent = dataB.gravity;
+      document.getElementById('valAtmoB').textContent = dataB.atmosphere;
+
+      // Comparative Bars
+      const maxDia = Math.max(dataA.diameterVal, dataB.diameterVal, 1);
+      const pctDiaA = Math.max(6, Math.min(100, (dataA.diameterVal / maxDia) * 100));
+      const pctDiaB = Math.max(6, Math.min(100, (dataB.diameterVal / maxDia) * 100));
+      document.getElementById('barDiameterA').style.width = pctDiaA + '%';
+      document.getElementById('barDiameterB').style.width = pctDiaB + '%';
+
+      const maxDist = Math.max(dataA.distanceVal, dataB.distanceVal, 1);
+      const pctDistA = Math.max(4, Math.min(100, (dataA.distanceVal / maxDist) * 100));
+      const pctDistB = Math.max(4, Math.min(100, (dataB.distanceVal / maxDist) * 100));
+      document.getElementById('barDistanceA').style.width = pctDistA + '%';
+      document.getElementById('barDistanceB').style.width = pctDistB + '%';
+
+      // Insight Banner Summary
+      const ratio = (dataA.diameterVal / dataB.diameterVal).toFixed(2);
+      let ratioText = '';
+      if (dataA.diameterVal > dataB.diameterVal) {
+        ratioText = `${dataA.nameTh} มีขนาดเส้นผ่านศูนย์กลางใหญ่กว่า ${dataB.nameTh} ประมาณ ${(dataA.diameterVal / dataB.diameterVal).toFixed(1)} เท่า`;
+      } else if (dataA.diameterVal < dataB.diameterVal) {
+        ratioText = `${dataB.nameTh} มีขนาดเส้นผ่านศูนย์กลางใหญ่กว่า ${dataA.nameTh} ประมาณ ${(dataB.diameterVal / dataA.diameterVal).toFixed(1)} เท่า`;
+      } else {
+        ratioText = `ทั้งสองวัตถุมีขนาดใกล้เคียงกันมาก`;
+      }
+
+      document.getElementById('insightTitle').innerHTML = `
+        <i class="fa-solid fa-wand-magic-sparkles" style="color:#a855f7;"></i>
+        บทวิเคราะห์เปรียบเทียบ: ${dataA.nameTh} vs ${dataB.nameTh}
+      `;
+
+      document.getElementById('insightSummary').textContent = `
+        การประมวลผลเชิงเปรียบเทียบระหว่าง ${dataA.nameTh} (${dataA.type}) และ ${dataB.nameTh} (${dataB.type}) ${ratioText} 
+        โดย ${dataA.nameTh} มีระยะห่างจากดวงอาทิตย์ ${dataA.distanceText} และ ${dataB.nameTh} มีระยะห่าง ${dataB.distanceText}
+      `;
+
+      document.getElementById('insightTags').innerHTML = `
+        <span class="insight-tag"><i class="fa-solid fa-arrows-left-right"></i> อัตราส่วนขนาด: ${ratio}:1</span>
+        <span class="insight-tag"><i class="fa-solid fa-moon"></i> บริวาร: ${dataA.moons.split(' ')[0]} vs ${dataB.moons.split(' ')[0]}</span>
+        <span class="insight-tag"><i class="fa-solid fa-clock"></i> คาบหมุน: ${dataA.rotation.split(' ')[0]} vs ${dataB.rotation.split(' ')[0]}</span>
+      `;
+    }
+
+    /* ============================================================
+       5. Table Row Click & Category Filter Handling
+       ============================================================ */
+    const tableRows = document.querySelectorAll('#allPlanetsTable tbody tr');
+    tableRows.forEach(row => {
+      row.addEventListener('click', () => {
+        const pKey = row.getAttribute('data-planet');
+        if (!pKey) return;
+        playClickSound();
+
+        // Assign to next slot
+        if (!selectedPlanetA || selectedPlanetA === pKey) {
+          selectedPlanetA = pKey;
+        } else {
+          selectedPlanetB = pKey;
+        }
+        updateSelectionUI();
+        renderComparisonResults();
+        showToast(`เลือก ${celestialData[pKey].nameTh} สำเร็จ`);
+      });
+    });
+
+    const filterBtns = document.querySelectorAll('.table-filter-group .filter-btn');
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        playClickSound();
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.getAttribute('data-filter');
+        tableRows.forEach(row => {
+          const cat = row.getAttribute('data-category');
+          const pKey = row.getAttribute('data-planet');
+
+          if (filter === 'all') {
+            row.style.display = '';
+          } else if (filter === 'terrestrial') {
+            row.style.display = (cat === 'terrestrial') ? '' : 'none';
+          } else if (filter === 'giant') {
+            row.style.display = (cat === 'giant') ? '' : 'none';
+          } else if (filter === 'selected') {
+            row.style.display = (pKey === selectedPlanetA || pKey === selectedPlanetB) ? '' : 'none';
+          }
+        });
+      });
+    });
+
+    /* ============================================================
+       6. Interactive Quiz Engine (Pre, Post, Act1, Act2)
+       ============================================================ */
+    const quizDataBank = {
+      pre: {
+        badge: 'แบบทดสอบก่อนเรียน // PRE-ASSESSMENT',
+        title: 'วัดความรู้พื้นฐานระบบสุริยะจักรวาล',
+        desc: 'ทดสอบความรู้และมโนทัศน์เบื้องต้นก่อนเริ่มต้นการเดินทางสำรวจดาราศาสตร์',
+        questions: [
+          {
+            q: '1. ศูนย์กลางของระบบสุริยะที่มีแรงโน้มถ่วงยึดเหนี่ยวทุกสิ่งคือวัตถุใด?',
+            options: ['โลก (Earth)', 'ดวงอาทิตย์ (The Sun)', 'ดาวพฤหัสบดี (Jupiter)', 'หลุมดำใจกลางทางช้างเผือก'],
+            answer: 1,
+            explain: 'ดวงอาทิตย์เป็นดาวฤกษ์ดวงเดียวและเป็นศูนย์กลางของระบบสุริยะ มีมวล 99.86% ของทั้งระบบ'
+          },
+          {
+            q: '2. ดาวเคราะห์ดวงใดในระบบสุริยะที่มีขนาดใหญ่ที่สุด?',
+            options: ['ดาวเสาร์', 'ดาวอังคาร', 'ดาวพฤหัสบดี', 'ดาวยูเรนัส'],
+            answer: 2,
+            explain: 'ดาวพฤหัสบดีเป็นดาวยักษ์แก๊สที่มีขนาดใหญ่ที่สุด สามารถบรรจุโลกได้มากกว่า 1,300 ใบ'
+          },
+          {
+            q: '3. ดาวเคราะห์ที่อยู่ใกล้ดวงอาทิตย์มากที่สุดในลำดับที่ 1 คือข้อใด?',
+            options: ['ดาวพุธ', 'ดาวศุกร์', 'โลก', 'ดาวอังคาร'],
+            answer: 0,
+            explain: 'ดาวพุธเป็นดาวเคราะห์ลำดับแรก ห่างจากดวงอาทิตย์เฉลี่ยเพียง 57.9 ล้านกิโลเมตร'
+          }
+        ]
+      },
+      post: {
+        badge: 'แบบทดสอบหลังเรียน // POST-ASSESSMENT',
+        title: 'ประเมินผลสัมฤทธิ์การเรียนรู้และการเปรียบเทียบดวงดาว',
+        desc: 'วัดความรู้ความเข้าใจเชิงลึกหลังจากการศึกษาและเปรียบเทียบองค์ประกอบของระบบสุริยะ',
+        questions: [
+          {
+            q: '1. ดาวเคราะห์ดวงใดมีอุณหภูมิเฉลี่ย "ร้อนที่สุด" ในระบบสุริยะ เพราะเหตุใด?',
+            options: [
+              'ดาวพุธ เพราะอยู่ใกล้ดวงอาทิตย์ที่สุด',
+              'ดาวศุกร์ เพราะมีภาวะเรือนกระจกขั้นรุนแรงจากก๊าซ CO2',
+              'ดาวอังคาร เพราะมีสีแดงดูดความร้อน',
+              'ดาวพฤหัสบดี เพราะมีแรงโน้มถ่วงสูงมาก'
+            ],
+            answer: 1,
+            explain: 'ดาวศุกร์ร้อนที่สุด (~465°C) จากปรากฏการณ์เรือนกระจกขั้นรุนแรง แม้จะอยู่ไกลกว่าดาวพุธก็ตาม'
+          },
+          {
+            q: '2. ข้อใดจัดอยู่ในกลุ่ม "ดาวเคราะห์หิน" (Terrestrial Planets) ทั้งหมด?',
+            options: [
+              'ดาวพุธ, ดาวศุกร์, โลก, ดาวอังคาร',
+              'ดาวพฤหัสบดี, ดาวเสาร์, ดาวยูเรนัส, ดาวเนปจูน',
+              'โลก, ดาวอังคาร, ดาวพฤหัสบดี, ดาวเสาร์',
+              'ดาวพุธ, โลก, ดาวเสาร์, ดาวเนปจูน'
+            ],
+            answer: 0,
+            explain: 'ดาวเคราะห์หินคือดาวเคราะห์ชั้นใน 4 ดวงแรกที่มีพื้นผิวเป็นของแข็งและหิน'
+          },
+          {
+            q: '3. ปรากฏการณ์ "จุดแดงใหญ่" (Great Red Spot) พบบนดาวเคราะห์ดวงใด?',
+            options: ['ดาวอังคาร', 'ดาวเสาร์', 'ดาวพฤหัสบดี', 'ดาวยูเรนัส'],
+            answer: 2,
+            explain: 'จุดแดงใหญ่คือพายุหมุนขนาดยักษ์ในชั้นบรรยากาศของดาวพฤหัสบดี'
+          }
+        ]
+      },
+      act1: {
+        badge: 'กิจกรรมการเรียนรู้ที่ 1 // MISSION ALPHA',
+        title: 'ภารกิจ: สำรวจสถิติดาราศาสตร์และวงแหวน',
+        desc: 'ฝึกจำแนกดาวเคราะห์ตามลักษณะเฉพาะทางกายภาพและโครงสร้างวงแหวน',
+        questions: [
+          {
+            q: '1. ดาวเคราะห์ดวงใดมี "ระบบวงแหวนน้ำแข็ง" ที่กว้างใหญ่และมองเห็นชัดเจนที่สุด?',
+            options: ['ดาวยูเรนัส', 'ดาวเนปจูน', 'ดาวเสาร์', 'ดาวพฤหัสบดี'],
+            answer: 2,
+            explain: 'ดาวเสาร์มีระบบวงแหวนที่สวยงามและกว้างใหญ่ที่สุด ประกอบด้วยก้อนน้ำแข็งและหิน'
+          },
+          {
+            q: '2. วัตถุใดในระบบสุริยะที่มีจำนวนดวงจันทร์บริวารมากที่สุดในปัจจุบัน (>140 ดวง)?',
+            options: ['โลก', 'ดาวพฤหัสบดี', 'ดาวเสาร์', 'ดาวเนปจูน'],
+            answer: 2,
+            explain: 'ดาวเสาร์มีดวงจันทร์ที่ค้นพบและยืนยันแล้วมากที่สุดถึง 146 ดวง'
+          }
+        ]
+      },
+      act2: {
+        badge: 'กิจกรรมการเรียนรู้ที่ 2 // MISSION BETA',
+        title: 'ภารกิจ: แกะรอยความลับของจักรวาล',
+        desc: 'ทดสอบความรู้เชิงสำรวจเกี่ยวกับความมหัศจรรย์และสถิติสุดขั้วในอวกาศ',
+        questions: [
+          {
+            q: '1. ดาวเคราะห์ดวงใดที่ "แกนหมุนเอียงถึง 98 องศา" จนดูเหมือนกลิ้งไปบนวงโคจร?',
+            options: ['ดาวเนปจูน', 'ดาวอังคาร', 'ดาวยูเรนัส', 'ดาวศุกร์'],
+            answer: 2,
+            explain: 'ดาวยูเรนัสมีแกนหมุนเอียงตะแคงข้างเกือบขนานกับระนาบวงโคจรอย่างน่าอัศจรรย์'
+          },
+          {
+            q: '2. "Olympus Mons" ภูเขาไฟที่สูงที่สุดในระบบสุริยะ (สูงกว่าเอเวอเรสต์เกือบ 3 เท่า) ตั้งอยู่บนดาวดวงใด?',
+            options: ['โลก', 'ดาวอังคาร', 'ดวงจันทร์', 'ดาวศุกร์'],
+            answer: 1,
+            explain: 'ภูเขาไฟโอลิมปัสอยู่บนดาวอังคาร เป็นภูเขาไฟรูปโล่ที่สูงถึง 21.9 กิโลเมตร'
+          }
+        ]
+      }
+    };
+
+    let currentQuizKey = null;
+    const quizModal = document.getElementById('quizModal');
+    const quizModalCloseBtn = document.getElementById('quizModalCloseBtn');
+    const quizBadge = document.getElementById('quizBadge');
+    const quizTitle = document.getElementById('quizTitle');
+    const quizDesc = document.getElementById('quizDesc');
+    const quizQuestionsContainer = document.getElementById('quizQuestionsContainer');
+    const quizSubmitBtn = document.getElementById('quizSubmitBtn');
+    const quizScoreResult = document.getElementById('quizScoreResult');
+
+    function openQuizByKey(key) {
+      const data = quizDataBank[key];
+      if (!data || !quizModal) return;
+
+      currentQuizKey = key;
+      playWarpSound();
+
+      quizBadge.textContent = data.badge;
+      quizTitle.textContent = data.title;
+      quizDesc.textContent = data.desc;
+      quizScoreResult.style.display = 'none';
+      quizSubmitBtn.style.display = 'inline-flex';
+      quizSubmitBtn.disabled = false;
+
+      let html = '';
+      data.questions.forEach((item, qIdx) => {
+        html += `
+          <div class="quiz-question-item" data-qidx="${qIdx}">
+            <div class="quiz-question-title">${item.q}</div>
+            <div class="quiz-options-group">
+        `;
+        item.options.forEach((opt, optIdx) => {
+          html += `
+            <label class="quiz-option-label" onclick="playClickSound()">
+              <input type="radio" name="q_${qIdx}" value="${optIdx}">
+              <span class="quiz-opt-marker"></span>
+              <span class="quiz-opt-text">${opt}</span>
+            </label>
+          `;
+        });
+        html += `
+            </div>
+            <div class="quiz-explanation" id="explain_${qIdx}" style="display:none;"></div>
+          </div>
+        `;
+      });
+
+      quizQuestionsContainer.innerHTML = html;
+      quizModal.classList.add('show');
+      quizModal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeQuizModal() {
+      if (!quizModal) return;
+      quizModal.classList.remove('show');
+      quizModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      currentQuizKey = null;
+    }
+
+    if (quizModalCloseBtn) {
+      quizModalCloseBtn.addEventListener('click', closeQuizModal);
+    }
+
+    if (quizModal) {
+      quizModal.addEventListener('click', (e) => {
+        if (e.target === quizModal) closeQuizModal();
+      });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && quizModal && quizModal.classList.contains('show')) {
+        closeQuizModal();
+      }
+    });
+
+    // Quiz Submit & Score Assessment
+    if (quizSubmitBtn) {
+      quizSubmitBtn.addEventListener('click', () => {
+        if (!currentQuizKey) return;
+        const data = quizDataBank[currentQuizKey];
+        let score = 0;
+        let answeredCount = 0;
+
+        data.questions.forEach((item, qIdx) => {
+          const selected = document.querySelector(`input[name="q_${qIdx}"]:checked`);
+          const explainBox = document.getElementById(`explain_${qIdx}`);
+
+          if (selected) {
+            answeredCount++;
+            const userAns = parseInt(selected.value, 10);
+            const isCorrect = userAns === item.answer;
+
+            if (isCorrect) {
+              score++;
+              selected.closest('.quiz-option-label').classList.add('correct');
+            } else {
+              selected.closest('.quiz-option-label').classList.add('wrong');
+              const correctRadio = document.querySelector(`input[name="q_${qIdx}"][value="${item.answer}"]`);
+              if (correctRadio) {
+                correctRadio.closest('.quiz-option-label').classList.add('correct');
+              }
+            }
+
+            if (explainBox) {
+              explainBox.style.display = 'block';
+              explainBox.innerHTML = `<strong>${isCorrect ? '✅ ถูกต้อง!' : '❌ ยังไม่ถูกต้อง:'}</strong> ${item.explain}`;
+              explainBox.className = `quiz-explanation ${isCorrect ? 'is-correct' : 'is-wrong'}`;
+            }
+          } else {
+            if (explainBox) {
+              explainBox.style.display = 'block';
+              explainBox.innerHTML = `<strong>เฉลย:</strong> ${item.explain}`;
+              explainBox.className = 'quiz-explanation is-wrong';
+            }
+          }
+        });
+
+        if (answeredCount < data.questions.length) {
+          if (!confirm('คุณยังตอบคำถามไม่ครบทุกข้อ ต้องการส่งคำตอบหรือไม่?')) {
+            return;
+          }
+        }
+
+        playSuccessSound();
+        quizSubmitBtn.disabled = true;
+        quizSubmitBtn.style.display = 'none';
+
+        const total = data.questions.length;
+        const pct = Math.round((score / total) * 100);
+        quizScoreResult.style.display = 'block';
+        quizScoreResult.innerHTML = `
+          <div class="score-summary-title">🎉 ผลการประเมินคะแนน</div>
+          <div class="score-numbers">${score} / ${total} คะแนน (${pct}%)</div>
+          <p class="score-eval-text">${pct >= 70 ? 'ยอดเยี่ยมมาก! คุณมีความเข้าใจเกี่ยวกับระบบสุริยะเป็นอย่างดี' : 'ทำได้ดี! ลองศึกษาข้อมูลเปรียบเทียบในหน้านี้เพิ่มเติมเพื่อพัฒนาคะแนนให้สูงขึ้น'}</p>
+        `;
+      });
+    }
+
+    // Navbar Quiz Dropdown Integration
+    const dropdownTrigger = document.getElementById('dropdownTrigger');
+    const quizDropdown = document.getElementById('quizDropdown');
+    if (dropdownTrigger && quizDropdown) {
+      const toggleDropdown = (e) => {
+        if (typeof window.toggleQuizDropdown === 'function') {
+          window.toggleQuizDropdown(e);
+        } else {
+          if (e && e.cancelable) e.preventDefault();
+          e.stopPropagation();
+          const isOpen = quizDropdown.classList.toggle('open');
+          dropdownTrigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        }
+      };
+      dropdownTrigger.addEventListener('click', toggleDropdown);
+      dropdownTrigger.addEventListener('touchend', (e) => {
+        if (e.cancelable) e.preventDefault();
+        toggleDropdown(e);
+      }, { passive: false });
+
+      ['click', 'touchstart'].forEach((evt) => {
+        document.addEventListener(evt, (e) => {
+          if (!quizDropdown.contains(e.target) && !e.target.closest('#dropdownMenu, .dropdown-menu')) {
+            if (typeof window.closeQuizDropdown === 'function') {
+              window.closeQuizDropdown();
+            } else {
+              quizDropdown.classList.remove('open');
+              dropdownTrigger.setAttribute('aria-expanded', 'false');
+            }
+          }
+        }, { passive: true });
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          if (typeof window.closeQuizDropdown === 'function') {
+            window.closeQuizDropdown();
+          } else {
+            quizDropdown.classList.remove('open');
+            dropdownTrigger.setAttribute('aria-expanded', 'false');
+          }
+        }
+      });
+
+      const dropdownItems = quizDropdown.querySelectorAll('.dropdown-item');
+      dropdownItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+          const href = item.getAttribute('href');
+          const qKey = item.getAttribute('data-quiz');
+          if (href === '1.html' || qKey === 'pre') {
+            quizDropdown.classList.remove('open');
+            window.location.href = '1.html';
+            return;
+          }
+          if (href === '2.html' || qKey === 'post') {
+            quizDropdown.classList.remove('open');
+            window.location.href = '2.html';
+            return;
+          }
+          if (href === '3.html' || qKey === 'act1') {
+            quizDropdown.classList.remove('open');
+            window.location.href = '3.html';
+            return;
+          }
+          if (href === '4.html' || qKey === 'act2') {
+            quizDropdown.classList.remove('open');
+            window.location.href = '4.html';
+            return;
+          }
+          e.preventDefault();
+          quizDropdown.classList.remove('open');
+          if (qKey) openQuizByKey(qKey);
+        });
+      });
+    }
+
+    // Mobile Navbar Toggle
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navMenu = document.getElementById('navMenu');
+    if (mobileToggle && navMenu) {
+      mobileToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+      });
+    }
+
+    /* ============================================================
+       Horizontal Comparison Deck Scroll Control (Mobile / Tablet)
+       ============================================================ */
+    const scrollCompareLeft = document.getElementById('scrollCompareLeft');
+    const scrollCompareRight = document.getElementById('scrollCompareRight');
+    const dualCompareGrid = document.getElementById('dualCompareGrid');
+
+    if (scrollCompareLeft && dualCompareGrid) {
+      scrollCompareLeft.addEventListener('click', () => {
+        playClickSound();
+        const scrollAmount = dualCompareGrid.clientWidth * 0.85 || 320;
+        dualCompareGrid.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      });
+    }
+
+    if (scrollCompareRight && dualCompareGrid) {
+      scrollCompareRight.addEventListener('click', () => {
+        playClickSound();
+        const scrollAmount = dualCompareGrid.clientWidth * 0.85 || 320;
+        dualCompareGrid.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      });
+    }
+
+    /* ============================================================
+       7. Space Canvas Starfield Animation
+       ============================================================ */
+    const spaceCanvas = document.getElementById('space-canvas');
+    if (spaceCanvas) {
+      const ctx = spaceCanvas.getContext('2d');
+      let stars = [];
+      const numStars = 160;
+
+      function resizeCanvas() {
+        spaceCanvas.width = window.innerWidth;
+        spaceCanvas.height = window.innerHeight;
+        initStars();
+      }
+
+      function initStars() {
+        stars = [];
+        for (let i = 0; i < numStars; i++) {
+          stars.push({
+            x: Math.random() * spaceCanvas.width,
+            y: Math.random() * spaceCanvas.height,
+            size: Math.random() * 1.8 + 0.3,
+            alpha: Math.random() * 0.8 + 0.2,
+            speed: Math.random() * 0.02 + 0.005,
+            direction: Math.random() > 0.5 ? 1 : -1
+          });
+        }
+      }
+
+      function drawStars() {
+        ctx.clearRect(0, 0, spaceCanvas.width, spaceCanvas.height);
+        stars.forEach(star => {
+          star.alpha += star.speed * star.direction;
+          if (star.alpha > 0.95 || star.alpha < 0.15) {
+            star.direction *= -1;
+          }
+          ctx.beginPath();
+          ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(200, 240, 255, ${star.alpha})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(drawStars);
+      }
+
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+      drawStars();
+    }
+
+    /* ============================================================
+       8. Toast Notification Utility
+       ============================================================ */
+    let toastTimer = null;
+    function showToast(msg) {
+      const toast = document.getElementById('toast-msg');
+      const toastText = document.getElementById('toastText');
+      if (!toast || !toastText) return;
+
+      toastText.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // Initialize Default State on Load
+    document.addEventListener('DOMContentLoaded', () => {
+      updateSelectionUI();
+      renderComparisonResults();
+    });
+  </script>
+  <script src="navScroll.js?v=2"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
+

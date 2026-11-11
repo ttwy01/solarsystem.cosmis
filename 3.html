@@ -1,0 +1,2780 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>กิจกรรมที่ 1: เรียงลำดับดาวเคราะห์และระบบสุริยะ - ห้องเรียนระบบสุริยะ</title>
+  <!-- Google Fonts: Kanit & Orbitron -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,300;0,400;0,500;0,600;0,700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css?v=20">
+
+  <style>
+    /* ============================================================
+       Styles for Planet Ordering Game & Player Registration (3.html)
+       ============================================================ */
+    :root {
+      --reorder-cyan: #00f0ff;
+      --reorder-gold: #ffb703;
+      --reorder-success: #10b981;
+      --reorder-danger: #ef4444;
+      --card-bg: rgba(11, 19, 43, 0.75);
+      --card-border: rgba(0, 240, 255, 0.2);
+    }
+
+    body {
+      min-height: 100vh;
+      color: #e2e8f0;
+      background: #02040a;
+      overflow-x: hidden;
+      touch-action: pan-y;
+    }
+
+    #space-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .game-page-container {
+      width: 100%;
+      max-width: 100%;
+      margin: 90px auto 40px;
+      padding: 0 24px;
+      position: relative;
+      z-index: 10;
+      box-sizing: border-box;
+    }
+
+    .glass-box {
+      background: rgba(8, 14, 36, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 24px;
+      padding: 35px 30px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 240, 255, 0.12);
+      position: relative;
+      margin-bottom: 30px;
+      min-height: calc(100vh - 150px);
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Hero Header */
+    .game-hero-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .game-badge-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid var(--reorder-cyan);
+      border-radius: 50px;
+      color: var(--reorder-cyan);
+      font-size: 0.85rem;
+      font-family: var(--font-hud);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+    }
+
+    .game-main-title {
+      font-size: clamp(1.6rem, 3.8vw, 2.3rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, #ffffff 30%, var(--reorder-cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+
+    .game-sub-desc {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 900px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Player Register Card */
+    .user-register-card {
+      background: rgba(14, 22, 54, 0.85);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      border-radius: 18px;
+      padding: 30px;
+      margin: 25px 0;
+      box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.05);
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .id-badge-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+
+    .id-badge-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--reorder-cyan);
+    }
+
+    .id-badge-title i {
+      font-size: 1.4rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 2fr 1.2fr 1fr;
+      gap: 18px;
+    }
+
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-size: 0.92rem;
+      color: #94a3b8;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-input {
+      background: rgba(4, 8, 24, 0.85);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      border-radius: 10px;
+      padding: 13px 16px;
+      color: #fff;
+      font-family: var(--font-main);
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .form-input:focus {
+      border-color: var(--reorder-cyan);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+      background: rgba(6, 12, 34, 0.95);
+    }
+
+    /* Rules box */
+    .rules-box {
+      background: rgba(0, 240, 255, 0.05);
+      border: 1px dashed rgba(0, 240, 255, 0.3);
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin: 22px 0 25px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+    }
+
+    .rules-box i {
+      font-size: 1.3rem;
+      color: var(--reorder-cyan);
+      margin-top: 3px;
+    }
+
+    /* Primary Action Button */
+    .btn-cosmic-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      padding: 16px 30px;
+      background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-family: var(--font-main);
+      font-size: 1.15rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0, 180, 216, 0.4);
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn-cosmic-primary:hover {
+      background: linear-gradient(135deg, #00f0ff 0%, #0096c7 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px rgba(0, 240, 255, 0.5);
+      color: #02040a;
+    }
+
+    /* Pilot Current Status Strip in Game Screen */
+    .cadet-info-strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(4, 9, 26, 0.85);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 14px;
+      padding: 12px 20px;
+      margin-bottom: 22px;
+      font-size: 0.95rem;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn-edit-user {
+      background: none;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #94a3b8;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-family: var(--font-main);
+      transition: all 0.2s;
+    }
+    .btn-edit-user:hover {
+      color: var(--reorder-cyan);
+      border-color: var(--reorder-cyan);
+    }
+
+    /* Game Header Title Area (ตรงตามภาพ UI ของผู้ใช้) */
+    .game-header-area {
+      margin-bottom: 25px;
+    }
+
+    .game-title-flex {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .game-title-icon {
+      color: var(--reorder-cyan);
+      font-size: 1.45rem;
+    }
+
+    .game-play-title {
+      font-size: clamp(1.35rem, 3.5vw, 1.8rem);
+      font-weight: 700;
+      color: #ffffff;
+      margin: 0;
+      letter-spacing: 0.5px;
+    }
+
+    .game-instruction-text {
+      color: #94a3b8;
+      font-size: 0.98rem;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .game-instruction-text b {
+      color: var(--reorder-cyan);
+    }
+
+    /* Stage Selector Chips */
+    .stage-selector-bar {
+      display: flex;
+      gap: 10px;
+      margin: 20px 0 25px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      scrollbar-width: thin;
+    }
+
+    .stage-chip-btn {
+      background: rgba(14, 22, 54, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 30px;
+      padding: 8px 18px;
+      color: #cbd5e1;
+      font-family: var(--font-main);
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .stage-chip-btn:hover {
+      border-color: var(--reorder-cyan);
+      color: #fff;
+    }
+
+    .stage-chip-btn.active {
+      background: rgba(0, 240, 255, 0.15);
+      border-color: var(--reorder-cyan);
+      color: var(--reorder-cyan);
+      font-weight: 600;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+    }
+
+    /* Order List Container */
+    .order-list-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    /* Single Order Item Card (ดีไซน์ตรงตามภาพที่ผู้ใช้ส่งมา) */
+    .order-item-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10, 16, 40, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 14px 18px;
+      transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: pan-y;
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+    }
+
+    .order-item-card:hover {
+      background: rgba(16, 26, 65, 0.95);
+      border-color: rgba(0, 240, 255, 0.4);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .order-item-card.dragging {
+      opacity: 0.92;
+      background: rgba(22, 36, 90, 0.95);
+      border-color: var(--reorder-cyan);
+      box-shadow: 0 15px 35px rgba(0, 240, 255, 0.45);
+      transform: scale(1.02);
+      cursor: grabbing;
+      z-index: 1000;
+    }
+
+    .order-item-card.correct-item {
+      border-color: rgba(16, 185, 129, 0.7);
+      background: rgba(16, 185, 129, 0.12);
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+    }
+
+    .order-item-card.wrong-item {
+      border-color: rgba(239, 68, 68, 0.6);
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    /* Left Group: Number & Dot & Name */
+    .order-left-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .order-number-box {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-hud);
+      font-weight: 700;
+      color: #94a3b8;
+      font-size: 1.05rem;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+
+    .order-item-card:hover .order-number-box {
+      color: #fff;
+      border-color: var(--reorder-cyan);
+    }
+
+    /* Glowing Planet Dot (ตรงตามภาพ UI) */
+    .planet-glow-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      position: relative;
+      box-shadow: 0 0 12px var(--dot-glow, rgba(0, 240, 255, 0.8));
+      background: var(--dot-color, #00f0ff);
+    }
+
+    .planet-main-name {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    /* Right Group: Arrow Control Buttons (ตรงตามภาพ UI) */
+    .order-right-controls {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 3px;
+    }
+
+    .arrow-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .arrow-btn:hover {
+      background: var(--reorder-cyan);
+      color: #02040a;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+    }
+
+    .arrow-btn:active {
+      transform: scale(0.92);
+      background: var(--reorder-cyan);
+      color: #02040a;
+    }
+
+    .arrow-btn:disabled {
+      opacity: 0.25;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .drag-handle-touch {
+      color: #64748b;
+      font-size: 1.25rem;
+      padding: 10px 14px;
+      margin: -10px -6px -10px -10px;
+      cursor: grab;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: none;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+      border-radius: 8px;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .drag-handle-touch:hover, .drag-handle-touch:active {
+      color: var(--reorder-cyan);
+      background: rgba(0, 240, 255, 0.12);
+    }
+
+    /* Game Bottom Bar */
+    .game-footer-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-game-submit {
+      background: linear-gradient(135deg, #00f0ff 0%, #0077b6 100%);
+      color: #02040a;
+      font-weight: 700;
+      font-size: 1.12rem;
+      padding: 14px 34px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 25px rgba(0, 240, 255, 0.35);
+      transition: all 0.25s ease;
+    }
+
+    .btn-game-submit:hover {
+      background: linear-gradient(135deg, #38bdf8 0%, #00f0ff 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px rgba(0, 240, 255, 0.55);
+    }
+
+    /* Feedback Modal / Alert */
+    .game-result-box {
+      display: none;
+      background: rgba(6, 12, 35, 0.95);
+      border: 1px solid var(--reorder-cyan);
+      border-radius: 20px;
+      padding: 30px;
+      margin-top: 25px;
+      text-align: center;
+      box-shadow: 0 0 40px rgba(0, 240, 255, 0.2);
+    }
+
+    .game-result-box.show {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Admin Navbar Button (ตรงตามหน้า 1.html และ 2.html) */
+    .admin-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 183, 3, 0.12);
+      border: 1px solid var(--neon-gold);
+      color: var(--neon-gold);
+      padding: 7px 16px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-family: var(--font-main);
+      transition: all 0.2s ease;
+      margin-left: 10px;
+    }
+
+    .admin-nav-btn:hover {
+      background: var(--neon-gold);
+      color: #02040a;
+      box-shadow: 0 0 15px rgba(255, 183, 3, 0.4);
+    }
+
+    /* แผงควบคุมแอดมิน (Admin Portal Modal) - สไตล์มาตรฐานเดียวกับหน้า 1.html และ 2.html */
+    .admin-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(2, 4, 10, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .admin-modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .admin-modal-box {
+      background: #0a112c;
+      border: 1px solid var(--neon-cyan, #00f0ff);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 950px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 240, 255, 0.25);
+      overflow: hidden;
+    }
+
+    .admin-modal-header {
+      padding: 20px 25px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(14, 24, 60, 0.8);
+    }
+
+    .admin-modal-header h3 {
+      font-size: 1.3rem;
+      color: var(--neon-cyan, #00f0ff);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0;
+    }
+
+    .admin-modal-close {
+      background: none;
+      border: none;
+      color: var(--text-muted, #94a3b8);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .admin-modal-close:hover {
+      color: #ff453a;
+    }
+
+    .admin-modal-body {
+      padding: 25px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .admin-stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .stat-mini-card {
+      background: rgba(16, 26, 65, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .stat-mini-card .val {
+      font-family: var(--font-hud, 'Orbitron', sans-serif);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--neon-cyan, #00f0ff);
+      margin-top: 5px;
+    }
+
+    .stat-mini-card .label {
+      font-size: 0.85rem;
+      color: var(--text-muted, #94a3b8);
+    }
+
+    .admin-controls-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .admin-search-input {
+      background: rgba(4, 8, 24, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #fff;
+      font-family: var(--font-main, sans-serif);
+      width: 250px;
+      outline: none;
+    }
+
+    .admin-search-input:focus {
+      border-color: var(--neon-cyan, #00f0ff);
+    }
+
+    .btn-admin-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-main, sans-serif);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .btn-export-csv {
+      background: #10b981;
+      color: #fff;
+    }
+
+    .btn-export-csv:hover {
+      background: #059669;
+    }
+
+    .btn-danger-clear {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid #ef4444;
+      color: #fca5a5;
+    }
+
+    .btn-danger-clear:hover {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .admin-table th, .admin-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.92rem;
+      text-align: left;
+    }
+
+    .admin-table th {
+      background: rgba(14, 24, 60, 0.9);
+      color: var(--neon-cyan, #00f0ff);
+      font-family: var(--font-hud, 'Orbitron', sans-serif);
+      font-size: 0.82rem;
+    }
+
+    /* Mobile & Tablet Responsiveness for 3.html */
+    @media (max-width: 768px) {
+      .game-page-container {
+        padding: 0 max(12px, env(safe-area-inset-left, 0px)) calc(30px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-right, 0px));
+        margin-top: calc(75px + env(safe-area-inset-top, 0px));
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+      .glass-box {
+        padding: 20px 12px;
+        border-radius: 18px;
+        margin-bottom: 20px;
+        min-height: auto;
+      }
+      .game-main-title {
+        font-size: clamp(1.4rem, 5vw, 1.9rem);
+      }
+      .user-register-card {
+        padding: 18px 12px;
+      }
+      .stage-selector-bar {
+        gap: 6px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 4px;
+      }
+      .stage-chip-btn {
+        padding: 8px 14px;
+        font-size: 0.85rem;
+        min-height: 44px;
+        touch-action: manipulation;
+        white-space: nowrap;
+      }
+      .order-item-card {
+        padding: 12px 10px;
+      }
+      .order-left-group {
+        gap: 10px;
+      }
+      .planet-main-name {
+        font-size: 1.05rem;
+      }
+      .order-right-controls {
+        gap: 6px;
+        padding: 4px;
+      }
+      .arrow-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 1.15rem;
+        touch-action: manipulation;
+      }
+      .game-footer-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+      .btn-game-submit {
+        width: 100%;
+        justify-content: center;
+        min-height: 50px;
+        font-size: 1.1rem;
+        touch-action: manipulation;
+      }
+      .admin-modal-box {
+        padding: 16px 10px;
+        max-width: 96vw;
+        max-height: 90vh;
+      }
+      .form-control, .admin-search-input {
+        font-size: 16px !important;
+        min-height: 44px;
+      }
+      .leaderboard-table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+
+    /* สไตล์ตาราง 5 อันดับแรก (Top 5 Leaderboard) */
+    .top5-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 8px;
+    }
+
+    .top5-table th {
+      padding: 12px 18px;
+      text-align: left;
+      font-family: var(--font-hud, 'Orbitron', sans-serif);
+      font-size: 1.05rem;
+      color: var(--text-muted, #94a3b8);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .top5-row {
+      background: rgba(14, 22, 54, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .top5-row:hover {
+      background: rgba(20, 32, 75, 0.9);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .top5-row td {
+      padding: 16px 18px;
+      color: var(--text-bright, #f8fafc);
+      font-size: 1.15rem;
+    }
+
+    .top5-row td:first-child {
+      border-top-left-radius: 12px;
+      border-bottom-left-radius: 12px;
+    }
+
+    .top5-row td:last-child {
+      border-top-right-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+
+    .rank-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      font-family: var(--font-hud, 'Orbitron', sans-serif);
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
+
+    .rank-1 { background: linear-gradient(135deg, #ffd700, #b8860b); color: #000; box-shadow: 0 0 12px rgba(255, 215, 0, 0.6); }
+    .rank-2 { background: linear-gradient(135deg, #e0e0e0, #9e9e9e); color: #000; box-shadow: 0 0 10px rgba(224, 224, 224, 0.5); }
+    .rank-3 { background: linear-gradient(135deg, #cd7f32, #8b4513); color: #fff; box-shadow: 0 0 10px rgba(205, 127, 50, 0.5); }
+    .rank-other { background: rgba(255, 255, 255, 0.1); color: var(--text-muted, #94a3b8); }
+
+    .score-badge-pill {
+      font-family: var(--font-hud, 'Orbitron', sans-serif);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--reorder-cyan, #00f0ff);
+      background: rgba(0, 240, 255, 0.12);
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    /* สไตล์ปุ่มภารกิจที่ถูกล็อก (Locked) และผ่านแล้ว (Completed) */
+    .stage-chip-btn.locked {
+      background: rgba(8, 14, 30, 0.5) !important;
+      border-color: rgba(255, 255, 255, 0.08) !important;
+      color: #64748b !important;
+      cursor: not-allowed !important;
+      opacity: 0.65;
+    }
+
+    .stage-chip-btn.locked:hover {
+      border-color: rgba(239, 68, 68, 0.5) !important;
+      color: #fca5a5 !important;
+    }
+
+    .stage-chip-btn.completed {
+      border-color: rgba(16, 185, 129, 0.6);
+      background: rgba(16, 185, 129, 0.12);
+      color: #34d399;
+    }
+
+    .stage-chip-btn.completed.active {
+      border-color: var(--reorder-cyan);
+      background: rgba(0, 240, 255, 0.2);
+      color: #fff;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+    }
+
+    /* กล่องแจ้งเตือนเมื่อกดภารกิจที่ยังล็อกอยู่ */
+    .stage-lock-notice {
+      display: none;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 18px;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.5);
+      border-radius: 12px;
+      color: #fecaca;
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+      animation: shakeLock 0.35s ease;
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+    }
+
+    @keyframes shakeLock {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+    }
+
+    /* แผงแสดงคะแนนรวม (Total Score Screen) */
+    .score-banner-card {
+      text-align: center;
+      background: radial-gradient(circle at center, rgba(0, 240, 255, 0.16) 0%, rgba(10, 16, 42, 0.9) 75%);
+      border: 1px solid var(--reorder-cyan);
+      border-radius: 20px;
+      padding: 35px 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 0 45px rgba(0, 240, 255, 0.25);
+    }
+
+    .score-circle {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      border: 4px solid var(--reorder-cyan);
+      box-shadow: 0 0 35px rgba(0, 240, 255, 0.5), inset 0 0 25px rgba(0, 240, 255, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      background: rgba(2, 4, 12, 0.7);
+    }
+
+    .score-number {
+      font-family: var(--font-hud, 'Orbitron', sans-serif);
+      font-size: 3.4rem;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1;
+      text-shadow: 0 0 18px var(--reorder-cyan);
+    }
+
+    .score-total {
+      font-family: var(--font-hud, 'Orbitron', sans-serif);
+      font-size: 0.95rem;
+      color: var(--reorder-cyan);
+      margin-top: 5px;
+    }
+
+    .student-result-details {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 18px 0;
+      flex-wrap: wrap;
+    }
+
+    .student-result-pill {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 7px 18px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      color: #f1f5f9;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .mission-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin: 25px 0;
+    }
+
+    .mission-summary-card {
+      background: rgba(14, 22, 54, 0.85);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .mission-summary-card .m-title {
+      font-weight: 600;
+      color: #ffffff;
+      font-size: 1.05rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mission-summary-card .m-status {
+      font-size: 0.92rem;
+      color: #34d399;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mission-summary-card .m-score {
+      font-family: var(--font-hud, 'Orbitron', sans-serif);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--reorder-gold, #ffb703);
+    }
+
+    /* ไฮไลท์แถวคะแนนของผู้เล่นปัจจุบันใน Top 5 */
+    .top5-row.my-score-row {
+      border: 1.5px solid var(--reorder-cyan) !important;
+      background: rgba(0, 240, 255, 0.18) !important;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.35) !important;
+    }
+  </style>
+</head>
+<body>
+  <!-- Canvas แสดงดวงดาว 3 มิติ -->
+  <canvas id="space-canvas"></canvas>
+
+  <!-- แสงบรรยากาศอวกาศ -->
+  <div class="cosmic-aura aura-1"></div>
+  <div class="cosmic-aura aura-2"></div>
+  <div class="cosmic-aura aura-3"></div>
+
+  <!-- แถบนำทาง (Navbar) -->
+  <header class="header">
+    <nav class="navbar" id="navbar">
+      <a href="index.html" class="brand">
+        <div class="brand-orbit-ring">
+          <div class="brand-planet-dot"></div>
+          <div class="brand-icon">
+            <i class="fa-solid fa-sun"></i>
+          </div>
+        </div>
+        <div class="brand-text">
+          <span class="brand-main">ระบบสุริยะ</span>
+          <span class="brand-sub">SOLAR SYSTEM OBSERVATORY</span>
+        </div>
+      </a>
+
+      <!-- ปุ่มเปิดปิดเมนูสำหรับมือถือ -->
+      <button class="mobile-toggle" id="mobileToggle" aria-label="เมนู">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <!-- เมนูนำทาง -->
+      <div class="nav-menu" id="navMenu">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">
+              <i class="fa-solid fa-layer-group"></i> องค์ประกอบ
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="a.html" class="nav-link">
+              <i class="fa-solid fa-book-open"></i> พื้นฐาน
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="b.html" class="nav-link">
+              <i class="fa-solid fa-atom"></i> จำลองโคจร
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="c.html" class="nav-link">
+              <i class="fa-solid fa-scale-balanced"></i> เปรียบเทียบ
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="d.html" class="nav-link">
+              <i class="fa-solid fa-spell-check"></i> คำศัพท์
+            </a>
+          </li>
+          <!-- ขวาสุด: เมนูดรอปดาวน์ แบบทดสอบ -->
+          <li class="nav-item dropdown" id="quizDropdown">
+            <button class="dropdown-trigger" id="dropdownTrigger" aria-expanded="false">
+              <i class="fa-solid fa-clipboard-question"></i> แบบทดสอบ
+              <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </button>
+            <ul class="dropdown-menu" id="dropdownMenu">
+              <li>
+                <a href="1.html" class="dropdown-item" data-quiz="pre">
+                  <span class="drop-badge">01</span>
+                  <span class="drop-text">ก่อนเรียน</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li>
+                <a href="2.html" class="dropdown-item" data-quiz="post">
+                  <span class="drop-badge">02</span>
+                  <span class="drop-text">หลังเรียน</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li>
+                <a href="3.html" class="dropdown-item" data-quiz="act1">
+                  <span class="drop-badge">03</span>
+                  <span class="drop-text">กิจกรรม 1</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li>
+                <a href="4.html" class="dropdown-item" data-quiz="act2">
+                  <span class="drop-badge">04</span>
+                  <span class="drop-text">กิจกรรม 2</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li class="dropdown-divider" style="margin: 6px 0; border-top: 1px solid rgba(255, 255, 255, 0.12);"></li>
+              <li>
+                <a href="javascript:void(0)" class="dropdown-item admin-dropdown-item" onclick="openAdminModal();">
+                  <span class="drop-badge" style="background: rgba(0, 240, 255, 0.2);"><i class="fa-solid fa-shield-halved"></i></span>
+                  <span class="drop-text" style="font-weight: 600; color: var(--neon-cyan);">ศูนย์แอดมิน (คะแนน 1-4)</span>
+                  <i class="fa-solid fa-lock drop-arrow"></i>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <!-- ปุ่มศูนย์แอดมิน -->
+          <li class="nav-item admin-nav-item">
+            <button class="admin-nav-btn" id="openAdminNavBtn" onclick="openAdminModal();" title="ศูนย์ควบคุมแอดมิน / ดูคะแนน 1, 2, 3, 4 (Alt+A)">
+              <i class="fa-solid fa-shield-halved"></i>
+              <span>แอดมิน</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- เนื้อหาหลักเกมจัดเรียง -->
+  <main class="game-page-container">
+
+    <!-- ============================================================
+         ขั้นตอนที่ 1: กรอกชื่อข้อมูลผู้เล่น (Cadet Registration Screen)
+         ============================================================ -->
+    <section id="stepRegister" class="glass-box">
+      <div class="game-hero-header">
+        <div class="game-badge-tag">
+          <i class="fa-solid fa-rocket"></i> ACTIVITY 01 : PLANET ORDERING MISSION
+        </div>
+        <h1 class="game-main-title">กิจกรรมที่ 1 : เกมเรียงลำดับดาวเคราะห์</h1>
+        <p class="game-sub-desc">
+          ทดสอบความจำและความเข้าใจเกี่ยวกับระบบสุริยะจักรวาล 
+          ผ่านการจัดเรียงลำดับดาวเคราะห์ตามระยะทาง ขนาด และคาบการโคจร
+        </p>
+      </div>
+
+      <!-- กล่องฟอร์มกรอกชื่อข้อมูลผู้เล่น -->
+      <div class="user-register-card">
+        <div class="id-badge-header">
+          <div class="id-badge-title">
+            <i class="fa-solid fa-id-card-clip"></i>
+            <span>กรอกชื่อข้อมูลผู้เล่น (PLAYER IDENTIFICATION)</span>
+          </div>
+          <span style="font-size: 0.85rem; color: var(--reorder-cyan); font-family: var(--font-hud);">READY TO PLAY</span>
+        </div>
+
+        <form id="playerRegisterForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="playerNameInput"><i class="fa-solid fa-user-astronaut"></i> ชื่อ - นามสกุล นักเรียน :</label>
+              <input type="text" id="playerNameInput" class="form-input" placeholder="เช่น ด.ช.ดวงดาว ส่องแสง" required autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label for="playerGradeInput"><i class="fa-solid fa-graduation-cap"></i> ระดับชั้น / ห้อง :</label>
+              <input type="text" id="playerGradeInput" class="form-input" placeholder="เช่น ม.3/1" required autocomplete="off">
+            </div>
+            <div class="form-group">
+              <label for="playerNoInput"><i class="fa-solid fa-hashtag"></i> เลขที่ :</label>
+              <input type="number" id="playerNoInput" class="form-input" placeholder="เช่น 15" min="1" max="99" required autocomplete="off">
+            </div>
+          </div>
+
+          <!-- กติกาการเล่น -->
+          <div class="rules-box">
+            <i class="fa-solid fa-gamepad"></i>
+            <div>
+              <strong style="color: var(--reorder-cyan);">วิธีเล่นและกติกาของเกม:</strong>
+              <div style="margin-top: 6px;">
+                1. <b>ใช้นิ้วแตะลากเลื่อนขึ้น-ลง</b> หรือ <b>กดปุ่มลูกศรขึ้น/ลง</b> เพื่อสลับตำแหน่งการ์ดดาวเคราะห์<br>
+                2. จัดเรียงดาวเคราะห์ทั้ง 8 ดวงให้ถูกต้องตามโจทย์ที่กำหนด<br>
+                3. กดปุ่ม <b>"ตรวจสอบลำดับดาวเคราะห์"</b> เพื่อรับคะแนนและบันทึกสถิติสู่ตาราง Top 5
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-cosmic-primary" id="btnStartGame">
+            <i class="fa-solid fa-play"></i> เริ่มเล่นเกมจัดเรียงดาวเคราะห์
+          </button>
+        </form>
+      </div>
+
+      <!-- ตาราง 5 อันดับแรกหน้าลงทะเบียน -->
+      <div style="margin-top: 35px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+          <h3 style="color: var(--reorder-gold); font-size: 1.2rem; margin: 0; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-crown"></i> 5 อันดับยอดนักจัดเรียงดวงดาว (TOP 5 LEADERBOARD)
+          </h3>
+        </div>
+        <div id="frontLeaderboard"></div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         ขั้นตอนที่ 2: หน้าจอเล่นเกมจัดเรียงดาวเคราะห์ (Game Play Screen)
+         ============================================================ -->
+    <section id="stepGamePlay" class="glass-box" style="display: none;">
+
+      <!-- แถบข้อมูลผู้เล่นที่กำลังเล่นอยู่ -->
+      <div class="cadet-info-strip">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <i class="fa-solid fa-user-astronaut" style="color: var(--reorder-cyan); font-size: 1.2rem;"></i>
+          <div>
+            <span style="color: #94a3b8; font-size: 0.85rem;">ผู้เล่นปัจจุบัน:</span>
+            <strong id="playerBadgeName" style="color: #fff; margin-left: 5px;">-</strong>
+            <span id="playerBadgeDetails" style="color: var(--reorder-cyan); font-size: 0.88rem; margin-left: 8px;"></span>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+          <div>
+            <span style="color: #94a3b8;">ความคืบหน้า:</span>
+            <b id="missionProgressText" style="color: var(--reorder-cyan); font-family: var(--font-hud); font-size: 1rem; margin-left: 5px;">ภารกิจ 1/3</b>
+          </div>
+          <div>
+            <span style="color: #94a3b8;">คะแนนสะสม:</span>
+            <b id="playerCurrentScore" style="color: var(--reorder-gold); font-family: var(--font-hud); font-size: 1.15rem; margin-left: 5px;">0 / 300</b>
+          </div>
+          <button type="button" class="btn-edit-user" id="btnChangePlayer" title="เปลี่ยนผู้เล่น">
+            <i class="fa-solid fa-pen-to-square"></i> เปลี่ยนผู้เล่น
+          </button>
+        </div>
+      </div>
+
+      <!-- ส่วนหัวตามภาพ UI ของผู้ใช้ -->
+      <div class="game-header-area">
+        <div class="game-title-flex">
+          <i class="fa-solid fa-layer-group game-title-icon"></i>
+          <h2 class="game-play-title" id="stageMainTitle">ภารกิจที่ 1 : เรียงตามระยะห่างดวงอาทิตย์ (ใกล้สุด → ไกลสุด)</h2>
+        </div>
+        <p class="game-instruction-text" id="stageDescText">
+          กดลูกศร <b>ขึ้น</b> หรือ <b>ลง</b> หรือ <b>ใช้นิ้วลากแตะเลื่อนจัดเรียง</b> เพื่อย้ายลำดับรายดาวเคราะห์ ให้เรียงตัวจากใกล้ดวงอาทิตย์ที่สุดไปหาไกลที่สุด (ดวงที่ 1 ถึง 8)
+        </p>
+      </div>
+
+      <!-- แถบเลือกระดับโจทย์ความรู้ 3 ภารกิจ (ระยะทาง, ขนาด, คาบโคจร) -->
+      <div class="stage-selector-bar" id="stageSelectorBar">
+        <button type="button" class="stage-chip-btn active" data-stage="0" id="stageBtn0">
+          <i class="fa-solid fa-arrows-left-right-to-line"></i> <span>ภารกิจ 1: เรียงตามระยะห่างดวงอาทิตย์ (ใกล้ → ไกล)</span>
+        </button>
+        <button type="button" class="stage-chip-btn locked" data-stage="1" id="stageBtn1">
+          <i class="fa-solid fa-lock"></i> <span>ภารกิจ 2: เรียงตามขนาด (ล็อกอยู่)</span>
+        </button>
+        <button type="button" class="stage-chip-btn locked" data-stage="2" id="stageBtn2">
+          <i class="fa-solid fa-lock"></i> <span>ภารกิจ 3: เรียงตามคาบการโคจร (ล็อกอยู่)</span>
+        </button>
+      </div>
+
+      <!-- แถบแจ้งเตือนเมื่อกดภารกิจที่ยังล็อกอยู่ -->
+      <div class="stage-lock-notice" id="stageLockNotice">
+        <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.2rem; color: #f87171;"></i>
+        <span id="stageLockNoticeText">🔒 ต้องทำภารกิจที่ 1 ให้เสร็จก่อน จึงจะไปยังภารกิจที่ 2 ได้</span>
+      </div>
+
+      <!-- รายการจัดเรียง 8 อันดับ (ใช้นิ้วเลื่อน หรือกดลูกศรขึ้นลงได้) -->
+      <div class="order-list-wrapper" id="orderListWrapper">
+        <!-- รายการดาวเคราะห์จะถูกสร้างด้วย JavaScript -->
+      </div>
+
+      <!-- แถบปุ่มตรวจคำตอบ -->
+      <div class="game-footer-bar" style="justify-content: center;">
+        <button type="button" class="btn-game-submit" id="btnCheckAnswer" style="min-width: 280px; justify-content: center;">
+          <i class="fa-solid fa-circle-check"></i> ตรวจสอบลำดับดาวเคราะห์
+        </button>
+      </div>
+
+      <!-- ผลลัพธ์และสรุปสาระความรู้เมื่อตรวจเสร็จ -->
+      <div class="game-result-box" id="gameResultBox">
+        <div id="resultStatusIcon" style="font-size: 3rem; margin-bottom: 10px;">🌟</div>
+        <h2 id="resultTitle" style="font-size: 1.8rem; margin: 0 0 10px; color: #fff;">ยอดเยี่ยมมาก! เรียงถูกต้องครบทั้ง 8 ลำดับ</h2>
+        <p id="resultSubtitle" style="color: #cbd5e1; font-size: 1.05rem; max-width: 650px; margin: 0 auto 20px;"></p>
+        
+        <!-- แถบแสดงสถานะเชื่อมต่อ Google Sheet -->
+        <div style="margin: 15px auto 20px; text-align: center;">
+          <div id="sheetSyncStatus" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 22px; border-radius: 30px; background: rgba(5, 9, 28, 0.85); border: 1px solid rgba(0, 240, 255, 0.35); font-size: 0.92rem; color: #cbd5e1; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: all 0.3s ease;">
+            <i class="fa-solid fa-cloud-arrow-up" style="color: var(--reorder-cyan, #00f0ff);"></i>
+            <span>พร้อมบันทึกคะแนนเข้าสู่ระบบ Google Sheet</span>
+          </div>
+        </div>
+
+        <div style="background: rgba(14,22,54,0.6); border: 1px solid rgba(0,240,255,0.25); border-radius: 14px; padding: 18px; text-align: left; margin: 20px auto; max-width: 650px;" id="resultExplanationBox">
+          <strong style="color: var(--reorder-cyan); display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <i class="fa-solid fa-book-open"></i> สาระน่ารู้ของภารกิจนี้:
+          </strong>
+          <div id="resultExplanationText" style="color: #cbd5e1; font-size: 0.95rem; line-height: 1.6;"></div>
+        </div>
+
+        <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+          <button type="button" class="btn-cosmic-primary" id="btnNextMission" style="width: auto; padding: 12px 28px;">
+            <i class="fa-solid fa-arrow-right"></i> ไปยังภารกิจที่ 2
+          </button>
+          <a href="2.html" class="btn-cosmic-secondary" id="btnGoPostQuiz" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px;">
+            <i class="fa-solid fa-clipboard-check"></i> ทำแบบทดสอบหลังเรียน
+          </a>
+        </div>
+      </div>
+
+      <!-- ตาราง 5 อันดับยอดนักสำรวจหน้าเกม -->
+      <div style="margin-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 25px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+          <h3 style="color: var(--reorder-gold); font-size: 1.2rem; margin: 0; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-crown"></i> 5 อันดับยอดนักจัดเรียงดวงดาว (TOP 5 LEADERBOARD)
+          </h3>
+        </div>
+        <div id="gameLeaderboard"></div>
+      </div>
+
+      <!-- แผงปุ่มเชื่อมต่อไปยังทุกหน้าในระบบ (เหมือนหน้า 1.html และ 2.html) -->
+      <div style="margin-top: 40px; padding: 25px; background: rgba(5, 9, 28, 0.7); border: 1px solid var(--reorder-cyan); border-radius: 16px;">
+        <h4 style="text-align: center; font-size: 1.15rem; color: var(--reorder-cyan); margin-bottom: 20px;">
+          <i class="fa-solid fa-map-location-dot"></i> สำรวจเนื้อหาห้องเรียนระบบสุริยะต่อไป
+        </h4>
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <a href="index.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2);">
+            <i class="fa-solid fa-layer-group"></i> 1. องค์ประกอบ (หน้าหลัก)
+          </a>
+          <a href="a.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem;">
+            <i class="fa-solid fa-book-open"></i> 2. บทเรียนพื้นฐาน
+          </a>
+          <a href="b.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(168, 85, 247, 0.2); border: 1px solid var(--neon-purple, #a855f7); color: #fff;">
+            <i class="fa-solid fa-atom"></i> 3. จำลองโคจร 3D
+          </a>
+          <a href="c.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(255, 183, 3, 0.15); border: 1px solid var(--neon-gold, #ffb703); color: #fff;">
+            <i class="fa-solid fa-scale-balanced"></i> 4. เปรียบเทียบดาว
+          </a>
+          <a href="d.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(16, 185, 129, 0.15); border: 1px solid var(--neon-emerald, #10b981); color: #fff;">
+            <i class="fa-solid fa-spell-check"></i> 5. คำศัพท์ดาราศาสตร์
+          </a>
+          <a href="4.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(0, 240, 255, 0.2); border: 1px solid var(--reorder-cyan); color: #fff;">
+            <i class="fa-solid fa-spell-check"></i> กิจกรรม 2
+          </a>
+          <a href="2.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(16, 185, 129, 0.2); border: 1px solid var(--neon-emerald, #10b981); color: #fff;">
+            <i class="fa-solid fa-clipboard-check"></i> ทำแบบทดสอบหลังเรียน
+          </a>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ============================================================
+         ขั้นตอนที่ 3: หน้าจอแสดงคะแนนรวมและสรุปผลทั้ง 3 ภารกิจ (Total Score Summary Screen)
+         ============================================================ -->
+    <section id="stepTotalSummary" class="glass-box" style="display: none;">
+      <div class="game-hero-header">
+        <div class="game-badge-tag" style="border-color: #10b981; color: #10b981; background: rgba(16, 185, 129, 0.12); box-shadow: 0 0 18px rgba(16, 185, 129, 0.25);">
+          <i class="fa-solid fa-flag-checkered"></i> ALL 3 MISSIONS COMPLETED!
+        </div>
+        <h1 class="game-main-title">สรุปผลคะแนนรวม กิจกรรมที่ 1</h1>
+        <p class="game-sub-desc">
+          ยินดีด้วย! คุณผ่านการทดสอบจัดเรียงดาวเคราะห์ครบทั้ง 3 ภารกิจอย่างสมบูรณ์แบบ
+        </p>
+      </div>
+
+      <!-- การ์ดแสดงคะแนนรวม -->
+      <div class="score-banner-card">
+        <div class="score-circle">
+          <span class="score-number" id="totalSummaryScoreNum">300</span>
+          <span class="score-total">เต็ม 300 คะแนน</span>
+        </div>
+
+        <h2 id="totalEvaluationTitle" style="font-size: 1.55rem; margin-bottom: 8px; color: #ffd700;">
+          <i class="fa-solid fa-crown"></i> ยอดเยี่ยมระดับจักรวาล! (COSMIC MASTER)
+        </h2>
+        <p id="totalEvaluationMsg" style="color: #cbd5e1; max-width: 580px; margin: 0 auto 15px; font-size: 1rem; line-height: 1.6;">
+          คุณมีความจำและความเข้าใจเรื่องระยะห่าง ขนาด และการโคจรของระบบสุริยะอย่างยอดเยี่ยมและถูกต้องครบถ้วน!
+        </p>
+
+        <div class="student-result-details">
+          <span class="student-result-pill"><i class="fa-solid fa-user-astronaut" style="color: var(--reorder-cyan);"></i> ผู้เล่น: <strong id="sumName">-</strong></span>
+          <span class="student-result-pill"><i class="fa-solid fa-graduation-cap" style="color: var(--reorder-gold);"></i> ชั้น: <strong id="sumGrade">-</strong></span>
+          <span class="student-result-pill"><i class="fa-solid fa-hashtag" style="color: #a855f7;"></i> เลขที่: <strong id="sumNo">-</strong></span>
+          <span class="student-result-pill"><i class="fa-solid fa-clock" style="color: #10b981;"></i> บันทึกเมื่อ: <strong id="sumDate">-</strong></span>
+        </div>
+
+        <!-- แถบแสดงสถานะเชื่อมต่อ Google Sheet -->
+        <div style="margin-top: 18px; text-align: center;">
+          <div id="sumSheetSyncStatus" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 22px; border-radius: 30px; background: rgba(5, 9, 28, 0.85); border: 1px solid rgba(0, 240, 255, 0.35); font-size: 0.92rem; color: #cbd5e1; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: all 0.3s ease;">
+            <i class="fa-solid fa-cloud-arrow-up" style="color: var(--reorder-cyan);"></i>
+            <span>พร้อมบันทึกคะแนนรวมเข้าสู่ระบบ Google Sheet</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- สรุปผลราย 3 ภารกิจ -->
+      <div style="margin: 30px 0;">
+        <h3 style="font-size: 1.2rem; color: var(--reorder-cyan); margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+          <i class="fa-solid fa-list-check"></i> ผลการทำภารกิจจัดเรียงดวงดาวทั้ง 3 ภารกิจ:
+        </h3>
+        <div class="mission-summary-grid">
+          <div class="mission-summary-card">
+            <div class="m-title"><i class="fa-solid fa-arrows-left-right-to-line" style="color: var(--reorder-cyan);"></i> ภารกิจที่ 1: ระยะห่างดวงอาทิตย์</div>
+            <div class="m-status"><i class="fa-solid fa-circle-check"></i> จัดเรียงถูกต้องครบ 8 ลำดับ</div>
+            <div class="m-score"><span id="sumMissionScore0">100</span> / 100 คะแนน</div>
+          </div>
+          <div class="mission-summary-card">
+            <div class="m-title"><i class="fa-solid fa-maximize" style="color: var(--reorder-cyan);"></i> ภารกิจที่ 2: ขนาดเส้นผ่านศูนย์กลาง</div>
+            <div class="m-status"><i class="fa-solid fa-circle-check"></i> จัดเรียงถูกต้องครบ 8 ลำดับ</div>
+            <div class="m-score"><span id="sumMissionScore1">100</span> / 100 คะแนน</div>
+          </div>
+          <div class="mission-summary-card">
+            <div class="m-title"><i class="fa-solid fa-rotate" style="color: var(--reorder-cyan);"></i> ภารกิจที่ 3: คาบการโคจร</div>
+            <div class="m-status"><i class="fa-solid fa-circle-check"></i> จัดเรียงถูกต้องครบ 8 ลำดับ</div>
+            <div class="m-score"><span id="sumMissionScore2">100</span> / 100 คะแนน</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ปุ่มดำเนินการ -->
+      <div style="display: flex; justify-content: center; gap: 15px; margin: 30px 0 40px; flex-wrap: wrap;">
+        <button type="button" class="btn-cosmic-primary" id="btnPlayAgain" style="width: auto; padding: 14px 28px;">
+          <i class="fa-solid fa-rotate-right"></i> เล่นใหม่อีกครั้ง
+        </button>
+        <a href="2.html" class="btn-cosmic-primary" style="width: auto; padding: 14px 28px; background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #fff;">
+          <i class="fa-solid fa-clipboard-check"></i> ทำแบบทดสอบหลังเรียน (2.html)
+        </a>
+      </div>
+
+      <!-- ตาราง 5 อันดับแรกหลังจบเกม -->
+      <div style="margin-top: 35px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 25px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+          <h3 style="color: var(--reorder-gold); font-size: 1.25rem; margin: 0; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-crown"></i> 5 อันดับคะแนนรวมสูงสุด (TOP 5 LEADERBOARD)
+          </h3>
+        </div>
+        <div id="summaryLeaderboard"></div>
+      </div>
+
+      <!-- แผงปุ่มเชื่อมต่อไปยังทุกหน้าในระบบ -->
+      <div style="margin-top: 40px; padding: 25px; background: rgba(5, 9, 28, 0.7); border: 1px solid var(--reorder-cyan); border-radius: 16px;">
+        <h4 style="text-align: center; font-size: 1.15rem; color: var(--reorder-cyan); margin-bottom: 20px;">
+          <i class="fa-solid fa-map-location-dot"></i> สำรวจเนื้อหาห้องเรียนระบบสุริยะต่อไป
+        </h4>
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <a href="index.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2);">
+            <i class="fa-solid fa-layer-group"></i> 1. องค์ประกอบ (หน้าหลัก)
+          </a>
+          <a href="a.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem;">
+            <i class="fa-solid fa-book-open"></i> 2. บทเรียนพื้นฐาน
+          </a>
+          <a href="b.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(168, 85, 247, 0.2); border: 1px solid var(--neon-purple, #a855f7); color: #fff;">
+            <i class="fa-solid fa-atom"></i> 3. จำลองโคจร 3D
+          </a>
+          <a href="c.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(255, 183, 3, 0.15); border: 1px solid var(--neon-gold, #ffb703); color: #fff;">
+            <i class="fa-solid fa-scale-balanced"></i> 4. เปรียบเทียบดาว
+          </a>
+          <a href="d.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(16, 185, 129, 0.15); border: 1px solid var(--neon-emerald, #10b981); color: #fff;">
+            <i class="fa-solid fa-spell-check"></i> 5. คำศัพท์ดาราศาสตร์
+          </a>
+          <a href="4.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(0, 240, 255, 0.2); border: 1px solid var(--reorder-cyan); color: #fff;">
+            <i class="fa-solid fa-spell-check"></i> กิจกรรม 2
+          </a>
+          <a href="2.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(16, 185, 129, 0.2); border: 1px solid var(--neon-emerald, #10b981); color: #fff;">
+            <i class="fa-solid fa-clipboard-check"></i> ทำแบบทดสอบหลังเรียน
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer" style="margin-top: 60px;">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="brand-text">
+          <span class="brand-main">ระบบสุริยะ</span>
+          <span class="brand-sub">SOLAR SYSTEM OBSERVATORY</span>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 SOLAR SYSTEM OBSERVATORY. ALL RIGHTS RESERVED.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       SCRIPT: REGISTRATION, TOUCH REORDER, AND GAME LOGIC
+       ============================================================ -->
+  <script>
+    /* ============================================================
+       1. DATA MISSIONS & PLANET SPECS
+       ============================================================ */
+    const MISSIONS_DATA = [
+      {
+        id: 0,
+        title: "ภารกิจที่ 1 : เรียงตามระยะห่างดวงอาทิตย์ (ใกล้สุด → ไกลสุด)",
+        description: "กดลูกศร <b>ขึ้น</b> หรือ <b>ลง</b> หรือ <b>ใช้นิ้วลากแตะเลื่อนจัดเรียง</b> เพื่อย้ายลำดับรายดาวเคราะห์ ให้เรียงตัวจากใกล้ดวงอาทิตย์ที่สุดไปหาไกลที่สุด (ดวงที่ 1 ถึง 8)",
+        correctOrder: ["ดาวพุธ", "ดาวศุกร์", "โลก", "ดาวอังคาร", "ดาวพฤหัสบดี", "ดาวเสาร์", "ดาวยูเรนัส", "ดาวเนปจูน"],
+        explanation: "ลำดับดาวเคราะห์จากใกล้ดวงอาทิตย์ที่สุดไปไกลที่สุด ได้แก่: 1.ดาวพุธ (0.39 AU) → 2.ดาวศุกร์ (0.72 AU) → 3.โลก (1 AU) → 4.ดาวอังคาร (1.52 AU) → 5.ดาวพฤหัสบดี (5.2 AU) → 6.ดาวเสาร์ (9.5 AU) → 7.ดาวยูเรนัส (19.8 AU) → 8.ดาวเนปจูน (30.1 AU)"
+      },
+      {
+        id: 1,
+        title: "ภารกิจที่ 2 : เรียงตามขนาดเส้นผ่านศูนย์กลาง (ใหญ่สุด → เล็กสุด)",
+        description: "กดลูกศร <b>ขึ้น</b> หรือ <b>ลง</b> หรือ <b>ใช้นิ้วแตะลากสลับตำแหน่ง</b> ให้เรียงลำดับดาวเคราะห์จากดวงที่มี <b>ขนาดเส้นผ่านศูนย์กลางใหญ่ที่สุด</b> ไปหาดวงที่ <b>เล็กที่สุด</b> (ดวงที่ 1 ถึง 8)",
+        correctOrder: ["ดาวพฤหัสบดี", "ดาวเสาร์", "ดาวยูเรนัส", "ดาวเนปจูน", "โลก", "ดาวศุกร์", "ดาวอังคาร", "ดาวพุธ"],
+        explanation: "เรียงขนาดเส้นผ่านศูนย์กลางจากใหญ่ที่สุดไปหาเล็กที่สุด: 1.ดาวพฤหัสบดี (142,984 กม.) → 2.ดาวเสาร์ (120,536 กม.) → 3.ดาวยูเรนัส (51,118 กม.) → 4.ดาวเนปจูน (49,528 กม.) → 5.โลก (12,742 กม.) → 6.ดาวศุกร์ (12,104 กม.) → 7.ดาวอังคาร (6,779 กม.) → 8.ดาวพุธ (4,879 กม.)"
+      },
+      {
+        id: 2,
+        title: "ภารกิจที่ 3 : เรียงตามคาบการโคจรรอบดวงอาทิตย์ (เร็วสุด → นานสุด)",
+        description: "กดลูกศร <b>ขึ้น</b> หรือ <b>ลง</b> หรือ <b>ใช้นิ้วแตะลากสลับ</b> เพื่อเรียงลำดับดาวเคราะห์ที่มี <b>คาบการโคจรรอบดวงอาทิตย์สั้นที่สุด (เร็วสุด)</b> ไปหา <b>นานที่สุด</b> ตามกฎข้อที่ 3 ของเคปเลอร์",
+        correctOrder: ["ดาวพุธ", "ดาวศุกร์", "โลก", "ดาวอังคาร", "ดาวพฤหัสบดี", "ดาวเสาร์", "ดาวยูเรนัส", "ดาวเนปจูน"],
+        explanation: "ดาวที่อยู่ใกล้ดวงอาทิตย์จะโคจรเร็วกว่าตามกฎเคปเลอร์: 1.ดาวพุธ (88 วัน) → 2.ดาวศุกร์ (225 วัน) → 3.โลก (365.25 วัน) → 4.ดาวอังคาร (687 วัน) → 5.ดาวพฤหัสบดี (11.86 ปี) → 6.ดาวเสาร์ (29.45 ปี) → 7.ดาวยูเรนัส (84 ปี) → 8.ดาวเนปจูน (164.8 ปี)"
+      }
+    ];
+
+    // ข้อมูลจำเพาะและสีสันจุดเรืองแสงของดาวเคราะห์ 8 ดวง (ตรงตามภาพ UI)
+    const PLANETS_CONFIG = {
+      "โลก": { color: "#00a8ff", glow: "rgba(0, 168, 255, 0.9)", detail: "ดาวเคราะห์แห่งสิ่งมีชีวิต" },
+      "ดาวพุธ": { color: "#cbd5e1", glow: "rgba(203, 213, 225, 0.8)", detail: "เตาไฟแช่แข็ง ขนาดเล็กที่สุด" },
+      "ดาวศุกร์": { color: "#f59e0b", glow: "rgba(245, 158, 11, 0.9)", detail: "ดาวเคราะห์ร้อนที่สุด เรือนกระจก" },
+      "ดาวอังคาร": { color: "#f97316", glow: "rgba(249, 115, 22, 0.9)", detail: "ดาวเคราะห์สีแดง สนิมเหล็ก" },
+      "ดาวพฤหัสบดี": { color: "#e2e8f0", glow: "rgba(226, 232, 240, 0.85)", detail: "ดาวเคราะห์ยักษ์ใหญ่ที่สุด พายุจุดแดงใหญ่" },
+      "ดาวเสาร์": { color: "#fbbf24", glow: "rgba(251, 191, 36, 0.9)", detail: "วงแหวนสว่างสวยงาม ลอยน้ำได้" },
+      "ดาวยูเรนัส": { color: "#22d3ee", glow: "rgba(34, 211, 238, 0.9)", detail: "ยักษ์น้ำแข็งสีฟ้าเขียว แกนหมุนเอียงกลิ้ง" },
+      "ดาวเนปจูน": { color: "#3b82f6", glow: "rgba(59, 130, 246, 0.9)", detail: "ลมพายุเร็วแรงที่สุด อยู่ไกลสุด" }
+    };
+
+    /* ============================================================
+       2. WEB AUDIO API SYNTHESIZER
+       ============================================================ */
+    let audioCtx = null;
+    let sfxEnabled = true;
+
+    function getAudioCtx() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      return audioCtx;
+    }
+
+    // ปลดล็อกระบบเสียงสำหรับ iOS Safari และ Android WebView ทันทีที่แตะหน้าจอครั้งแรก
+    function unlockAudioOnFirstGesture() {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+      } catch (err) {}
+      window.removeEventListener('touchstart', unlockAudioOnFirstGesture);
+      window.removeEventListener('touchend', unlockAudioOnFirstGesture);
+      window.removeEventListener('click', unlockAudioOnFirstGesture);
+    }
+    window.addEventListener('touchstart', unlockAudioOnFirstGesture, { passive: true });
+    window.addEventListener('touchend', unlockAudioOnFirstGesture, { passive: true });
+    window.addEventListener('click', unlockAudioOnFirstGesture);
+
+    function playSound(type) {
+      if (!sfxEnabled) return;
+      try {
+        const ctx = getAudioCtx();
+        const now = ctx.currentTime;
+        if (type === 'move') {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(400, now);
+          osc.frequency.exponentialRampToValueAtTime(600, now + 0.06);
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.06);
+        } else if (type === 'success') {
+          [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(f, now + i * 0.08);
+            gain.gain.setValueAtTime(0.18, now + i * 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.3);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now + i * 0.08);
+            osc.stop(now + i * 0.08 + 0.3);
+          });
+        } else if (type === 'wrong') {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(260, now);
+          osc.frequency.exponentialRampToValueAtTime(140, now + 0.2);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.2);
+        }
+      } catch (e) {}
+    }
+
+    /* ============================================================
+       3. GAME STATE & DOM CONTROLLER
+       ============================================================ */
+    let currentMissionIdx = 0;
+    // ลำดับดาวเคราะห์ปัจจุบันในลิสต์ (ตั้งต้นสลับตำแหน่งให้เหมือนภาพผู้ใช้)
+    let currentList = ["โลก", "ดาวพุธ", "ดาวศุกร์", "ดาวอังคาร", "ดาวพฤหัสบดี", "ดาวเสาร์", "ดาวยูเรนัส", "ดาวเนปจูน"];
+    let totalScore = 0;
+    let currentPlayer = { name: '', grade: '', studentNo: '' };
+    const completedMissions = new Set();
+    const STORAGE_KEY = 'solar_system_quiz_act1_records';
+
+    // การเชื่อมต่อ Google Sheet: สเปรดชีต "จักรวาลปลายนิ้ว" > แผ่นงาน "กิจกรรม1"
+    const GOOGLE_SHEET_KEY = 'solar_system_google_sheet_url';
+    const DEFAULT_GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycby-dYF1bxJ_XQutaOV4_Em88C8t1SAUh98t5mWYiq24aj2r3FNdTWafXEsLN9oHIMHI/exec';
+    const GOOGLE_SHEET_TAB_NAME = 'กิจกรรม1';
+
+    function getGoogleSheetUrl() {
+      const saved = localStorage.getItem(GOOGLE_SHEET_KEY);
+      if (saved && saved.trim() !== '') {
+        return saved.trim();
+      }
+      return DEFAULT_GOOGLE_SHEET_URL.trim();
+    }
+
+    function setGoogleSheetUrl(url) {
+      if (url && url.trim() !== '') {
+        localStorage.setItem(GOOGLE_SHEET_KEY, url.trim());
+      } else {
+        localStorage.removeItem(GOOGLE_SHEET_KEY);
+      }
+    }
+
+    // ฟังก์ชันส่งข้อมูลไปยัง Google Sheet (เฉพาะ 4 ช่อง: ชื่อ, ชั้น, เลขที่, คะแนน)
+    async function sendRecordToGoogleSheet(record) {
+      const url = getGoogleSheetUrl();
+      if (!url) {
+        return { success: false, reason: 'NO_URL' };
+      }
+
+      const payload = {
+        sheetName: GOOGLE_SHEET_TAB_NAME,
+        name: record.name,
+        grade: record.grade,
+        studentNo: record.studentNo,
+        score: record.score
+      };
+
+      try {
+        await fetch(url, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8'
+          },
+          body: JSON.stringify(payload)
+        });
+        return { success: true };
+      } catch (err) {
+        console.error("ส่งข้อมูลไปยัง Google Sheet ล้มเหลว:", err);
+        return { success: false, reason: err.message };
+      }
+    }
+
+    // ฟังก์ชันซิงค์คะแนนลง Google Sheet และอัปเดตสถานะบนหน้าจอ
+    async function syncToGoogleSheetUI(record) {
+      const statusBadges = [
+        document.getElementById('sheetSyncStatus'),
+        document.getElementById('sumSheetSyncStatus')
+      ].filter(Boolean);
+
+      if (statusBadges.length === 0) return;
+
+      const sheetUrl = getGoogleSheetUrl();
+      if (!sheetUrl) {
+        statusBadges.forEach(b => {
+          b.innerHTML = '<i class="fa-solid fa-cloud-arrow-up" style="color: var(--reorder-gold, #ffb703);"></i> <span>บันทึกคะแนนในเครื่องเรียบร้อย (ยังไม่ได้ตั้งค่า Google Sheet URL)</span>';
+          b.style.borderColor = 'rgba(255, 183, 3, 0.4)';
+          b.style.color = 'var(--reorder-gold, #ffb703)';
+        });
+        return;
+      }
+
+      statusBadges.forEach(b => {
+        b.innerHTML = '<i class="fa-solid fa-rotate fa-spin" style="color: var(--reorder-cyan, #00f0ff);"></i> <span>กำลังบันทึกคะแนนเข้าสู่ Google Sheet (กิจกรรม1)...</span>';
+        b.style.borderColor = 'rgba(0, 240, 255, 0.4)';
+        b.style.color = 'var(--reorder-cyan, #00f0ff)';
+      });
+
+      const res = await sendRecordToGoogleSheet(record);
+      if (res.success) {
+        statusBadges.forEach(b => {
+          b.innerHTML = '<i class="fa-solid fa-circle-check" style="color: #34d399;"></i> <span>บันทึกคะแนนรวมเข้าสู่ Google Sheet (กิจกรรม1) เรียบร้อยแล้ว ✓</span>';
+          b.style.borderColor = 'rgba(52, 211, 153, 0.5)';
+          b.style.color = '#34d399';
+        });
+        setTimeout(() => { renderLeaderboards(); }, 1200);
+      } else {
+        statusBadges.forEach(b => {
+          b.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color: #f87171;"></i> <span>บันทึกในเครื่องแล้ว (ไม่สามารถส่งไปยัง Google Sheet ได้)</span>';
+          b.style.borderColor = 'rgba(248, 113, 113, 0.4)';
+          b.style.color = '#f87171';
+        });
+      }
+    }
+
+    // Elements
+    const stepRegister = document.getElementById('stepRegister');
+    const stepGamePlay = document.getElementById('stepGamePlay');
+    const stepTotalSummary = document.getElementById('stepTotalSummary');
+    const playerRegisterForm = document.getElementById('playerRegisterForm');
+    const playerNameInput = document.getElementById('playerNameInput');
+    const playerGradeInput = document.getElementById('playerGradeInput');
+    const playerNoInput = document.getElementById('playerNoInput');
+
+    const playerBadgeName = document.getElementById('playerBadgeName');
+    const playerBadgeDetails = document.getElementById('playerBadgeDetails');
+    const playerCurrentScore = document.getElementById('playerCurrentScore');
+    const missionProgressText = document.getElementById('missionProgressText');
+    const btnChangePlayer = document.getElementById('btnChangePlayer');
+
+    const stageMainTitle = document.getElementById('stageMainTitle');
+    const stageDescText = document.getElementById('stageDescText');
+    const stageSelectorBar = document.getElementById('stageSelectorBar');
+    const stageLockNotice = document.getElementById('stageLockNotice');
+    const stageLockNoticeText = document.getElementById('stageLockNoticeText');
+    const orderListWrapper = document.getElementById('orderListWrapper');
+    const btnCheckAnswer = document.getElementById('btnCheckAnswer');
+    const btnShuffle = document.getElementById('btnShuffle');
+    const gameResultBox = document.getElementById('gameResultBox');
+    const resultTitle = document.getElementById('resultTitle');
+    const resultSubtitle = document.getElementById('resultSubtitle');
+    const resultStatusIcon = document.getElementById('resultStatusIcon');
+    const resultExplanationText = document.getElementById('resultExplanationText');
+    const btnNextMission = document.getElementById('btnNextMission');
+    const btnPlayAgain = document.getElementById('btnPlayAgain');
+
+    // Summary Screen elements
+    const totalSummaryScoreNum = document.getElementById('totalSummaryScoreNum');
+    const totalEvaluationTitle = document.getElementById('totalEvaluationTitle');
+    const totalEvaluationMsg = document.getElementById('totalEvaluationMsg');
+    const sumName = document.getElementById('sumName');
+    const sumGrade = document.getElementById('sumGrade');
+    const sumNo = document.getElementById('sumNo');
+    const sumDate = document.getElementById('sumDate');
+    const sumMissionScore0 = document.getElementById('sumMissionScore0');
+    const sumMissionScore1 = document.getElementById('sumMissionScore1');
+    const sumMissionScore2 = document.getElementById('sumMissionScore2');
+
+    let unlockedMissions = [0]; // เริ่มต้นปลดล็อกเฉพาะภารกิจ 1
+    const missionScores = { 0: 0, 1: 0, 2: 0 };
+
+    /* ============================================================
+       4. REGISTRATION SUBMIT & START GAME
+       ============================================================ */
+    playerRegisterForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = playerNameInput.value.trim();
+      const grade = playerGradeInput.value.trim();
+      const studentNo = playerNoInput.value.trim();
+
+      if (!name || !grade || !studentNo) {
+        alert('กรุณากรอกชื่อ ระดับชั้น และเลขที่ให้ครบถ้วน');
+        return;
+      }
+
+      // ปิดคีย์บอร์ดบน iOS
+      if (document.activeElement && typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
+      }
+
+      currentPlayer = { name, grade, studentNo };
+      sessionStorage.setItem('solar_cadet_name', name);
+      sessionStorage.setItem('solar_cadet_grade', grade);
+      sessionStorage.setItem('solar_cadet_no', studentNo);
+
+      // รีเซ็ตสถานะภารกิจและการปลดล็อกสำหรับผู้เล่นใหม่
+      unlockedMissions = [0];
+      completedMissions.clear();
+      missionScores[0] = 0;
+      missionScores[1] = 0;
+      missionScores[2] = 0;
+      totalScore = 0;
+      currentMissionIdx = 0;
+
+      // อัปเดตการแสดงผลข้อมูลผู้เล่น
+      playerBadgeName.textContent = currentPlayer.name;
+      playerBadgeDetails.textContent = `(ชั้น ${currentPlayer.grade} เลขที่ ${currentPlayer.studentNo})`;
+
+      // เปลี่ยนหน้าไปที่หน้าเล่นเกม
+      stepRegister.style.display = 'none';
+      if (stepTotalSummary) stepTotalSummary.style.display = 'none';
+      stepGamePlay.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      updateStageUI();
+      shuffleList();
+      renderLeaderboards();
+      playSound('move');
+    });
+
+    // ปุ่มเปลี่ยนข้อมูลผู้เล่น
+    btnChangePlayer.addEventListener('click', () => {
+      stepGamePlay.style.display = 'none';
+      if (stepTotalSummary) stepTotalSummary.style.display = 'none';
+      stepRegister.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    /* ============================================================
+       5. RENDER ORDER LIST & REORDER CONTROLS
+       ============================================================ */
+    function renderOrderList() {
+      orderListWrapper.innerHTML = '';
+
+      currentList.forEach((planetName, index) => {
+        const pCfg = PLANETS_CONFIG[planetName] || { color: '#00f0ff', glow: 'rgba(0,240,255,0.8)' };
+
+        const card = document.createElement('div');
+        card.className = 'order-item-card';
+        card.dataset.index = index;
+        card.dataset.name = planetName;
+
+        card.innerHTML = `
+          <div class="order-left-group">
+            <span class="drag-handle-touch" title="ลากเพื่อสลับตำแหน่ง"><i class="fa-solid fa-grip-vertical"></i></span>
+            <div class="order-number-box">${index + 1}</div>
+            <div class="planet-glow-dot" style="--dot-color: ${pCfg.color}; --dot-glow: ${pCfg.glow};"></div>
+            <div class="planet-text-info">
+              <span class="planet-main-name">${planetName}</span>
+            </div>
+          </div>
+          <div class="order-right-controls">
+            <button type="button" class="arrow-btn btn-up" title="เลื่อนขึ้น" ${index === 0 ? 'disabled' : ''}>
+              <i class="fa-solid fa-chevron-up"></i>
+            </button>
+            <button type="button" class="arrow-btn btn-down" title="เลื่อนลง" ${index === currentList.length - 1 ? 'disabled' : ''}>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+          </div>
+        `;
+
+        // ปุ่มเลื่อนขึ้น ^ (รองรับทั้ง Touch บน iOS และ Click)
+        const btnUp = card.querySelector('.btn-up');
+        let upTriggered = 0;
+        const triggerUp = (e) => {
+          e.stopPropagation();
+          const now = Date.now();
+          if (now - upTriggered < 60) return;
+          upTriggered = now;
+          moveItem(index, index - 1);
+        };
+        btnUp.addEventListener('click', triggerUp);
+        btnUp.addEventListener('touchend', (e) => {
+          e.preventDefault();
+          triggerUp(e);
+        }, { passive: false });
+
+        // ปุ่มเลื่อนลง v (รองรับทั้ง Touch บน iOS และ Click)
+        const btnDown = card.querySelector('.btn-down');
+        let downTriggered = 0;
+        const triggerDown = (e) => {
+          e.stopPropagation();
+          const now = Date.now();
+          if (now - downTriggered < 60) return;
+          downTriggered = now;
+          moveItem(index, index + 1);
+        };
+        btnDown.addEventListener('click', triggerDown);
+        btnDown.addEventListener('touchend', (e) => {
+          e.preventDefault();
+          triggerDown(e);
+        }, { passive: false });
+
+        orderListWrapper.appendChild(card);
+      });
+
+      // ผูก Touch & Mouse Drag and Drop
+      bindTouchDragAndDrop();
+    }
+
+    // ฟังก์ชันเลื่อนตำแหน่งขึ้น/ลง
+    function moveItem(fromIdx, toIdx) {
+      if (toIdx < 0 || toIdx >= currentList.length) return;
+      playSound('move');
+
+      // สลับค่าใน Array
+      const temp = currentList[fromIdx];
+      currentList[fromIdx] = currentList[toIdx];
+      currentList[toIdx] = temp;
+
+      // ซ่อนผลลัพธ์เก่าหากมีการขยับ
+      gameResultBox.classList.remove('show');
+
+      renderOrderList();
+    }
+
+    // สลับตำแหน่งแบบสุ่ม (Shuffle)
+    function shuffleList() {
+      playSound('move');
+      let shuffled;
+      const target = MISSIONS_DATA[currentMissionIdx].correctOrder;
+      do {
+        shuffled = [...currentList].sort(() => Math.random() - 0.5);
+      } while (shuffled.join(',') === target.join(','));
+
+      currentList = shuffled;
+      gameResultBox.classList.remove('show');
+      renderOrderList();
+    }
+
+    /* ============================================================
+       6. TOUCH & MOUSE DRAG AND DROP HANDLER (รองรับทั้ง iOS Safari, Android และ Desktop)
+       ============================================================ */
+    let draggedItem = null;
+    let touchStartY = 0;
+    let touchStartIndex = -1;
+    let touchTargetIdx = -1;
+    let isTouchDragging = false;
+
+    function bindTouchDragAndDrop() {
+      const cards = orderListWrapper.querySelectorAll('.order-item-card');
+
+      cards.forEach((card, index) => {
+        const handle = card.querySelector('.drag-handle-touch');
+        const touchZone = handle || card;
+
+        // เริ่มต้นการลากด้วยการแตะที่จุดจับ (หรือการ์ด)
+        touchZone.addEventListener('touchstart', (e) => {
+          if (e.target.closest('.arrow-btn')) return;
+
+          // บนมือถือ ให้เริ่มลากเมื่อจับที่ด้ามจับ เพื่อให้เลื่อนหน้าจอได้ลื่นไหลเมื่อแตะที่อื่น
+          if (e.target.closest('.drag-handle-touch') || window.innerWidth > 768) {
+            draggedItem = card;
+            touchStartIndex = index;
+            touchTargetIdx = index;
+            touchStartY = e.touches[0].clientY;
+            isTouchDragging = true;
+          }
+        }, { passive: true });
+
+        // --- 2. Desktop Drag Events (สำหรับเมาส์) ---
+        card.setAttribute('draggable', 'true');
+
+        card.addEventListener('dragstart', (e) => {
+          draggedItem = card;
+          e.dataTransfer.effectAllowed = 'move';
+          setTimeout(() => card.classList.add('dragging'), 0);
+        });
+
+        card.addEventListener('dragend', () => {
+          if (draggedItem) {
+            draggedItem.classList.remove('dragging');
+            draggedItem = null;
+          }
+          cards.forEach(c => c.classList.remove('dragging', 'drop-target-hover'));
+        });
+
+        card.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+          cards.forEach(c => c.classList.remove('drop-target-hover'));
+          card.classList.add('drop-target-hover');
+        });
+
+        card.addEventListener('drop', (e) => {
+          e.preventDefault();
+          cards.forEach(c => c.classList.remove('drop-target-hover', 'dragging'));
+          if (draggedItem && draggedItem !== card) {
+            const fromIdx = parseInt(draggedItem.dataset.index);
+            const toIdx = parseInt(card.dataset.index);
+            const temp = currentList[fromIdx];
+            currentList.splice(fromIdx, 1);
+            currentList.splice(toIdx, 0, temp);
+            playSound('move');
+            renderOrderList();
+          }
+        });
+      });
+    }
+
+    // ตัวดักจับ Touch Move ระดับ Window เพื่อความลื่นไหลสูงสุดบน iOS และ Android
+    window.addEventListener('touchmove', (e) => {
+      if (!isTouchDragging || !draggedItem) return;
+
+      const currentY = e.touches[0].clientY;
+      const deltaY = currentY - touchStartY;
+
+      if (Math.abs(deltaY) > 4) {
+        if (e.cancelable) e.preventDefault(); // ป้องกันหน้าเว็บเลื่อนขณะกำลังลากการ์ด
+
+        draggedItem.classList.add('dragging');
+        draggedItem.style.transform = `translateY(${deltaY}px) scale(1.03)`;
+        draggedItem.style.pointerEvents = 'none'; // จุดสำคัญ: อนุญาตให้ elementFromPoint มองทะลุไปยังการ์ดเป้าหมาย
+
+        const currentX = e.touches[0].clientX;
+        const elementUnderFinger = document.elementFromPoint(currentX, currentY);
+
+        const cards = orderListWrapper.querySelectorAll('.order-item-card');
+        cards.forEach(c => c.classList.remove('drop-target-hover'));
+
+        if (elementUnderFinger) {
+          const targetCard = elementUnderFinger.closest('.order-item-card');
+          if (targetCard && targetCard !== draggedItem) {
+            const tIdx = parseInt(targetCard.dataset.index);
+            if (!isNaN(tIdx)) {
+              touchTargetIdx = tIdx;
+              targetCard.classList.add('drop-target-hover');
+            }
+          }
+        }
+      }
+    }, { passive: false });
+
+    // สิ้นสุดการลากด้วยนิ้ว
+    window.addEventListener('touchend', () => {
+      if (isTouchDragging && draggedItem) {
+        draggedItem.style.pointerEvents = '';
+        draggedItem.classList.remove('dragging');
+        draggedItem.style.transform = '';
+
+        const cards = orderListWrapper.querySelectorAll('.order-item-card');
+        cards.forEach(c => c.classList.remove('drop-target-hover'));
+
+        if (touchTargetIdx !== -1 && touchTargetIdx !== touchStartIndex) {
+          const temp = currentList[touchStartIndex];
+          currentList.splice(touchStartIndex, 1);
+          currentList.splice(touchTargetIdx, 0, temp);
+          playSound('move');
+          renderOrderList();
+        }
+
+        draggedItem = null;
+        isTouchDragging = false;
+        touchTargetIdx = -1;
+        touchStartIndex = -1;
+      }
+    });
+
+    // คืนค่าสถานะเมื่อเกิดการรบกวนของระบบสัมผัส (เช่น สายเรียกเข้า หรือสลับแอป)
+    window.addEventListener('touchcancel', () => {
+      if (draggedItem) {
+        draggedItem.style.pointerEvents = '';
+        draggedItem.classList.remove('dragging');
+        draggedItem.style.transform = '';
+      }
+      const cards = orderListWrapper.querySelectorAll('.order-item-card');
+      cards.forEach(c => c.classList.remove('drop-target-hover', 'dragging'));
+      draggedItem = null;
+      isTouchDragging = false;
+      touchTargetIdx = -1;
+      touchStartIndex = -1;
+    });
+
+    /* ============================================================
+       7. CHECK ANSWER & PROGRESSION CONTROLLER (ภารกิจ 1 ➔ 2 ➔ 3 ➔ แสดงคะแนนรวม)
+       ============================================================ */
+    function updateStageUI() {
+      const stageBtns = [
+        document.getElementById('stageBtn0'),
+        document.getElementById('stageBtn1'),
+        document.getElementById('stageBtn2')
+      ];
+
+      stageBtns.forEach((btn, idx) => {
+        if (!btn) return;
+        const isUnlocked = unlockedMissions.includes(idx);
+        const isCompleted = completedMissions.has(idx);
+        const isActive = (idx === currentMissionIdx);
+
+        btn.classList.toggle('active', isActive);
+        btn.classList.toggle('completed', isCompleted);
+        btn.classList.toggle('locked', !isUnlocked);
+
+        let iconHtml = '';
+        if (isCompleted) {
+          iconHtml = '<i class="fa-solid fa-circle-check" style="color: #34d399;"></i>';
+        } else if (!isUnlocked) {
+          iconHtml = '<i class="fa-solid fa-lock" style="color: #64748b;"></i>';
+        } else {
+          if (idx === 0) iconHtml = '<i class="fa-solid fa-arrows-left-right-to-line"></i>';
+          else if (idx === 1) iconHtml = '<i class="fa-solid fa-maximize"></i>';
+          else if (idx === 2) iconHtml = '<i class="fa-solid fa-rotate"></i>';
+        }
+
+        const titleText = (idx === 0)
+          ? 'ภารกิจ 1: เรียงตามระยะห่างดวงอาทิตย์ (ใกล้ → ไกล)'
+          : (idx === 1)
+            ? (isUnlocked ? 'ภารกิจ 2: เรียงตามขนาด (ใหญ่สุด → เล็กสุด)' : 'ภารกิจ 2: เรียงตามขนาด (ล็อกอยู่)')
+            : (isUnlocked ? 'ภารกิจ 3: เรียงตามคาบการโคจร (เร็วสุด → นานสุด)' : 'ภารกิจ 3: เรียงตามคาบการโคจร (ล็อกอยู่)');
+
+        btn.innerHTML = `${iconHtml} <span>${titleText}</span>`;
+      });
+
+      if (missionProgressText) {
+        missionProgressText.textContent = `ภารกิจ ${currentMissionIdx + 1}/3 (สำเร็จ ${completedMissions.size}/3)`;
+      }
+      if (playerCurrentScore) {
+        playerCurrentScore.textContent = `${totalScore} / 300`;
+      }
+    }
+
+    let lockNoticeTimer = null;
+    function showLockNotice(targetIdx) {
+      if (!stageLockNotice || !stageLockNoticeText) return;
+      if (targetIdx === 1) {
+        stageLockNoticeText.innerHTML = '<strong>🔒 ต้องทำภารกิจที่ 1 (เรียงตามระยะห่าง) ให้เสร็จก่อน</strong> จึงจะไปยังภารกิจที่ 2 ได้';
+      } else if (targetIdx === 2) {
+        stageLockNoticeText.innerHTML = '<strong>🔒 ต้องทำภารกิจที่ 2 (เรียงตามขนาด) ให้เสร็จก่อน</strong> จึงจะไปยังภารกิจที่ 3 ได้';
+      } else {
+        stageLockNoticeText.innerHTML = '<strong>🔒 ภารกิจนี้ยังไม่ปลดล็อก</strong> กรุณาทำภารกิจตามลำดับ';
+      }
+
+      stageLockNotice.style.display = 'flex';
+      clearTimeout(lockNoticeTimer);
+      lockNoticeTimer = setTimeout(() => {
+        stageLockNotice.style.display = 'none';
+      }, 4500);
+    }
+
+    function switchMission(missionIndex) {
+      if (!unlockedMissions.includes(missionIndex)) {
+        playSound('wrong');
+        showLockNotice(missionIndex);
+        return;
+      }
+
+      if (stageLockNotice) stageLockNotice.style.display = 'none';
+      currentMissionIdx = missionIndex;
+      const m = MISSIONS_DATA[currentMissionIdx];
+
+      stageMainTitle.textContent = m.title;
+      stageDescText.innerHTML = m.description;
+      gameResultBox.classList.remove('show');
+
+      updateStageUI();
+      shuffleList();
+    }
+
+    document.querySelectorAll('.stage-chip-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const stageIdx = parseInt(btn.dataset.stage);
+        if (stageIdx === currentMissionIdx) return;
+        switchMission(stageIdx);
+      });
+    });
+
+    btnCheckAnswer.addEventListener('click', () => {
+      const mission = MISSIONS_DATA[currentMissionIdx];
+      const correctOrder = mission.correctOrder;
+
+      let allCorrect = true;
+      let correctCount = 0;
+      const cards = orderListWrapper.querySelectorAll('.order-item-card');
+
+      currentList.forEach((planetName, idx) => {
+        const isMatch = (planetName === correctOrder[idx]);
+        const card = cards[idx];
+
+        if (isMatch) {
+          card.classList.add('correct-item');
+          card.classList.remove('wrong-item');
+          correctCount++;
+        } else {
+          card.classList.add('wrong-item');
+          card.classList.remove('correct-item');
+          allCorrect = false;
+        }
+      });
+
+      gameResultBox.classList.add('show');
+      resultExplanationText.innerHTML = mission.explanation;
+
+      if (allCorrect) {
+        playSound('success');
+        completedMissions.add(currentMissionIdx);
+        missionScores[currentMissionIdx] = 100;
+        totalScore = (missionScores[0] || 0) + (missionScores[1] || 0) + (missionScores[2] || 0);
+
+        resultStatusIcon.textContent = '🌟';
+
+        if (currentMissionIdx === 0) {
+          if (!unlockedMissions.includes(1)) {
+            unlockedMissions.push(1);
+          }
+          resultTitle.textContent = 'ยอดเยี่ยมมาก! จัดเรียงภารกิจที่ 1 ถูกต้องสมบูรณ์ (+100 คะแนน)';
+          resultTitle.style.color = '#34d399';
+          resultSubtitle.textContent = `คุณ ${currentPlayer.name || 'ผู้เล่น'} จัดเรียงดาวเคราะห์ตามระยะห่างดวงอาทิตย์ถูกต้องครบทั้ง 8 ลำดับ ตอนนี้ปลดล็อกไปยังภารกิจที่ 2 แล้ว!`;
+          btnNextMission.innerHTML = '<i class="fa-solid fa-arrow-right"></i> ไปยังภารกิจที่ 2 : เรียงตามขนาด';
+          btnNextMission.style.display = 'inline-flex';
+        } else if (currentMissionIdx === 1) {
+          if (!unlockedMissions.includes(2)) {
+            unlockedMissions.push(2);
+          }
+          resultTitle.textContent = 'ยอดเยี่ยมมาก! จัดเรียงภารกิจที่ 2 ถูกต้องสมบูรณ์ (+100 คะแนน)';
+          resultTitle.style.color = '#34d399';
+          resultSubtitle.textContent = `คุณ ${currentPlayer.name || 'ผู้เล่น'} จัดเรียงดาวเคราะห์ตามขนาดเส้นผ่านศูนย์กลางถูกต้องครบทั้ง 8 ลำดับ ตอนนี้ปลดล็อกไปยังภารกิจที่ 3 แล้ว!`;
+          btnNextMission.innerHTML = '<i class="fa-solid fa-arrow-right"></i> ไปยังภารกิจที่ 3 : เรียงตามคาบการโคจร';
+          btnNextMission.style.display = 'inline-flex';
+        } else if (currentMissionIdx === 2) {
+          resultStatusIcon.textContent = '🏆';
+          resultTitle.textContent = '🎊 ยินดีด้วย! ทำครบทั้ง 3 ภารกิจสำเร็จแล้ว (+100 คะแนน)';
+          resultTitle.style.color = '#ffd700';
+          resultSubtitle.textContent = `คุณพิชิตภารกิจครบทั้ง 3 ภารกิจ คะแนนรวม ${totalScore} / 300 คะแนน! ได้รับการบันทึกสถิติสู่ตาราง Top 5 เรียบร้อยแล้ว`;
+          btnNextMission.innerHTML = '<i class="fa-solid fa-trophy"></i> ดูคะแนนรวมและอันดับ Top 5';
+          btnNextMission.style.display = 'inline-flex';
+
+          // บันทึกคะแนนรวมทั้งหมดลง LocalStorage และ Google Sheet
+          saveTotalGameRecord(totalScore);
+        }
+
+        updateStageUI();
+      } else {
+        playSound('wrong');
+        resultStatusIcon.textContent = '🔭';
+        resultTitle.textContent = `ยังไม่ถูกต้องทั้งหมด (ถูก ${correctCount} จาก 8 ดวง)`;
+        resultTitle.style.color = '#f87171';
+        resultSubtitle.textContent = 'แถวที่เป็นสีเขียวคือเรียงถูกต้องแล้ว ส่วนแถวสีแดงยังสลับตำแหน่งอยู่ ลองใช้นิ้วเลื่อนสลับอีกครั้ง เพื่อให้ผ่านภารกิจ!';
+      }
+
+      gameResultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    if (btnShuffle) btnShuffle.addEventListener('click', shuffleList);
+
+    btnNextMission.addEventListener('click', () => {
+      if (currentMissionIdx === 0) {
+        switchMission(1);
+        stepGamePlay.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if (currentMissionIdx === 1) {
+        switchMission(2);
+        stepGamePlay.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else if (currentMissionIdx === 2) {
+        showTotalSummaryScreen();
+      }
+    });
+
+    function showTotalSummaryScreen() {
+      stepGamePlay.style.display = 'none';
+      if (stepTotalSummary) stepTotalSummary.style.display = 'block';
+
+      if (totalSummaryScoreNum) totalSummaryScoreNum.textContent = totalScore;
+      if (sumName) sumName.textContent = currentPlayer.name || '-';
+      if (sumGrade) sumGrade.textContent = currentPlayer.grade || '-';
+      if (sumNo) sumNo.textContent = currentPlayer.studentNo || '-';
+      if (sumDate) sumDate.textContent = new Date().toLocaleDateString('th-TH', { hour: '2-digit', minute: '2-digit' });
+
+      if (sumMissionScore0) sumMissionScore0.textContent = missionScores[0] || 100;
+      if (sumMissionScore1) sumMissionScore1.textContent = missionScores[1] || 100;
+      if (sumMissionScore2) sumMissionScore2.textContent = missionScores[2] || 100;
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      renderLeaderboards();
+      playSound('success');
+    }
+
+    if (btnPlayAgain) {
+      btnPlayAgain.addEventListener('click', () => {
+        unlockedMissions = [0];
+        completedMissions.clear();
+        missionScores[0] = 0;
+        missionScores[1] = 0;
+        missionScores[2] = 0;
+        totalScore = 0;
+        currentMissionIdx = 0;
+
+        if (stepTotalSummary) stepTotalSummary.style.display = 'none';
+        stepGamePlay.style.display = 'block';
+
+        updateStageUI();
+        shuffleList();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    /* ============================================================
+       8. STORAGE & LEADERBOARD CONTROLLER (บันทึกคะแนนรวม & 5 อันดับแรก)
+       ============================================================ */
+    function saveTotalGameRecord(finalScore) {
+      try {
+        const name = currentPlayer.name || sessionStorage.getItem('solar_cadet_name') || 'นักสำรวจอวกาศ';
+        const grade = currentPlayer.grade || sessionStorage.getItem('solar_cadet_grade') || '-';
+        const no = currentPlayer.studentNo || sessionStorage.getItem('solar_cadet_no') || '-';
+
+        const record = {
+          id: 'REORDER_TOTAL_' + Date.now(),
+          name: name,
+          grade: grade,
+          studentNo: no,
+          mission: 'ครบ 3 ภารกิจ',
+          score: finalScore,
+          correct: 24,
+          date: new Date().toLocaleDateString('th-TH', { hour: '2-digit', minute: '2-digit' }),
+          timestamp: Date.now()
+        };
+
+        const records = getStoredRecords();
+        records.push(record);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+        renderLeaderboards();
+
+        // ซิงค์คะแนนรวมไปยัง Google Sheet (กิจกรรม1)
+        syncToGoogleSheetUI(record);
+      } catch (e) {
+        console.error("Save total game record error:", e);
+      }
+    }
+
+    function getStoredRecords() {
+      try {
+        const data = localStorage.getItem(STORAGE_KEY);
+        return data ? JSON.parse(data) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    /* ============================================================
+       8. STORAGE & LEADERBOARD CONTROLLER
+       ดึงข้อมูลจาก Google Sheet เพื่อให้ทุกเครื่องเห็น 5 อันดับแรกที่เหมือนกัน
+       ============================================================ */
+    const SPREADSHEET_ID = '1Djr3luVP2gRxsjImrGTXxvFrJdBQQz-ESBEieDFl1kc';
+
+    function fetchGvizViaJsonp(sheetTab) {
+      return new Promise((resolve, reject) => {
+        const callbackName = 'gviz_jsonp_' + Math.floor(Math.random() * 10000000);
+        const script = document.createElement('script');
+        
+        const timeout = setTimeout(() => {
+          cleanup();
+          reject(new Error('Gviz JSONP timeout'));
+        }, 8000);
+
+        function cleanup() {
+          clearTimeout(timeout);
+          try { delete window[callbackName]; } catch (e) { window[callbackName] = undefined; }
+          if (script && script.parentNode) {
+            script.parentNode.removeChild(script);
+          }
+        }
+
+        window[callbackName] = function(data) {
+          cleanup();
+          resolve(data);
+        };
+
+        script.onerror = function(err) {
+          cleanup();
+          reject(err);
+        };
+
+        script.src = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=responseHandler:${callbackName}&sheet=${encodeURIComponent(sheetTab)}&t=${Date.now()}`;
+        document.head.appendChild(script);
+      });
+    }
+
+    async function fetchTop5FromGoogleSheet() {
+      const url = getGoogleSheetUrl();
+      const sheetTab = GOOGLE_SHEET_TAB_NAME;
+
+      // 1. ดึงข้อมูลผ่าน Google Visualization API ด้วย JSONP (ไม่มีปัญหา CORS ทุกเบราว์เซอร์เข้าถึงได้ทันที)
+      try {
+        const data = await fetchGvizViaJsonp(sheetTab);
+        if (data && data.status === 'ok' && data.table) {
+          const cols = data.table.cols || [];
+          let nameColIdx = 0;
+          let scoreColIdx = 3;
+
+          cols.forEach((col, idx) => {
+            const label = String(col.label || '').trim().toLowerCase();
+            if (label.includes('ชื่อ') || label.includes('name')) nameColIdx = idx;
+            if (label.includes('คะแนน') || label.includes('score') || label.includes('point')) scoreColIdx = idx;
+          });
+
+          const list = [];
+          (data.table.rows || []).forEach(r => {
+            if (!r || !r.c || !r.c.length) return;
+            const nameCell = r.c[nameColIdx];
+            const name = nameCell ? String(nameCell.v !== undefined && nameCell.v !== null ? nameCell.v : (nameCell.f || '')).trim() : '';
+
+            if (!name || name === '-' || name === 'ชื่อ' || name === 'ชื่อ - นามสกุล' || name.toLowerCase() === 'name') return;
+
+            const scoreCell = (scoreColIdx < r.c.length && r.c[scoreColIdx]) ? r.c[scoreColIdx] : (r.c.length > 3 && r.c[3] ? r.c[3] : (r.c.length > 1 ? r.c[r.c.length - 1] : null));
+            let score = 0;
+            if (scoreCell) {
+              if (typeof scoreCell.v === 'number') {
+                score = scoreCell.v;
+              } else if (scoreCell.v !== undefined && scoreCell.v !== null) {
+                score = parseFloat(String(scoreCell.v).replace(/[^0-9.-]/g, ''));
+              } else if (scoreCell.f) {
+                score = parseFloat(String(scoreCell.f).replace(/[^0-9.-]/g, ''));
+              }
+            }
+            if (isNaN(score)) score = 0;
+
+            list.push({ name, score });
+          });
+
+          list.sort((a, b) => b.score - a.score);
+          return { items: list.slice(0, 5), source: 'sheet' };
+        }
+      } catch (err) {
+        console.warn('Gviz JSONP fetch failed:', err);
+      }
+
+      // 2. สำรองข้อมูลผ่าน Google Apps Script Web App (doGet)
+      if (url) {
+        try {
+          const sep = url.includes('?') ? '&' : '?';
+          const requestUrl = `${url}${sep}action=read&sheetName=${encodeURIComponent(sheetTab)}&t=${Date.now()}`;
+          const response = await fetch(requestUrl, {
+            method: 'GET',
+            headers: { 'Accept': 'application/json' }
+          });
+          if (response.ok) {
+            const result = await response.json();
+            if (result && result.status === 'success' && (Array.isArray(result.top5) || Array.isArray(result.data))) {
+              const records = (result.top5 && Array.isArray(result.top5) && result.top5.length > 0)
+                ? result.top5
+                : (result.data || []);
+
+              const formatted = records.map(item => ({
+                name: String(item.name || '').trim(),
+                score: (typeof item.score === 'number') ? item.score : (parseFloat(item.score) || 0)
+              })).filter(item => item.name && item.name !== '-');
+
+              formatted.sort((a, b) => b.score - a.score);
+              return { items: formatted.slice(0, 5), source: 'sheet' };
+            }
+          }
+        } catch (err) {
+          console.warn('Apps Script fetch failed:', err);
+        }
+      }
+
+      // 3. สำรองข้อมูลจาก LocalStorage (กรณีออฟไลน์หรือไม่มีอินเทอร์เน็ต)
+      const localRecords = getStoredRecords();
+      if (localRecords && localRecords.length > 0) {
+        const sorted = [...localRecords].sort((a, b) => (b.score - a.score) || (a.timestamp - b.timestamp));
+        return {
+          items: sorted.slice(0, 5).map(item => ({ name: item.name, score: item.score })),
+          source: 'local'
+        };
+      }
+
+      return { items: [], source: 'local' };
+    }
+
+    async function renderLeaderboards() {
+      const containers = [
+        document.getElementById('top5TableContainerFront'),
+        document.getElementById('top5TableContainerResult'),
+        document.getElementById('frontLeaderboard'),
+        document.getElementById('gameLeaderboard'),
+        document.getElementById('summaryLeaderboard')
+      ].filter(Boolean);
+
+      if (containers.length === 0) return;
+
+      const cacheKey = `solar_system_cached_top5_${GOOGLE_SHEET_TAB_NAME}`;
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        try {
+          const cachedObj = JSON.parse(cached);
+          const cachedItems = Array.isArray(cachedObj) ? cachedObj : (cachedObj.items || []);
+          const cachedSource = (cachedObj && cachedObj.source) ? cachedObj.source : 'sheet';
+          if (cachedSource === 'sheet') {
+            const cachedHtml = generateTop5TableHtml(cachedItems, cachedSource);
+            containers.forEach(c => c.innerHTML = cachedHtml);
+          }
+        } catch (e) {}
+      }
+
+      containers.forEach(c => {
+        if (!c.innerHTML || c.innerHTML.includes('แสดงเฉพาะคะแนนในเครื่องนี้')) {
+          c.innerHTML = `
+            <div style="text-align: center; padding: 25px; background: rgba(14,22,54,0.5); border-radius: 12px; color: var(--text-muted, #94a3b8); font-size: 1.05rem;">
+              <i class="fa-solid fa-rotate fa-spin" style="font-size: 1.8rem; margin-bottom: 8px; display: block; color: var(--reorder-cyan, #00f0ff);"></i>
+              กำลังดึงข้อมูล 5 อันดับแรกจาก Google Sheet...
+            </div>
+          `;
+        }
+      });
+
+      try {
+        const res = await fetchTop5FromGoogleSheet();
+        if (res && res.items) {
+          localStorage.setItem(cacheKey, JSON.stringify(res));
+          const html = generateTop5TableHtml(res.items, res.source);
+          containers.forEach(c => c.innerHTML = html);
+        }
+      } catch (err) {
+        console.error('Error rendering leaderboards:', err);
+      }
+    }
+
+    function generateTop5TableHtml(items, source = 'sheet') {
+      const statusBanner = (source === 'sheet')
+        ? `
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 0.88rem; color: #10b981; padding: 4px 6px;">
+            <span><i class="fa-solid fa-circle-check"></i> ดึงคะแนนออนไลน์จาก Google Sheet แล้ว (เห็นคะแนนของทุกคน)</span>
+            <button type="button" onclick="renderLeaderboards();" style="background: none; border: none; color: var(--reorder-cyan, #00f0ff); cursor: pointer; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 5px;">
+              <i class="fa-solid fa-arrows-rotate"></i> อัปเดตสด
+            </button>
+          </div>
+        `
+        : `
+          <div style="margin-bottom: 14px; font-size: 0.88rem; color: #fbbf24; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); padding: 10px 14px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <span><i class="fa-solid fa-triangle-exclamation"></i> <strong>แสดงเฉพาะคะแนนในเครื่องนี้:</strong> ต้องการให้เห็นคะแนนของเพื่อนทุกคน? โปรดเปิดแชร์ Google Sheet ให้ 'ทุกคนที่มีลิงก์มีสิทธิ์ดู'</span>
+            <button type="button" onclick="renderLeaderboards();" style="background: rgba(245, 158, 11, 0.25); border: 1px solid rgba(245, 158, 11, 0.6); color: #fff; padding: 4px 12px; border-radius: 6px; cursor: pointer; font-size: 0.82rem;">
+              <i class="fa-solid fa-arrows-rotate"></i> โหลดใหม่
+            </button>
+          </div>
+        `;
+
+      if (!items || items.length === 0) {
+        return `
+          ${statusBanner}
+          <div style="text-align: center; padding: 30px; background: rgba(14,22,54,0.5); border-radius: 12px; color: var(--text-muted, #94a3b8); font-size: 1.1rem;">
+            <i class="fa-solid fa-trophy" style="font-size: 2.2rem; margin-bottom: 12px; display: block; color: var(--reorder-gold, #ffd700);"></i>
+            ยังไม่มีข้อมูลคะแนนของผู้ทำกิจกรรม เป็นคนแรกที่คว้าอันดับ Top 5!
+          </div>
+        `;
+      }
+
+      let rows = '';
+      const currentUserName = (currentPlayer && currentPlayer.name) ? currentPlayer.name.trim().toLowerCase() : '';
+
+      items.forEach((item, idx) => {
+        const rank = idx + 1;
+        let rankBadgeClass = 'rank-other';
+        let medalIcon = rank;
+        if (rank === 1) {
+          rankBadgeClass = 'rank-1';
+          medalIcon = '<i class="fa-solid fa-crown"></i>';
+        } else if (rank === 2) {
+          rankBadgeClass = 'rank-2';
+          medalIcon = '<i class="fa-solid fa-medal"></i>';
+        } else if (rank === 3) {
+          rankBadgeClass = 'rank-3';
+          medalIcon = '<i class="fa-solid fa-medal"></i>';
+        }
+
+        const safeName = String(item.name || 'ไม่ระบุชื่อ')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+
+        const scoreNum = (item.score !== undefined && item.score !== null) ? item.score : 0;
+        const isMyRow = (currentUserName !== '' && safeName.trim().toLowerCase() === currentUserName);
+        const rowClass = isMyRow ? 'top5-row my-score-row' : 'top5-row';
+        const myBadge = isMyRow ? '<span style="display: inline-block; font-size: 0.78rem; background: var(--reorder-cyan); color: #02040a; padding: 2px 8px; border-radius: 6px; font-weight: 700; margin-left: 8px;">คุณ</span>' : '';
+
+        rows += `
+          <tr class="${rowClass}">
+            <td style="width: 80px; text-align: center;">
+              <span class="rank-badge ${rankBadgeClass}">${medalIcon}</span>
+            </td>
+            <td style="text-align: left;">
+              <strong style="color: #ffffff; font-size: 1.25rem;">${safeName}</strong>${myBadge}
+            </td>
+            <td style="text-align: right; width: 170px;">
+              <span class="score-badge-pill">${scoreNum} คะแนน</span>
+            </td>
+          </tr>
+        `;
+      });
+
+      return `
+        ${statusBanner}
+        <div class="leaderboard-table-responsive">
+          <table class="top5-table">
+            <thead>
+              <tr>
+                <th style="width: 80px; text-align: center;">อันดับ</th>
+                <th style="text-align: left;">ชื่อผู้ทำกิจกรรม</th>
+                <th style="text-align: right; width: 170px;">คะแนนรวม</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    // ส่งออกฟังก์ชันสู่ Window เพื่อให้ศูนย์ควบคุมแอดมิน (admin.js) เรียกอัปเดตตารางได้
+    window.renderLeaderboards = renderLeaderboards;
+
+    /* ============================================================
+       9. ADMIN DASHBOARD (MANAGED BY admin.js)
+       ============================================================ */
+
+    /* ============================================================
+       10. INITIALIZATION & STAR CANVAS
+       ============================================================ */
+    document.addEventListener('DOMContentLoaded', () => {
+      // โหลดชื่อเดิมที่เคยกรอกมาใส่ในฟอร์มอัตโนมัติ
+      const savedName = sessionStorage.getItem('solar_cadet_name');
+      const savedGrade = sessionStorage.getItem('solar_cadet_grade');
+      const savedNo = sessionStorage.getItem('solar_cadet_no');
+      if (savedName) playerNameInput.value = savedName;
+      if (savedGrade) playerGradeInput.value = savedGrade;
+      if (savedNo) playerNoInput.value = savedNo;
+
+      updateStageUI();
+      renderLeaderboards();
+
+      // Sound Toggle Button
+      const soundBtn = document.getElementById('soundToggleBtn');
+      if (soundBtn) {
+        soundBtn.addEventListener('click', () => {
+          sfxEnabled = !sfxEnabled;
+          soundBtn.innerHTML = sfxEnabled ? '<i class="fa-solid fa-volume-high"></i> เสียง' : '<i class="fa-solid fa-volume-xmark" style="color: #ef4444;"></i> ปิดเสียง';
+        });
+      }
+
+      // Mobile Menu
+      const mobileToggle = document.getElementById('mobileToggle');
+      const navMenu = document.getElementById('navMenu');
+      if (mobileToggle && navMenu) {
+        mobileToggle.addEventListener('click', () => navMenu.classList.toggle('open'));
+      }
+
+      // Quiz Dropdown
+      const quizDropdown = document.getElementById('quizDropdown');
+      const dropdownTrigger = document.getElementById('dropdownTrigger');
+      if (dropdownTrigger && quizDropdown) {
+        const toggleDropdown = (e) => {
+          if (typeof window.toggleQuizDropdown === 'function') {
+            window.toggleQuizDropdown(e);
+          } else {
+            if (e && e.cancelable) e.preventDefault();
+            e.stopPropagation();
+            const isOpen = quizDropdown.classList.toggle('open');
+            dropdownTrigger.setAttribute('aria-expanded', isOpen);
+          }
+        };
+        dropdownTrigger.addEventListener('click', toggleDropdown);
+        dropdownTrigger.addEventListener('touchend', (e) => {
+          if (e.cancelable) e.preventDefault();
+          toggleDropdown(e);
+        }, { passive: false });
+
+        ['click', 'touchstart'].forEach((evt) => {
+          document.addEventListener(evt, (e) => {
+            if (!quizDropdown.contains(e.target) && !e.target.closest('#dropdownMenu, .dropdown-menu')) {
+              if (typeof window.closeQuizDropdown === 'function') {
+                window.closeQuizDropdown();
+              } else {
+                quizDropdown.classList.remove('open');
+                dropdownTrigger.setAttribute('aria-expanded', 'false');
+              }
+            }
+          }, { passive: true });
+        });
+      }
+
+      initSpaceCanvas();
+    });
+
+    function initSpaceCanvas() {
+      const canvas = document.getElementById('space-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w = canvas.width = window.innerWidth;
+      let h = canvas.height = window.innerHeight;
+
+      window.addEventListener('resize', () => {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      });
+
+      const stars = [];
+      for (let i = 0; i < 160; i++) {
+        stars.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 1.5 + 0.5,
+          alpha: Math.random() * 0.8 + 0.2,
+          speed: Math.random() * 0.02 + 0.005
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, w, h);
+        stars.forEach(s => {
+          s.alpha += s.speed;
+          if (s.alpha > 1 || s.alpha < 0.2) s.speed = -s.speed;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${Math.abs(s.alpha)})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+  </script>
+  <script src="navScroll.js?v=2"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,2375 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>กิจกรรมที่ 2: ระบบสุริยะ - ห้องเรียนระบบสุริยะ</title>
+  <!-- Google Fonts: Kanit & Orbitron -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,300;0,400;0,500;0,600;0,700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css?v=20">
+  <style>
+    /* ============================================================
+       สไตล์สำหรับกิจกรรมที่ 2 : ระบบสุริยะ (4.html - Activity 2)
+       ธีมอวกาศล้ำสมัย (Futuristic Cosmic Sci-Fi Glassmorphism)
+       ============================================================ */
+    :root {
+      --fill-cyan: #00f0ff;
+      --fill-purple: #c084fc;
+      --fill-gold: #ffb703;
+      --fill-emerald: #10b981;
+      --fill-rose: #f43f5e;
+      --fill-blue: #38bdf8;
+      --fill-card-bg: rgba(10, 16, 42, 0.82);
+      --fill-border: rgba(0, 240, 255, 0.28);
+    }
+
+    body {
+      min-height: 100vh;
+      color: #e2e8f0;
+      background: #02040a;
+      overflow-x: hidden;
+      touch-action: pan-y;
+      font-family: var(--font-main);
+    }
+
+    #space-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .game-page-container {
+      width: 100%;
+      max-width: 100%;
+      margin: 90px auto 40px;
+      padding: 0 24px;
+      position: relative;
+      z-index: 10;
+      box-sizing: border-box;
+    }
+
+    .glass-panel {
+      background: var(--fill-card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--fill-border);
+      border-radius: 24px;
+      padding: 35px 30px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 35px rgba(0, 240, 255, 0.12);
+      margin-bottom: 30px;
+      position: relative;
+      transition: all 0.3s ease;
+      min-height: calc(100vh - 150px);
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Header ฮีโร่ของกิจกรรม */
+    .game-hero-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .game-badge-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 18px;
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid var(--fill-cyan);
+      border-radius: 50px;
+      color: var(--fill-cyan);
+      font-size: 0.85rem;
+      font-family: var(--font-hud);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      box-shadow: 0 0 16px rgba(0, 240, 255, 0.25);
+    }
+
+    .game-main-title {
+      font-size: clamp(1.6rem, 3.8vw, 2.3rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, #ffffff 25%, #38bdf8 65%, var(--fill-cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .game-sub-desc {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 900px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    /* ฟอร์มลงทะเบียนข้อมูลนักเรียน */
+    .user-register-card {
+      background: rgba(14, 22, 54, 0.88);
+      border: 1px solid rgba(0, 240, 255, 0.28);
+      border-radius: 18px;
+      padding: 30px;
+      margin: 25px 0;
+      box-shadow: inset 0 0 25px rgba(0, 240, 255, 0.06);
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .id-badge-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .id-badge-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--fill-cyan);
+    }
+
+    .id-badge-title i {
+      font-size: 1.4rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 18px;
+    }
+
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-bright);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-group label i {
+      color: var(--fill-cyan);
+    }
+
+    .form-control {
+      background: rgba(4, 8, 26, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 10px;
+      padding: 13px 16px;
+      color: #fff;
+      font-family: var(--font-main);
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.25s ease;
+    }
+
+    .form-control:focus {
+      border-color: var(--fill-cyan);
+      box-shadow: 0 0 16px rgba(0, 240, 255, 0.35);
+      background: rgba(6, 12, 36, 0.95);
+    }
+
+    /* คำชี้แจงกฎกติกา */
+    .rules-box {
+      background: rgba(255, 183, 3, 0.08);
+      border-left: 4px solid var(--fill-gold);
+      padding: 18px 22px;
+      border-radius: 0 14px 14px 0;
+      margin: 25px 0;
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .rules-box i {
+      color: var(--fill-gold);
+      font-size: 1.4rem;
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
+
+    .rules-box ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--text-bright);
+    }
+
+    .rules-box li {
+      margin-bottom: 6px;
+    }
+
+    .rules-box li strong {
+      color: var(--fill-gold);
+    }
+
+    /* ปุ่ม Action หลัก */
+    .btn-cosmic-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      padding: 16px 30px;
+      background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-family: var(--font-main);
+      font-size: 1.15rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0, 180, 216, 0.4);
+      transition: all 0.3s ease;
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .btn-cosmic-primary:hover {
+      background: linear-gradient(135deg, #00f0ff 0%, #0096c7 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px rgba(0, 240, 255, 0.5);
+      color: #02040a;
+    }
+
+    /* แถบ HUD แสดงข้อมูลและสถานะขณะทำกิจกรรม (Sticky) */
+    .activity-hud {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(5, 10, 30, 0.92);
+      border: 1px solid var(--fill-border);
+      border-radius: 16px;
+      padding: 14px 22px;
+      margin-bottom: 24px;
+      position: sticky;
+      top: 80px;
+      z-index: 40;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .hud-cadet-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.95rem;
+    }
+
+    .hud-cadet-badge {
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--fill-cyan);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-family: var(--font-hud);
+      font-size: 0.85rem;
+      border: 1px solid rgba(0, 240, 255, 0.35);
+    }
+
+    .hud-stats-group {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .hud-counter-text {
+      font-family: var(--font-hud);
+      color: var(--fill-gold);
+      font-size: 0.95rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hud-progress-bar-wrap {
+      width: 140px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .hud-progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #00b4d8, var(--fill-cyan));
+      border-radius: 10px;
+      transition: width 0.3s ease;
+      box-shadow: 0 0 10px var(--fill-cyan);
+    }
+
+    /* แผงคลังคำตอบ (Word Bank Panel) */
+    .word-bank-card {
+      background: rgba(8, 14, 40, 0.9);
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      border-radius: 18px;
+      padding: 22px 24px;
+      margin-bottom: 28px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 240, 255, 0.05);
+      position: relative;
+    }
+
+    .word-bank-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 12px;
+    }
+
+    .word-bank-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--fill-cyan);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-hud);
+      letter-spacing: 0.5px;
+    }
+
+    .word-bank-hint {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .word-bank-chips-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .word-bank-chip {
+      background: rgba(14, 24, 60, 0.75);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      color: #e2e8f0;
+      border-radius: 30px;
+      padding: 8px 18px;
+      font-size: 0.95rem;
+      font-family: var(--font-main);
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+      -webkit-touch-callout: none;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: rgba(0, 240, 255, 0.2);
+    }
+
+    @supports (-webkit-touch-callout: none) {
+      .word-bank-chip, .choice-chip-btn {
+        -webkit-user-select: auto !important;
+      }
+    }
+
+    .word-bank-chip:hover {
+      background: rgba(0, 240, 255, 0.18);
+      border-color: var(--fill-cyan);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 240, 255, 0.25);
+    }
+
+    .word-bank-chip:active {
+      transform: scale(0.96);
+    }
+
+    .word-bank-chip.used {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.15);
+      color: #64748b;
+      opacity: 0.75;
+    }
+
+    .word-bank-chip.used:hover {
+      opacity: 1;
+      color: #cbd5e1;
+      border-color: rgba(0, 240, 255, 0.4);
+    }
+
+    .word-bank-chip.used .used-indicator {
+      font-size: 0.75rem;
+      background: rgba(255, 255, 255, 0.12);
+      padding: 1px 6px;
+      border-radius: 10px;
+      color: #94a3b8;
+    }
+
+    /* การ์ดคำถามเติมคำแต่ละข้อ (Fill-in-the-Blank Cards) */
+    .question-fill-card {
+      background: rgba(12, 18, 48, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 22px;
+      position: relative;
+      transition: all 0.25s ease;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.35);
+    }
+
+    .question-fill-card:hover {
+      border-color: rgba(0, 240, 255, 0.4);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 240, 255, 0.08);
+    }
+
+    .question-fill-card.active-focus {
+      border-color: var(--fill-cyan);
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.25);
+      background: rgba(16, 26, 68, 0.95);
+    }
+
+    .question-fill-card.answered {
+      border-color: rgba(16, 185, 129, 0.45);
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);
+    }
+
+    .q-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .q-number-pill {
+      background: rgba(0, 240, 255, 0.12);
+      border: 1px solid var(--fill-cyan);
+      color: var(--fill-cyan);
+      font-family: var(--font-hud);
+      font-size: 0.85rem;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    .q-category-tag {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 3px 12px;
+      border-radius: 12px;
+    }
+
+    /* ประโยคโจทย์พร้อมช่องเติมคำ */
+    .sentence-container {
+      font-size: 1.15rem;
+      line-height: 2;
+      color: #ffffff;
+      margin-bottom: 18px;
+      padding: 8px 4px;
+    }
+
+    .inline-blank-slot {
+      display: inline-flex;
+      align-items: center;
+      position: relative;
+      margin: 0 6px;
+      vertical-align: middle;
+    }
+
+    .blank-input {
+      background: rgba(4, 9, 30, 0.95);
+      border: 2px dashed rgba(0, 240, 255, 0.55);
+      border-radius: 12px;
+      padding: 8px 40px 8px 16px;
+      color: var(--fill-cyan);
+      font-family: var(--font-main);
+      font-size: 1.1rem;
+      font-weight: 600;
+      min-width: 220px;
+      max-width: 320px;
+      outline: none;
+      transition: all 0.25s ease;
+      text-align: center;
+      box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1);
+    }
+
+    .blank-input:focus {
+      border-style: solid;
+      border-color: var(--fill-cyan);
+      background: rgba(6, 14, 45, 1);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.4), inset 0 0 15px rgba(0, 240, 255, 0.2);
+    }
+
+    .blank-input.filled {
+      border-style: solid;
+      border-color: #34d399;
+      color: #34d399;
+      background: rgba(6, 28, 25, 0.85);
+      box-shadow: 0 0 15px rgba(52, 211, 153, 0.2);
+    }
+
+    .blank-input::placeholder {
+      color: rgba(148, 163, 184, 0.6);
+      font-size: 0.95rem;
+      font-weight: 400;
+      font-style: italic;
+    }
+
+    .btn-clear-slot {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.95rem;
+      cursor: pointer;
+      padding: 4px 6px;
+      display: none;
+      transition: color 0.2s;
+    }
+
+    .btn-clear-slot:hover {
+      color: #ef4444;
+    }
+
+    .blank-input.filled + .btn-clear-slot {
+      display: block;
+    }
+
+    /* ช้อยส์คำตอบด่วนใต้โจทย์แต่ละข้อ (Quick Choice Chips) */
+    .quick-chips-box {
+      background: rgba(6, 12, 32, 0.6);
+      border-radius: 12px;
+      padding: 12px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .quick-chips-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .quick-chips-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .choice-chip-btn {
+      background: rgba(14, 22, 54, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #cbd5e1;
+      border-radius: 8px;
+      padding: 7px 14px;
+      font-size: 0.92rem;
+      font-family: var(--font-main);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      touch-action: manipulation;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: rgba(0, 240, 255, 0.2);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .choice-chip-btn * {
+      pointer-events: none;
+    }
+
+    .choice-chip-btn:hover {
+      border-color: var(--fill-cyan);
+      color: #fff;
+      background: rgba(0, 240, 255, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .choice-chip-btn.selected {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: #34d399;
+      color: #34d399;
+      font-weight: 600;
+      box-shadow: 0 0 12px rgba(52, 211, 153, 0.3);
+    }
+
+    /* ผลลัพธ์คะแนน (Step Result) */
+    .score-banner-card {
+      text-align: center;
+      padding: 40px 20px;
+      background: radial-gradient(circle at center, rgba(0, 240, 255, 0.15) 0%, rgba(10, 16, 40, 0.85) 70%);
+      border: 1px solid var(--fill-cyan);
+      border-radius: 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 0 40px rgba(0, 240, 255, 0.2);
+    }
+
+    .score-circle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      width: 155px;
+      height: 155px;
+      border-radius: 50%;
+      border: 4px solid var(--fill-cyan);
+      background: rgba(2, 4, 10, 0.65);
+      box-shadow: 0 0 35px rgba(0, 240, 255, 0.5), inset 0 0 25px rgba(0, 240, 255, 0.3);
+      margin-bottom: 20px;
+    }
+
+    .score-number {
+      font-size: 3.4rem;
+      font-weight: 900;
+      font-family: var(--font-hud);
+      color: #fff;
+      line-height: 1;
+      text-shadow: 0 0 15px var(--fill-cyan);
+    }
+
+    .score-total {
+      font-size: 0.95rem;
+      color: var(--fill-cyan);
+      font-family: var(--font-hud);
+      margin-top: 2px;
+    }
+
+    .student-result-details {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px 30px;
+      background: rgba(6, 12, 32, 0.7);
+      border-radius: 12px;
+      padding: 14px 22px;
+      margin: 20px auto 0;
+      max-width: 680px;
+      font-size: 0.95rem;
+    }
+
+    .student-result-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-bright);
+    }
+
+    .student-result-pill strong {
+      color: var(--fill-cyan);
+    }
+
+    /* การ์ดเฉลยรายข้อ */
+    .feedback-card {
+      background: rgba(14, 20, 48, 0.75);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 18px;
+      border-left: 5px solid;
+    }
+
+    .feedback-card.correct {
+      border-left-color: #34d399;
+      border-top: 1px solid rgba(52, 211, 153, 0.2);
+      border-right: 1px solid rgba(52, 211, 153, 0.2);
+      border-bottom: 1px solid rgba(52, 211, 153, 0.2);
+      background: rgba(16, 185, 129, 0.08);
+      box-shadow: 0 5px 20px rgba(16, 185, 129, 0.1);
+    }
+
+    .feedback-card.incorrect {
+      border-left-color: #f87171;
+      border-top: 1px solid rgba(248, 113, 113, 0.2);
+      border-right: 1px solid rgba(248, 113, 113, 0.2);
+      border-bottom: 1px solid rgba(248, 113, 113, 0.2);
+      background: rgba(239, 68, 68, 0.06);
+    }
+
+    .feedback-header-correct {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #34d399;
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 10px;
+    }
+
+    .feedback-header-incorrect {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #f87171;
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 10px;
+    }
+
+    .feedback-explanation {
+      margin-top: 12px;
+      padding: 12px 16px;
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 10px;
+      font-size: 0.92rem;
+      color: var(--text-bright);
+      line-height: 1.65;
+    }
+
+    /* ตาราง Top 5 Leaderboard */
+    .leaderboard-section {
+      margin-top: 40px;
+    }
+
+    .leaderboard-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .leaderboard-title h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--fill-gold);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .top5-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 8px;
+    }
+
+    .top5-table th {
+      padding: 12px 18px;
+      text-align: left;
+      font-family: var(--font-hud);
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .top5-row {
+      background: rgba(14, 22, 54, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .top5-row:hover {
+      background: rgba(20, 32, 75, 0.9);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .top5-row td {
+      padding: 16px 18px;
+      color: var(--text-bright);
+      font-size: 1.15rem;
+    }
+
+    .top5-row td:first-child {
+      border-top-left-radius: 12px;
+      border-bottom-left-radius: 12px;
+    }
+
+    .top5-row td:last-child {
+      border-top-right-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+
+    .rank-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      font-family: var(--font-hud);
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
+
+    .rank-1 { background: linear-gradient(135deg, #ffd700, #b8860b); color: #000; box-shadow: 0 0 12px rgba(255, 215, 0, 0.6); }
+    .rank-2 { background: linear-gradient(135deg, #e0e0e0, #9e9e9e); color: #000; box-shadow: 0 0 10px rgba(224, 224, 224, 0.5); }
+    .rank-3 { background: linear-gradient(135deg, #cd7f32, #8b4513); color: #fff; box-shadow: 0 0 10px rgba(205, 127, 50, 0.5); }
+    .rank-other { background: rgba(255, 255, 255, 0.1); color: var(--text-muted); }
+
+    .score-badge-pill {
+      font-family: var(--font-hud);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--fill-cyan);
+      background: rgba(0, 240, 255, 0.1);
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+
+    /* การปรับแต่ง Responsive สำหรับมือถือและแท็บเล็ต */
+    @media (max-width: 768px) {
+      .game-page-container {
+        padding: 0 max(12px, env(safe-area-inset-left, 0px)) calc(30px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-right, 0px));
+        margin-top: calc(75px + env(safe-area-inset-top, 0px));
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+      .glass-panel {
+        padding: 20px 14px;
+        border-radius: 18px;
+        margin-bottom: 20px;
+        min-height: auto;
+      }
+      .activity-hud {
+        padding: 12px 14px;
+        top: calc(env(safe-area-inset-top, 0px) + 54px);
+      }
+      .hud-stats-group {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .word-bank-card {
+        padding: 16px 14px;
+      }
+      .word-bank-chip {
+        padding: 6px 12px;
+        font-size: 0.88rem;
+      }
+      .question-fill-card {
+        padding: 18px 14px;
+      }
+      .sentence-container {
+        font-size: 1.05rem;
+        line-height: 1.85;
+      }
+      .inline-blank-slot {
+        display: block;
+        margin: 10px 0;
+      }
+      .blank-input {
+        width: 100%;
+        max-width: 100%;
+        min-width: auto;
+      }
+      .choice-chip-btn {
+        padding: 6px 10px;
+        font-size: 0.85rem;
+      }
+      .form-control {
+        font-size: 16px !important;
+        min-height: 44px;
+      }
+      .btn-cosmic-primary {
+        min-height: 48px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- พื้นหลังอวกาศ 3 มิติ -->
+  <canvas id="space-canvas"></canvas>
+
+  <!-- แสงบรรยากาศอวกาศ -->
+  <div class="cosmic-aura aura-1"></div>
+  <div class="cosmic-aura aura-2"></div>
+  <div class="cosmic-aura aura-3"></div>
+
+  <!-- แถบนำทาง (Navbar) -->
+  <header class="header">
+    <nav class="navbar" id="navbar">
+      <a href="index.html" class="brand">
+        <div class="brand-orbit-ring">
+          <div class="brand-planet-dot"></div>
+          <div class="brand-icon">
+            <i class="fa-solid fa-sun"></i>
+          </div>
+        </div>
+        <div class="brand-text">
+          <span class="brand-main">ระบบสุริยะ</span>
+          <span class="brand-sub">SOLAR SYSTEM OBSERVATORY</span>
+        </div>
+      </a>
+
+      <!-- ปุ่มเปิดปิดเมนูสำหรับมือถือ -->
+      <button class="mobile-toggle" id="mobileToggle" aria-label="เมนู">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <!-- เมนูนำทาง -->
+      <div class="nav-menu" id="navMenu">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">
+              <i class="fa-solid fa-layer-group"></i> องค์ประกอบ
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="a.html" class="nav-link">
+              <i class="fa-solid fa-book-open"></i> พื้นฐาน
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="b.html" class="nav-link">
+              <i class="fa-solid fa-atom"></i> จำลองโคจร
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="c.html" class="nav-link">
+              <i class="fa-solid fa-scale-balanced"></i> เปรียบเทียบ
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="d.html" class="nav-link">
+              <i class="fa-solid fa-spell-check"></i> คำศัพท์
+            </a>
+          </li>
+          <!-- ขวาสุด: เมนูดรอปดาวน์ แบบทดสอบ -->
+          <li class="nav-item dropdown" id="quizDropdown">
+            <button class="dropdown-trigger" id="dropdownTrigger" aria-expanded="false">
+              <i class="fa-solid fa-clipboard-question"></i> แบบทดสอบ
+              <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </button>
+            <ul class="dropdown-menu" id="dropdownMenu">
+              <li>
+                <a href="1.html" class="dropdown-item" data-quiz="pre">
+                  <span class="drop-badge">01</span>
+                  <span class="drop-text">ก่อนเรียน</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li>
+                <a href="2.html" class="dropdown-item" data-quiz="post">
+                  <span class="drop-badge">02</span>
+                  <span class="drop-text">หลังเรียน</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li>
+                <a href="3.html" class="dropdown-item" data-quiz="act1">
+                  <span class="drop-badge">03</span>
+                  <span class="drop-text">กิจกรรม 1</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li>
+                <a href="4.html" class="dropdown-item active" data-quiz="act2">
+                  <span class="drop-badge">04</span>
+                  <span class="drop-text">กิจกรรม 2</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li class="dropdown-divider" style="margin: 6px 0; border-top: 1px solid rgba(255, 255, 255, 0.12);"></li>
+              <li>
+                <a href="javascript:void(0)" class="dropdown-item admin-dropdown-item" onclick="openAdminModal();">
+                  <span class="drop-badge" style="background: rgba(0, 240, 255, 0.2);"><i class="fa-solid fa-shield-halved"></i></span>
+                  <span class="drop-text" style="font-weight: 600; color: var(--neon-cyan);">ศูนย์แอดมิน (คะแนน 1-4)</span>
+                  <i class="fa-solid fa-lock drop-arrow"></i>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <!-- ปุ่มศูนย์แอดมิน -->
+          <li class="nav-item admin-nav-item">
+            <button class="admin-nav-btn" id="openAdminNavBtn" onclick="openAdminModal();" title="ศูนย์ควบคุมแอดมิน / ดูคะแนน 1, 2, 3, 4 (Alt+A)">
+              <i class="fa-solid fa-shield-halved"></i>
+              <span>แอดมิน</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- เนื้อหาหลักของกิจกรรมที่ 2 : ระบบสุริยะ -->
+  <main class="game-page-container">
+
+    <!-- ส่วนที่ 1: ขั้นตอนลงทะเบียนข้อมูลนักเรียน -->
+    <section id="stepRegister" class="glass-panel">
+      <div class="game-hero-header">
+        <div class="game-badge-tag">
+          <i class="fa-solid fa-spell-check"></i> ACTIVITY 02 : FILL IN THE BLANKS
+        </div>
+        <h1 class="game-main-title">กิจกรรมที่ 2 : ระบบสุริยะ</h1>
+        <p class="game-sub-desc">
+          ทบทวนและประเมินความรู้ความเข้าใจเกี่ยวกับดวงอาทิตย์ ดาวเคราะห์ วัตถุ และปรากฏการณ์สำคัญในระบบสุริยะ โดยการเติมคำศัพท์ที่ถูกต้องลงในช่องว่าง จำนวน 15 ข้อ
+        </p>
+      </div>
+
+      <!-- การ์ดลงทะเบียนข้อมูลนักเรียน -->
+      <div class="user-register-card">
+        <div class="id-badge-header">
+          <div class="id-badge-title">
+            <i class="fa-solid fa-id-card"></i>
+            <span>ข้อมูลผู้เข้าร่วมกิจกรรม (ASTRONAUT CADET IDENTIFICATION)</span>
+          </div>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">กรุณากรอกข้อมูลให้ครบถ้วน</span>
+        </div>
+
+        <form id="studentRegisterForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="studentName"><i class="fa-solid fa-user"></i> ชื่อ - นามสกุล *</label>
+              <input type="text" id="studentName" class="form-control" placeholder="เช่น ด.ช. จักรวาล ปลายนิ้ว" required autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label for="studentGrade"><i class="fa-solid fa-graduation-cap"></i> ชั้น / ห้อง *</label>
+              <input type="text" id="studentGrade" class="form-control" placeholder="เช่น ม.3/1" required>
+            </div>
+            <div class="form-group">
+              <label for="studentNo"><i class="fa-solid fa-hashtag"></i> เลขที่ *</label>
+              <input type="number" id="studentNo" class="form-control" placeholder="เช่น 24" min="1" max="99" required>
+            </div>
+          </div>
+
+          <div class="rules-box">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <div>
+              <strong>คำชี้แจงในการทำกิจกรรมที่ 2:</strong>
+              <ul>
+                <li>กิจกรรมมีทั้งหมด <strong>15 ข้อ</strong> ข้อละ 1 คะแนน รวม 15 คะแนน</li>
+                <li>ให้นักเรียนอ่านข้อความและ <strong>เติมคำศัพท์ทางดาราศาสตร์ที่ถูกต้อง</strong> ลงในช่องว่าง</li>
+                <li>สามารถคลิกเลือกคำศัพท์จาก <strong>"คลังคำตอบ (Word Bank)"</strong> ด้านบน, คลิกช้อยส์ด่วนใต้ข้อ หรือพิมพ์ตอบลงในช่องว่างได้โดยตรง</li>
+                <li>สามารถแก้ไขหรือเปลี่ยนคำตอบได้ตลอดเวลาก่อนกดส่ง</li>
+                <li>เมื่อส่งคำตอบ ระบบจะตรวจคะแนน บันทึกข้อมูล และ <strong>แสดงเฉลยพร้อมคำอธิบายความรู้ทางดาราศาสตร์อย่างละเอียด</strong></li>
+                <li>ระบบจะแสดง <strong>5 อันดับแรก (Top 5)</strong> ที่ทำคะแนนได้สูงสุดบนกระดานเกียรติยศ</li>
+              </ul>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-cosmic-primary" id="startActivityBtn">
+            <i class="fa-solid fa-rocket"></i> เริ่มทำกิจกรรมที่ 2 (15 ข้อ)
+          </button>
+        </form>
+      </div>
+
+      <!-- ตาราง 5 อันดับแรกปัจจุบันบนหน้าแรก -->
+      <div class="leaderboard-section">
+        <div class="leaderboard-title">
+          <h3><i class="fa-solid fa-trophy"></i> 5 อันดับคะแนนสูงสุด (TOP 5 LEADERBOARD)</h3>
+          <span style="font-size: 0.85rem; color: var(--fill-cyan);">อัปเดตแบบเรียลไทม์</span>
+        </div>
+        <div id="top5TableContainerFront">
+          <!-- ตาราง Top 5 โหลดด้วย JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ส่วนที่ 2: หน้าต่างทำกิจกรรมที่ 2 (15 ข้อ) -->
+    <section id="stepGame" class="glass-panel" style="display: none;">
+      <!-- แถบ HUD แสดงข้อมูลผู้เรียน & ความคืบหน้า -->
+      <div class="activity-hud">
+        <div class="hud-cadet-meta">
+          <i class="fa-solid fa-user-astronaut" style="color: var(--fill-cyan); font-size: 1.2rem;"></i>
+          <span id="hudStudentDisplay">ผู้ทำกิจกรรม: -</span>
+          <span class="hud-cadet-badge" id="hudClassDisplay">ม.-/-</span>
+        </div>
+        <div class="hud-stats-group">
+          <div class="hud-progress-bar-wrap" title="ความคืบหน้าการเติมคำ">
+            <div class="hud-progress-bar-fill" id="hudProgressBar"></div>
+          </div>
+          <div class="hud-counter-text" id="hudProgressText">
+            เติมคำแล้ว: 0 / 15 ข้อ
+          </div>
+        </div>
+      </div>
+
+      <!-- แผงคลังคำตอบ (Word Bank Panel) -->
+      <div class="word-bank-card">
+        <div class="word-bank-header">
+          <div class="word-bank-title">
+            <i class="fa-solid fa-box-archive"></i> คลังคำตอบ (WORD BANK)
+          </div>
+          <div class="word-bank-hint">
+            <i class="fa-solid fa-arrow-pointer"></i> คลิกคำศัพท์เพื่อเติมลงในข้อที่เลือก หรือกดเลือกช้อยส์ในแต่ละข้อโดยตรง
+          </div>
+        </div>
+        <div class="word-bank-chips-grid" id="wordBankChipsContainer">
+          <!-- คำศัพท์ 15 คำจะถูก Render ที่นี่ -->
+        </div>
+      </div>
+
+      <!-- ฟอร์มข้อสอบเติมคำ 15 ข้อ -->
+      <form id="fillBlanksForm">
+        <div id="questionsListWrapper">
+          <!-- คำถาม 15 ข้อจะถูก Render ด้วย JavaScript -->
+        </div>
+
+        <div style="margin-top: 35px; text-align: center;">
+          <button type="submit" class="btn-cosmic-primary" id="submitAnswersBtn">
+            <i class="fa-solid fa-paper-plane"></i> ส่งคำตอบและตรวจคะแนน
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ส่วนที่ 3: สรุปผลคะแนน & เฉลยอย่างละเอียด (Results Screen) -->
+    <section id="stepResult" class="glass-panel" style="display: none;">
+      <div class="game-hero-header">
+        <div class="game-badge-tag" style="border-color: var(--fill-emerald); color: var(--fill-emerald); background: rgba(16, 185, 129, 0.1);">
+          <i class="fa-solid fa-flag-checkered"></i> MISSION COMPLETED
+        </div>
+        <h1 class="game-main-title">ผลการทำกิจกรรมที่ 2 : ระบบสุริยะ</h1>
+        <p class="game-sub-desc">
+          คะแนนประเมินและเฉลยความรู้ทางดาราศาสตร์อย่างละเอียด เพื่อการเรียนรู้และพัฒนาตนเอง
+        </p>
+      </div>
+
+      <!-- การ์ดแสดงคะแนน -->
+      <div class="score-banner-card">
+        <div class="score-circle">
+          <span class="score-number" id="resultScoreNum">0</span>
+          <span class="score-total">จาก 15 คะแนน</span>
+        </div>
+
+        <h2 id="resultEvaluation" style="font-size: 1.5rem; margin-bottom: 10px; color: #fff;">-</h2>
+        <p id="resultFeedbackMsg" style="color: var(--text-muted); max-width: 600px; margin: 0 auto 15px;">-</p>
+
+        <div class="student-result-details">
+          <span class="student-result-pill"><i class="fa-solid fa-user"></i> <strong id="resName">-</strong></span>
+          <span class="student-result-pill"><i class="fa-solid fa-graduation-cap"></i> ชั้น: <strong id="resGrade">-</strong></span>
+          <span class="student-result-pill"><i class="fa-solid fa-hashtag"></i> เลขที่: <strong id="resNo">-</strong></span>
+          <span class="student-result-pill"><i class="fa-solid fa-clock"></i> บันทึกเมื่อ: <strong id="resTime">-</strong></span>
+        </div>
+
+        <!-- แถบแสดงสถานะเชื่อมต่อ Google Sheet -->
+        <div style="margin-top: 20px; text-align: center;">
+          <div id="sheetSyncStatus" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 22px; border-radius: 30px; background: rgba(5, 9, 28, 0.85); border: 1px solid rgba(0, 240, 255, 0.35); font-size: 0.92rem; color: var(--text-bright, #e2e8f0); box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: all 0.3s ease;">
+            <i class="fa-solid fa-cloud-arrow-up" style="color: var(--fill-cyan);"></i>
+            <span>พร้อมบันทึกคะแนนเข้าสู่ระบบ Google Sheet</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ส่วนเฉลยคำตอบพร้อมคำอธิบายรายข้อ -->
+      <div style="margin: 35px 0;">
+        <h3 style="font-size: 1.3rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; color: var(--fill-cyan);">
+          <i class="fa-solid fa-square-check"></i> ตรวจสอบผลการตอบและเฉลยความรู้ทางวิทยาศาสตร์ (15 ข้อ)
+        </h3>
+        <div id="resultsBreakdownContainer">
+          <!-- รายการข้อสอบพร้อมเฉลยจะถูก Render ที่นี่ -->
+        </div>
+      </div>
+
+      <!-- ตาราง 5 อันดับแรกหลังทำกิจกรรมเสร็จ -->
+      <div class="leaderboard-section">
+        <div class="leaderboard-title">
+          <h3><i class="fa-solid fa-trophy"></i> 5 อันดับคะแนนสูงสุด (TOP 5 LEADERBOARD)</h3>
+          <span style="font-size: 0.85rem; color: var(--fill-gold);">จัดอันดับคะแนนสูงสุด</span>
+        </div>
+        <div id="top5TableContainerResult">
+          <!-- ตาราง Top 5 โหลดด้วย JS -->
+        </div>
+      </div>
+
+      <!-- แผงปุ่มเชื่อมต่อไปยังทุกหน้าในระบบ -->
+      <div style="margin-top: 40px; padding: 25px; background: rgba(5, 9, 28, 0.7); border: 1px solid var(--glass-border-cyan); border-radius: 16px;">
+        <h4 style="text-align: center; font-size: 1.15rem; color: var(--fill-cyan); margin-bottom: 20px;">
+          <i class="fa-solid fa-map-location-dot"></i> สำรวจเนื้อหาห้องเรียนระบบสุริยะต่อไป
+        </h4>
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <a href="index.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2);">
+            <i class="fa-solid fa-layer-group"></i> 1. องค์ประกอบ (หน้าหลัก)
+          </a>
+          <a href="a.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem;">
+            <i class="fa-solid fa-book-open"></i> 2. บทเรียนพื้นฐาน
+          </a>
+          <a href="b.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(168, 85, 247, 0.2); border: 1px solid var(--neon-purple); color: #fff;">
+            <i class="fa-solid fa-atom"></i> 3. จำลองโคจร 3D
+          </a>
+          <a href="c.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(255, 183, 3, 0.15); border: 1px solid var(--fill-gold); color: #fff;">
+            <i class="fa-solid fa-scale-balanced"></i> 4. เปรียบเทียบดาว
+          </a>
+          <a href="d.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(16, 185, 129, 0.15); border: 1px solid var(--fill-emerald); color: #fff;">
+            <i class="fa-solid fa-spell-check"></i> 5. คำศัพท์ดาราศาสตร์
+          </a>
+          <a href="1.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(0, 240, 255, 0.15); border: 1px solid var(--fill-cyan); color: #fff;">
+            <i class="fa-solid fa-clipboard-question"></i> แบบทดสอบก่อนเรียน
+          </a>
+          <a href="2.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(0, 180, 216, 0.25); border: 1px solid #00b4d8; color: #fff;">
+            <i class="fa-solid fa-clipboard-check"></i> แบบทดสอบหลังเรียน
+          </a>
+          <a href="3.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(255, 183, 3, 0.2); border: 1px solid var(--fill-gold); color: #fff;">
+            <i class="fa-solid fa-rocket"></i> กิจกรรม 1 (เรียงดาว)
+          </a>
+          <button type="button" id="retakeActivityBtn" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #fca5a5;">
+            <i class="fa-solid fa-rotate-right"></i> ทำกิจกรรมอีกครั้ง
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- JavaScript หลักของกิจกรรมที่ 2 (4.html) -->
+  <script>
+    /* ============================================================
+       1. ชุดข้อมูลกิจกรรมที่ 2 (Activity 2 Bank)
+       ============================================================ */
+    const FILL_BLANKS_DATA = [
+      {
+        id: 1,
+        category: "ดาวฤกษ์ศูนย์กลาง",
+        sentenceBefore: "",
+        sentenceAfter: "เป็นดาวฤกษ์ศูนย์กลางของระบบสุริยะ มีมวลคิดเป็น 99.86% ของทั้งระบบ และผลิตพลังงานมหาศาลจากปฏิกิริยานิวเคลียร์ฟิวชัน",
+        targetWord: "ดวงอาทิตย์",
+        aliases: ["ดวงอาทิตย์", "พระอาทิตย์", "the sun", "sun"],
+        choices: ["ดวงอาทิตย์", "ดาวพฤหัสบดี", "ดาวเนปจูน", "ดาวหาง"],
+        explanation: "ดวงอาทิตย์ (The Sun) เป็นดาวฤกษ์สีเหลืองชนิด G2V เป็นศูนย์กลางมวลและพลังงานของระบบสุริยะ ปลดปล่อยพลังงานความร้อนและแสงสว่างจากปฏิกิริยานิวเคลียร์ฟิวชันที่แกนกลาง"
+      },
+      {
+        id: 2,
+        category: "ดาวเคราะห์ชั้นใน",
+        sentenceBefore: "",
+        sentenceAfter: "เป็นดาวเคราะห์ที่อยู่ใกล้ดวงอาทิตย์ที่สุด ไม่มีชั้นบรรยากาศห่อหุ้ม ทำให้อุณหภูมิกลางวันและกลางคืนต่างกันสุดขั้วจนได้รับฉายาว่า \"เตาไฟแช่แข็ง\"",
+        targetWord: "ดาวพุธ",
+        aliases: ["ดาวพุธ", "พุธ", "mercury"],
+        choices: ["ดาวพุธ", "ดาวศุกร์", "ดาวอังคาร", "โลก"],
+        explanation: "ดาวพุธ (Mercury) ไม่มีชั้นบรรยากาศกักเก็บความร้อน ด้านกลางวันร้อนจัดถึง 430°C ส่วนด้านกลางคืนลดต่ำถึง -180°C จึงได้ฉายาว่า เตาไฟแช่แข็ง"
+      },
+      {
+        id: 3,
+        category: "ดาวเคราะห์ชั้นใน",
+        sentenceBefore: "",
+        sentenceAfter: "มีขนาดและมวลใกล้เคียงกับโลกจนได้ชื่อว่าเป็น \"ฝาแฝดของโลก\" และมีอุณหภูมิพื้นผิวสูงที่สุดในระบบสุริยะเนื่องจากปรากฏการณ์เรือนกระจกขั้นรุนแรง",
+        targetWord: "ดาวศุกร์",
+        aliases: ["ดาวศุกร์", "ศุกร์", "venus"],
+        choices: ["ดาวศุกร์", "ดาวพุธ", "ดาวเสาร์", "ดาวยูเรนัส"],
+        explanation: "ดาวศุกร์ (Venus) มีบรรยากาศแก๊สคาร์บอนไดออกไซด์หนาแน่นกว่า 96.5% กักเก็บความร้อนจนอุณหภูมิพื้นผิวเฉลี่ยสูงถึง 465°C ร้อนที่สุดในระบบสุริยะ และสว่างสุกใสที่สุดบนท้องฟ้า"
+      },
+      {
+        id: 4,
+        category: "ดาวเคราะห์ที่มีสิ่งมีชีวิต",
+        sentenceBefore: "",
+        sentenceAfter: "เป็นดาวเคราะห์เพียงดวงเดียวในระบบสุริยะที่พบสิ่งมีชีวิต มีน้ำในสถานะของเหลวปกคลุมพื้นผิวกว่า 71% และมีสนามแม่เหล็กช่วยป้องกันรังสีอันตรายจากอวกาศ",
+        targetWord: "โลก",
+        aliases: ["โลก", "ดาวโลก", "earth"],
+        choices: ["โลก", "ดาวอังคาร", "ดาวศุกร์", "ดาวพฤหัสบดี"],
+        explanation: "โลก (Earth) ตั้งอยู่ในเขตเอื้อต่อการอยู่อาศัย (Goldilocks Zone) มีบรรยากาศไนโตรเจน-ออกซิเจน มีน้ำในสถานะของเหลว และมีสนามแม่เหล็กโลกเข้มแข็ง"
+      },
+      {
+        id: 5,
+        category: "ดาวเคราะห์สีแดง",
+        sentenceBefore: "",
+        sentenceAfter: "ได้รับฉายาว่า \"ดาวเคราะห์สีแดง\" เนื่องจากพื้นผิวอุดมไปด้วยฝุ่นสนิมเหล็ก และเป็นที่ตั้งของภูเขาไฟโอลิมปัสซึ่งเป็นภูเขาไฟที่ใหญ่ที่สุดในระบบสุริยะ",
+        targetWord: "ดาวอังคาร",
+        aliases: ["ดาวอังคาร", "อังคาร", "mars"],
+        choices: ["ดาวอังคาร", "ดาวพุธ", "ดาวเสาร์", "แถบดาวเคราะห์น้อย"],
+        explanation: "ดาวอังคาร (Mars) มีสีแดงอมส้มจากสารประกอบไอรอนออกไซด์ (สนิมเหล็ก) มีภูเขาไฟโอลิมปัส (Olympus Mons) ซึ่งสูงกว่า 21 กิโลเมตร สูงกว่ายอดเขาเอเวอเรสต์เกือบ 3 เท่า"
+      },
+      {
+        id: 6,
+        category: "แถบวัตถุอวกาศ",
+        sentenceBefore: "",
+        sentenceAfter: "เป็นบริเวณที่รวมตัวของก้อนหินและเศษโลหะขนาดเล็กจำนวนนับล้านดวง โดยโคจรคั่นอยู่ระหว่างวงโคจรของดาวอังคารและดาวพฤหัสบดี",
+        targetWord: "แถบดาวเคราะห์น้อย",
+        aliases: ["แถบดาวเคราะห์น้อย", "ดาวเคราะห์น้อย", "asteroid belt"],
+        choices: ["แถบดาวเคราะห์น้อย", "แถบไคเปอร์", "เมฆออร์ต", "วงแหวนดาวเสาร์"],
+        explanation: "แถบดาวเคราะห์น้อย (Asteroid Belt) อยู่ระหว่างดาวอังคารและดาวพฤหัสบดี เป็นเศษซากหินโลหะจากการก่อตัวของระบบสุริยะที่ไม่สามารถรวมตัวเป็นดาวเคราะห์ดวงใหญ่ได้เพราะแรงรบกวนจากดาวพฤหัสบดี"
+      },
+      {
+        id: 7,
+        category: "ดาวเคราะห์แก๊สยักษ์",
+        sentenceBefore: "",
+        sentenceAfter: "เป็นดาวเคราะห์ที่มีขนาดและมวลมากที่สุดในระบบสุริยะ ประกอบด้วยแก๊สไฮโดรเจนและฮีเลียมเป็นหลัก และมีพายุหมุนรูปไข่ขนาดยักษ์ที่เรียกว่า \"จุดแดงใหญ่\"",
+        targetWord: "ดาวพฤหัสบดี",
+        aliases: ["ดาวพฤหัสบดี", "ดาวพฤหัส", "พฤหัสบดี", "jupiter"],
+        choices: ["ดาวพฤหัสบดี", "ดาวเสาร์", "ดาวเนปจูน", "ดวงอาทิตย์"],
+        explanation: "ดาวพฤหัสบดี (Jupiter) มีมวลมากกว่าดาวเคราะห์อื่นรวมกันถึง 2.5 เท่า มีพายุแอนไทไซโคลน 'จุดแดงใหญ่' (Great Red Spot) ที่หมุนวนต่อเนื่องมาไม่ต่ำกว่า 300 ปี"
+      },
+      {
+        id: 8,
+        category: "ดาวเคราะห์ที่มีวงแหวน",
+        sentenceBefore: "",
+        sentenceAfter: "เป็นดาวเคราะห์แก๊สที่มีความหนาแน่นเฉลี่ยต่ำที่สุด (น้อยกว่าน้ำ) โดดเด่นด้วยระบบวงแหวนน้ำแข็งและฝุ่นหินที่กว้างใหญ่และสว่างชัดเจนที่สุด",
+        targetWord: "ดาวเสาร์",
+        aliases: ["ดาวเสาร์", "เสาร์", "saturn"],
+        choices: ["ดาวเสาร์", "ดาวยูเรนัส", "ดาวเนปจูน", "ดาวพฤหัสบดี"],
+        explanation: "ดาวเสาร์ (Saturn) มีความหนาแน่นเพียงประมาณ 0.69 g/cm³ ซึ่งน้อยกว่าความหนาแน่นของน้ำ (1 g/cm³) จึงสามารถลอยน้ำได้ในทางทฤษฎี และมีระบบวงแหวนที่สวยงามตระการตา"
+      },
+      {
+        id: 9,
+        category: "ดาวเคราะห์น้ำแข็งยักษ์",
+        sentenceBefore: "",
+        sentenceAfter: "เป็นดาวเคราะห์แก๊สน้ำแข็งที่มีแกนหมุนรอบตัวเองเอียงเกือบขนานกับระนาบวงโคจร (ประมาณ 98 องศา) และมองเห็นเป็นสีฟ้าแกมเขียวเนื่องจากแก๊สมีเทน",
+        targetWord: "ดาวยูเรนัส",
+        aliases: ["ดาวยูเรนัส", "ยูเรนัส", "uranus"],
+        choices: ["ดาวยูเรนัส", "ดาวเนปจูน", "ดาวศุกร์", "ดาวเสาร์"],
+        explanation: "ดาวยูเรนัส (Uranus) หมุนรอบตัวเองในลักษณะตะแคงข้างเกือบ 98 องศา บรรยากาศชั้นบนมีแก๊สมีเทนที่ดูดกลืนแสงสีแดงและสะท้อนแสงสีฟ้าแกมเขียวออกมา"
+      },
+      {
+        id: 10,
+        category: "ดาวเคราะห์ชั้นนอกสุด",
+        sentenceBefore: "",
+        sentenceAfter: "เป็นดาวเคราะห์ลำดับที่แปดที่อยู่ห่างไกลจากดวงอาทิตย์ที่สุด มีสีน้ำเงินเข้ม มีกระแสลมพายุพัดเร็วและรุนแรงที่สุดในระบบสุริยะ และเคยพบพายุ \"จุดมืดใหญ่\"",
+        targetWord: "ดาวเนปจูน",
+        aliases: ["ดาวเนปจูน", "เนปจูน", "neptune"],
+        choices: ["ดาวเนปจูน", "ดาวยูเรนัส", "ดาวพลูโต", "ดาวพฤหัสบดี"],
+        explanation: "ดาวเนปจูน (Neptune) มีความเร็วลมพายุสูงสุดถึงกว่า 2,100 กิโลเมตรต่อชั่วโมง เร็วที่สุดในระบบสุริยะ และมองเห็นเป็นสีน้ำเงินเข้มสะดุดตา"
+      },
+      {
+        id: 11,
+        category: "ขอบนอกระบบสุริยะ",
+        sentenceBefore: "",
+        sentenceAfter: "เป็นอาณาเขตของวัตถุเยือกแข็งโบราณที่อยู่ถัดจากวงโคจรของดาวเนปจูนออกไป เป็นแหล่งกำเนิดดาวหางคาบสั้นและที่อยู่ของดาวเคราะห์แคระ เช่น ดาวพลูโต",
+        targetWord: "แถบไคเปอร์",
+        aliases: ["แถบไคเปอร์", "ไคเปอร์", "kuiper belt"],
+        choices: ["แถบไคเปอร์", "แถบดาวเคราะห์น้อย", "เมฆออร์ต", "โคโรนา"],
+        explanation: "แถบไคเปอร์ (Kuiper Belt) อยู่ห่างจากดวงอาทิตย์ประมาณ 30-50 AU อุดมไปด้วยวัตถุน้ำแข็ง เช่น มีเทนและแอมโมเนียเยือกแข็ง เป็นแหล่งกำเนิดดาวหางคาบสั้น"
+      },
+      {
+        id: 12,
+        category: "วัตถุอวกาศเยือกแข็ง",
+        sentenceBefore: "",
+        sentenceAfter: "เป็นวัตถุอวกาศที่เปรียบเสมือน \"ก้อนหิมะสกปรก\" ประกอบด้วยน้ำแข็ง ฝุ่น และแก๊ส เมื่อโคจรเข้าใกล้ดวงอาทิตย์จะระเหิดจนเกิดหางฝุ่นและหางแก๊สชี้หนีดวงอาทิตย์",
+        targetWord: "ดาวหาง",
+        aliases: ["ดาวหาง", "comet"],
+        choices: ["ดาวหาง", "อุกกาบาต", "ดาวเคราะห์น้อย", "สะเก็ดดาว"],
+        explanation: "ดาวหาง (Comet) ประกอบด้วยน้ำแข็งและฝุ่นหิน เมื่อเข้าใกล้ดวงอาทิตย์ความร้อนจะทำให้น้ำแข็งระเหิด และถูกลมสุริยะพัดจนเกิดเป็นหางยาวหลายล้านกิโลเมตรชี้หนีดวงอาทิตย์เสมอ"
+      },
+      {
+        id: 13,
+        category: "สะเก็ดดาวและอุกกาบาต",
+        sentenceBefore: "",
+        sentenceAfter: "คือสะเก็ดดาวที่เคลื่อนที่ผ่านชั้นบรรยากาศโลก เกิดการเสียดสีและเผาไหม้ไม่หมด จนตกลงมาชนถึงพื้นผิวโลก",
+        targetWord: "อุกกาบาต",
+        aliases: ["อุกกาบาต", "ลูกอุกกาบาต", "meteorite"],
+        choices: ["อุกกาบาต", "ดาวตก", "สะเก็ดดาว", "ดาวหาง"],
+        explanation: "เมื่อเศษสะเก็ดดาวเผาไหม้สว่างวาบในชั้นบรรยากาศจะเรียกว่า ดาวตก หรือ ผีพุ่งไต้ (Meteor) แต่หากมีส่วนที่เผาไหม้ไม่หมดและหลงเหลือตกถึงพื้นโลกจะเรียกว่า อุกกาบาต (Meteorite)"
+      },
+      {
+        id: 14,
+        category: "ปรากฏการณ์สุริยะ",
+        sentenceBefore: "",
+        sentenceAfter: "คือกระแสอนุภาคมีประจุพลังงานสูง (เช่น โปรตอนและอิเล็กตรอน) ที่พุ่งออกจากดวงอาทิตย์ เมื่อทำปฏิกิริยากับสนามแม่เหล็กและชั้นบรรยากาศโลกจะทำให้เกิดแสงออโรรา",
+        targetWord: "ลมสุริยะ",
+        aliases: ["ลมสุริยะ", "solar wind"],
+        choices: ["ลมสุริยะ", "รังสีคอสมิก", "จุดมืดดวงอาทิตย์", "เปลวสุริยะ"],
+        explanation: "ลมสุริยะ (Solar Wind) พัดออกจากชั้นบรรยากาศโคโรนาของดวงอาทิตย์ด้วยความเร็ว 400-800 km/s เมื่ออนุภาคประจุชนกับอะตอมออกซิเจนและไนโตรเจนที่ขั้วโลกจะเปล่งแสงออโรรา"
+      },
+      {
+        id: 15,
+        category: "แรงดาราศาสตร์ฟิสิกส์",
+        sentenceBefore: "",
+        sentenceAfter: "คือแรงดึงดูดระหว่างมวลตามกฎความโน้มถ่วงสากลของเซอร์ไอแซก นิวตัน ที่ดวงอาทิตย์ใช้ยึดเหนี่ยวให้ดาวเคราะห์และบริวารทั้งหมดโคจรรอบอย่างมีเสถียรภาพ",
+        targetWord: "แรงโน้มถ่วง",
+        aliases: ["แรงโน้มถ่วง", "แรงดึงดูด", "แรงโน้มถ่วงสากล", "gravity"],
+        choices: ["แรงโน้มถ่วง", "แรงแม่เหล็ก", "แรงเหวี่ยง", "แรงนิวเคลียร์"],
+        explanation: "แรงโน้มถ่วง (Gravitational Force) เป็นแรงสู่ศูนย์กลางที่ดวงอาทิตย์เหนี่ยวรั้งให้ดาวเคราะห์โคจรรอบตามกฎแรงดึงดูดระหว่างมวลและกฎการเคลื่อนที่ของดาวเคราะห์ของเคปเลอร์"
+      }
+    ];
+
+    // รายชื่อคำศัพท์ทั้งหมดสำหรับ Word Bank (15 คำ)
+    const ALL_WORD_BANK = [
+      "ดวงอาทิตย์", "ดาวพุธ", "ดาวศุกร์", "โลก", "ดาวอังคาร",
+      "แถบดาวเคราะห์น้อย", "ดาวพฤหัสบดี", "ดาวเสาร์", "ดาวยูเรนัส", "ดาวเนปจูน",
+      "แถบไคเปอร์", "ดาวหาง", "อุกกาบาต", "ลมสุริยะ", "แรงโน้มถ่วง"
+    ];
+
+    /* ============================================================
+       2. การจัดการฐานข้อมูล & Google Sheets (Database Controller)
+       ============================================================ */
+    const STORAGE_KEY = 'solar_system_quiz_act2_records';
+    const GOOGLE_SHEET_KEY = 'solar_system_google_sheet_url';
+    const DEFAULT_GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycby-dYF1bxJ_XQutaOV4_Em88C8t1SAUh98t5mWYiq24aj2r3FNdTWafXEsLN9oHIMHI/exec';
+    const GOOGLE_SHEET_TAB_NAME = 'กิจกรรม2';
+
+    function getGoogleSheetUrl() {
+      const saved = localStorage.getItem(GOOGLE_SHEET_KEY);
+      if (saved && saved.trim() !== '') return saved.trim();
+      return DEFAULT_GOOGLE_SHEET_URL.trim();
+    }
+
+    async function sendRecordToGoogleSheet(record) {
+      const url = getGoogleSheetUrl();
+      if (!url) return { success: false, reason: 'NO_URL' };
+
+      const payload = {
+        sheetName: GOOGLE_SHEET_TAB_NAME,
+        name: record.name,
+        grade: record.grade,
+        studentNo: record.studentNo,
+        score: record.score
+      };
+
+      try {
+        await fetch(url, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+        return { success: true };
+      } catch (err) {
+        console.error("ส่งข้อมูลไปยัง Google Sheet ล้มเหลว:", err);
+        return { success: false, reason: err.message };
+      }
+    }
+
+    async function syncToGoogleSheetUI(record) {
+      const statusBadge = document.getElementById('sheetSyncStatus');
+      if (!statusBadge) return;
+
+      const sheetUrl = getGoogleSheetUrl();
+      if (!sheetUrl) {
+        statusBadge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up" style="color: var(--fill-gold);"></i> <span>บันทึกคะแนนในเครื่องเรียบร้อย (ยังไม่ได้ตั้งค่า Google Sheet URL)</span>';
+        statusBadge.style.borderColor = 'rgba(255, 183, 3, 0.4)';
+        statusBadge.style.color = 'var(--fill-gold)';
+        return;
+      }
+
+      statusBadge.innerHTML = '<i class="fa-solid fa-rotate fa-spin" style="color: var(--fill-cyan);"></i> <span>กำลังบันทึกคะแนนเข้าสู่ Google Sheet (กิจกรรม2)...</span>';
+      statusBadge.style.borderColor = 'rgba(0, 240, 255, 0.4)';
+      statusBadge.style.color = 'var(--fill-cyan)';
+
+      const res = await sendRecordToGoogleSheet(record);
+      if (res.success) {
+        statusBadge.innerHTML = '<i class="fa-solid fa-circle-check" style="color: #34d399;"></i> <span>บันทึกคะแนนเข้าสู่ Google Sheet (กิจกรรม2) เรียบร้อยแล้ว ✓</span>';
+        statusBadge.style.borderColor = 'rgba(52, 211, 153, 0.5)';
+        statusBadge.style.color = '#34d399';
+        setTimeout(() => { renderLeaderboards(); }, 1200);
+      } else {
+        statusBadge.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color: #f87171;"></i> <span>บันทึกในเครื่องแล้ว (ไม่สามารถส่งไปยัง Google Sheet ได้)</span>';
+        statusBadge.style.borderColor = 'rgba(248, 113, 113, 0.4)';
+        statusBadge.style.color = '#f87171';
+      }
+    }
+
+    function getStoredRecords() {
+      try {
+        const data = localStorage.getItem(STORAGE_KEY);
+        return data ? JSON.parse(data) : [];
+      } catch (e) {
+        console.error("Storage error:", e);
+        return [];
+      }
+    }
+
+    function saveRecord(record) {
+      const records = getStoredRecords();
+      records.push(record);
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+      } catch (e) {
+        console.error("Save error:", e);
+      }
+      return records;
+    }
+
+    /* ============================================================
+       3. ตัวแปรสถานะของผู้เล่นปัจจุบัน (State Management)
+       ============================================================ */
+    let currentStudent = {
+      name: '',
+      grade: '',
+      studentNo: '',
+      startTime: null
+    };
+
+    // เก็บคำตอบที่ผู้เรียนกรอก: { 0: "ดวงอาทิตย์", 1: "ดาวพุธ", ... }
+    let userAnswers = {};
+    let activeBlankIndex = 0; // ตำแหน่งช่องว่างที่กำลังเลือกอยู่
+
+    /* ============================================================
+       4. การทำงานของ UI & Form Handling
+       ============================================================ */
+    const stepRegister = document.getElementById('stepRegister');
+    const stepGame = document.getElementById('stepGame');
+    const stepResult = document.getElementById('stepResult');
+
+    const studentRegisterForm = document.getElementById('studentRegisterForm');
+    const questionsListWrapper = document.getElementById('questionsListWrapper');
+    const wordBankChipsContainer = document.getElementById('wordBankChipsContainer');
+    const hudStudentDisplay = document.getElementById('hudStudentDisplay');
+    const hudClassDisplay = document.getElementById('hudClassDisplay');
+    const hudProgressText = document.getElementById('hudProgressText');
+    const hudProgressBar = document.getElementById('hudProgressBar');
+    const fillBlanksForm = document.getElementById('fillBlanksForm');
+
+    // 1. เริ่มทำกิจกรรมเมื่อกดฟอร์มลงทะเบียน
+    studentRegisterForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('studentName').value.trim();
+      const grade = document.getElementById('studentGrade').value.trim();
+      const studentNo = document.getElementById('studentNo').value.trim();
+
+      if (!name || !grade || !studentNo) {
+        alert('กรุณากรอกข้อมูลให้ครบถ้วนทั้ง ชื่อ-นามสกุล, ชั้น และเลขที่');
+        return;
+      }
+
+      // ปิดคีย์บอร์ดบน iOS
+      if (document.activeElement && typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
+      }
+
+      currentStudent = {
+        name,
+        grade,
+        studentNo,
+        startTime: new Date()
+      };
+
+      // สลับหน้าจอไปยังขั้นตอนทำกิจกรรม
+      stepRegister.style.display = 'none';
+      stepGame.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // อัปเดต HUD ด้านบน
+      hudStudentDisplay.textContent = `ผู้ทำกิจกรรม: ${name} (เลขที่ ${studentNo})`;
+      hudClassDisplay.textContent = `ชั้น ${grade}`;
+
+      // เรนเดอร์คลังคำตอบและข้อคำถาม
+      renderWordBank();
+      renderQuestions();
+    });
+
+    // 2. ฟังก์ชันเรนเดอร์คลังคำตอบ (Word Bank Chips)
+    let lastChipTapTime = 0;
+    function renderWordBank() {
+      wordBankChipsContainer.innerHTML = '';
+      
+      // หาคำที่ถูกใช้งานแล้ว
+      const usedWords = Object.values(userAnswers).filter(val => val && val.trim() !== '');
+
+      ALL_WORD_BANK.forEach(word => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        const isUsed = usedWords.includes(word);
+        chip.className = `word-bank-chip ${isUsed ? 'used' : ''}`;
+        chip.dataset.word = word;
+        chip.innerHTML = `
+          <span>${word}</span>
+          ${isUsed ? '<span class="used-indicator">ใช้แล้ว</span>' : ''}
+        `;
+
+        const onChipTrigger = () => {
+          const now = Date.now();
+          if (now - lastChipTapTime < 60) return;
+          lastChipTapTime = now;
+          handleWordBankChipClick(word);
+        };
+
+        chip.addEventListener('click', onChipTrigger);
+        chip.addEventListener('touchend', (e) => {
+          e.preventDefault();
+          onChipTrigger();
+        }, { passive: false });
+
+        wordBankChipsContainer.appendChild(chip);
+      });
+    }
+
+    // เมื่อคลิกคำในคลังคำตอบ
+    function handleWordBankChipClick(word) {
+      // ถ้ามีช่องว่างที่กำลัง active ให้ใส่ลงในช่องนั้น
+      // ถ้าช่องนั้นมีคำอยู่แล้ว ให้แทนที่
+      let targetIndex = activeBlankIndex;
+
+      // ถ้าช่อง active ถูกเติมไปแล้ว หรือยังไม่มี active ให้หาช่องว่างช่องแรกที่ยังไม่ได้เติม
+      const inputAtActive = document.getElementById(`blank_input_${targetIndex}`);
+      if (inputAtActive && inputAtActive.value.trim() !== '') {
+        const firstEmpty = findFirstEmptyIndex();
+        if (firstEmpty !== -1) {
+          targetIndex = firstEmpty;
+        }
+      }
+
+      setBlankAnswer(targetIndex, word);
+
+      // โฟกัสและเลื่อนไปยังข้อถัดไปที่ยังว่าง
+      const nextEmpty = findFirstEmptyIndex();
+      if (nextEmpty !== -1) {
+        focusBlank(nextEmpty);
+      }
+    }
+
+    function findFirstEmptyIndex() {
+      for (let i = 0; i < FILL_BLANKS_DATA.length; i++) {
+        if (!userAnswers[i] || userAnswers[i].trim() === '') {
+          return i;
+        }
+      }
+      return -1;
+    }
+
+    // 3. ฟังก์ชันเรนเดอร์ข้อคำถามเติมคำ 15 ข้อ
+    function renderQuestions() {
+      questionsListWrapper.innerHTML = '';
+      userAnswers = {};
+
+      FILL_BLANKS_DATA.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'question-fill-card';
+        card.id = `qCard_${index}`;
+        card.dataset.index = index;
+
+        // ช้อยส์ด่วน 4 ตัวเลือกสำหรับแต่ละข้อ
+        let choicesHtml = '';
+        item.choices.forEach(ch => {
+          choicesHtml += `
+            <button type="button" class="choice-chip-btn" data-q="${index}" data-choice="${ch}">
+              <i class="fa-solid fa-circle-dot" style="font-size: 0.75rem;"></i>
+              <span>${ch}</span>
+            </button>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="q-card-header">
+            <span class="q-number-pill">ข้อที่ ${index + 1} / 15</span>
+            <span class="q-category-tag"><i class="fa-solid fa-compass"></i> ${item.category}</span>
+          </div>
+
+          <div class="sentence-container">
+            ${item.sentenceBefore}
+            <span class="inline-blank-slot">
+              <input type="text" 
+                     id="blank_input_${index}" 
+                     class="blank-input" 
+                     placeholder="[ แตะเลือกหรือพิมพ์คำตอบ ]" 
+                     data-index="${index}" 
+                     autocomplete="off"
+                     spellcheck="false">
+              <button type="button" class="btn-clear-slot" data-index="${index}" title="ล้างคำตอบข้อนี้">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </span>
+            ${item.sentenceAfter}
+          </div>
+
+          <div class="quick-chips-box">
+            <div class="quick-chips-label">
+              <i class="fa-solid fa-bolt" style="color: var(--fill-gold);"></i> ตัวเลือกคำตอบสำหรับข้อนี้ (แตะเพื่อเติมทันที):
+            </div>
+            <div class="quick-chips-list">
+              ${choicesHtml}
+            </div>
+          </div>
+        `;
+
+        questionsListWrapper.appendChild(card);
+      });
+
+      // จัดการ Events การพิมพ์และการคลิก
+      setupInteractionEvents();
+      updateProgressHUD();
+      focusBlank(0);
+    }
+
+    function setupInteractionEvents() {
+      // 1. ช่อง Input ของแต่ละข้อ
+      document.querySelectorAll('.blank-input').forEach(input => {
+        input.addEventListener('focus', () => {
+          const idx = parseInt(input.dataset.index);
+          focusBlank(idx);
+        });
+
+        input.addEventListener('input', (e) => {
+          const idx = parseInt(input.dataset.index);
+          const val = e.target.value;
+          userAnswers[idx] = val;
+          updateInputVisual(idx, val);
+          renderWordBank();
+          updateProgressHUD();
+        });
+      });
+
+      // 2. ปุ่มล้างคำตอบในแต่ละช่อง
+      document.querySelectorAll('.btn-clear-slot').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const idx = parseInt(btn.dataset.index);
+          setBlankAnswer(idx, '');
+          focusBlank(idx);
+        });
+      });
+
+      // 3. ปุ่มช้อยส์ด่วนใต้ข้อคำถาม (รองรับทั้ง Touch บน iOS และ Click)
+      let lastQuickTapTime = 0;
+      document.querySelectorAll('.choice-chip-btn').forEach(btn => {
+        const onChoiceTrigger = () => {
+          const now = Date.now();
+          if (now - lastQuickTapTime < 60) return;
+          lastQuickTapTime = now;
+
+          const qIdx = parseInt(btn.dataset.q);
+          const word = btn.dataset.choice;
+          setBlankAnswer(qIdx, word);
+
+          // หาข้อว่างถัดไป
+          const nextEmpty = findFirstEmptyIndex();
+          if (nextEmpty !== -1) {
+            focusBlank(nextEmpty);
+          }
+        };
+
+        btn.addEventListener('click', onChoiceTrigger);
+        btn.addEventListener('touchend', (e) => {
+          e.preventDefault();
+          onChoiceTrigger();
+        }, { passive: false });
+      });
+    }
+
+    // กำหนดคำตอบลงในช่องว่างข้อ index
+    function setBlankAnswer(index, word) {
+      const input = document.getElementById(`blank_input_${index}`);
+      if (!input) return;
+
+      input.value = word;
+      userAnswers[index] = word;
+      updateInputVisual(index, word);
+      renderWordBank();
+      updateProgressHUD();
+    }
+
+    // อัปเดตรูปลักษณ์ของ Input และช้อยส์
+    function updateInputVisual(index, value) {
+      const input = document.getElementById(`blank_input_${index}`);
+      const card = document.getElementById(`qCard_${index}`);
+      if (!input || !card) return;
+
+      const hasValue = value && value.trim() !== '';
+      if (hasValue) {
+        input.classList.add('filled');
+        card.classList.add('answered');
+      } else {
+        input.classList.remove('filled');
+        card.classList.remove('answered');
+      }
+
+      // อัปเดตช้อยส์ด่วนใต้ข้อ
+      card.querySelectorAll('.choice-chip-btn').forEach(btn => {
+        if (hasValue && btn.dataset.choice.trim() === value.trim()) {
+          btn.classList.add('selected');
+        } else {
+          btn.classList.remove('selected');
+        }
+      });
+    }
+
+    // โฟกัสช่องว่างข้อ index
+    function focusBlank(index) {
+      activeBlankIndex = index;
+
+      document.querySelectorAll('.question-fill-card').forEach(c => c.classList.remove('active-focus'));
+      const targetCard = document.getElementById(`qCard_${index}`);
+      if (targetCard) {
+        targetCard.classList.add('active-focus');
+      }
+
+      const input = document.getElementById(`blank_input_${index}`);
+      if (input && document.activeElement !== input) {
+        input.focus();
+      }
+    }
+
+    // อัปเดตความคืบหน้าบน HUD
+    function updateProgressHUD() {
+      const answeredCount = Object.values(userAnswers).filter(v => v && v.trim() !== '').length;
+      hudProgressText.textContent = `เติมคำแล้ว: ${answeredCount} / 15 ข้อ`;
+
+      const pct = Math.round((answeredCount / 15) * 100);
+      hudProgressBar.style.width = `${pct}%`;
+
+      if (answeredCount === 15) {
+        hudProgressText.style.color = '#34d399';
+        hudProgressBar.style.background = '#34d399';
+      } else {
+        hudProgressText.style.color = 'var(--fill-gold)';
+        hudProgressBar.style.background = 'linear-gradient(90deg, #00b4d8, var(--fill-cyan))';
+      }
+    }
+
+    // 4. ส่งคำตอบและตรวจผล
+    fillBlanksForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const answeredCount = Object.values(userAnswers).filter(v => v && v.trim() !== '').length;
+
+      if (answeredCount < 15) {
+        const confirmSubmit = confirm(`คุณยังเติมคำไม่ครบ 15 ข้อ (ทำไปแล้ว ${answeredCount}/15 ข้อ) ต้องการส่งคำตอบและตรวจคะแนนเลยหรือไม่?`);
+        if (!confirmSubmit) return;
+      }
+
+      // คำนวณคะแนน
+      let score = 0;
+      const questionResults = [];
+
+      FILL_BLANKS_DATA.forEach((item, idx) => {
+        const rawUserAnswer = userAnswers[idx] ? userAnswers[idx].trim() : '';
+        const normalizedUser = rawUserAnswer.toLowerCase().replace(/\s+/g, '');
+
+        // ตรวจสอบกับ targetWord และ aliases
+        let isCorrect = false;
+        if (normalizedUser !== '') {
+          const canonicalNorm = item.targetWord.toLowerCase().replace(/\s+/g, '');
+          if (normalizedUser === canonicalNorm) {
+            isCorrect = true;
+          } else if (item.aliases && item.aliases.some(alias => normalizedUser === alias.toLowerCase().replace(/\s+/g, ''))) {
+            isCorrect = true;
+          }
+        }
+
+        if (isCorrect) score++;
+
+        questionResults.push({
+          questionId: item.id,
+          category: item.category,
+          sentenceBefore: item.sentenceBefore,
+          sentenceAfter: item.sentenceAfter,
+          rawUserAnswer,
+          targetWord: item.targetWord,
+          isCorrect,
+          explanation: item.explanation
+        });
+      });
+
+      // วันเวลาปัจจุบัน
+      const now = new Date();
+      const timeStr = now.toLocaleDateString('th-TH', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      // สร้าง Object ข้อมูลผลคะแนน
+      const studentRecord = {
+        id: 'ACT2_' + Date.now(),
+        name: currentStudent.name,
+        grade: currentStudent.grade,
+        studentNo: currentStudent.studentNo,
+        score: score,
+        total: 15,
+        percentage: Math.round((score / 15) * 100),
+        time: timeStr,
+        timestamp: now.getTime()
+      };
+
+      // บันทึกลงหน่วยเก็บข้อมูล (localStorage)
+      saveRecord(studentRecord);
+
+      // ส่งข้อมูลเข้าสู่ Google Sheet (สเปรดชีต "จักรวาลปลายนิ้ว" ➔ แผ่นงาน "กิจกรรม2")
+      syncToGoogleSheetUI(studentRecord);
+
+      // แสดงผลลัพธ์
+      displayResults(studentRecord, questionResults);
+    });
+
+    // 5. แสดงผลลัพธ์คะแนน & เฉลยคำตอบอย่างละเอียด
+    function displayResults(record, results) {
+      stepGame.style.display = 'none';
+      stepResult.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // ตัวเลขคะแนน
+      document.getElementById('resultScoreNum').textContent = record.score;
+      document.getElementById('resName').textContent = record.name;
+      document.getElementById('resGrade').textContent = record.grade;
+      document.getElementById('resNo').textContent = record.studentNo;
+      document.getElementById('resTime').textContent = record.time;
+
+      // ประเมินผล
+      const evalElem = document.getElementById('resultEvaluation');
+      const feedbackElem = document.getElementById('resultFeedbackMsg');
+      if (record.score >= 14) {
+        evalElem.textContent = 'ยอดเยี่ยมที่สุด! 🌟 (Astronomy Master)';
+        evalElem.style.color = '#34d399';
+        feedbackElem.textContent = 'คุณมีความจำและความเข้าใจเชิงลึกเกี่ยวกับวัตถุและปรากฏการณ์ในระบบสุริยะได้อย่างสมบูรณ์แบบ!';
+      } else if (record.score >= 10) {
+        evalElem.textContent = 'ดีมาก! 🚀 (Space Specialist)';
+        evalElem.style.color = 'var(--fill-cyan)';
+        feedbackElem.textContent = 'คุณมีความรู้รอบตัวเกี่ยวกับดาราศาสตร์ที่ดีเยี่ยม สามารถทบทวนเพิ่มเติมข้อที่พลาดเพื่อความแม่นยำเต็มร้อย';
+      } else if (record.score >= 6) {
+        evalElem.textContent = 'ผ่านเกณฑ์เริ่มต้น! 🔭 (Cadet Explorer)';
+        evalElem.style.color = 'var(--fill-gold)';
+        feedbackElem.textContent = 'เริ่มต้นได้ดี ลองศึกษาทบทวนเนื้อหาในหน้าคำศัพท์ (d.html) และบทเรียนพื้นฐาน (a.html) แล้วกลับมาพิชิตคะแนนเต็มได้เลย';
+      } else {
+        evalElem.textContent = 'พร้อมเรียนรู้! 🛰️ (Junior Observer)';
+        evalElem.style.color = '#f87171';
+        feedbackElem.textContent = 'ไม่ต้องกังวล เข้าไปสำรวจหน้าบทเรียนระบบสุริยะและทดลองใหม่เพื่อพัฒนาความรู้ให้แม่นยำยิ่งขึ้น!';
+      }
+
+      // แสดงเฉลยรายข้อ 15 ข้ออย่างละเอียด
+      const breakdownContainer = document.getElementById('resultsBreakdownContainer');
+      breakdownContainer.innerHTML = '';
+
+      results.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = `feedback-card ${item.isCorrect ? 'correct' : 'incorrect'}`;
+
+        const userText = item.rawUserAnswer ? item.rawUserAnswer : 'ไม่ได้กรอกคำตอบ';
+
+        if (item.isCorrect) {
+          card.innerHTML = `
+            <div class="feedback-header-correct">
+              <i class="fa-solid fa-circle-check"></i>
+              <span>ข้อที่ ${index + 1} : ตอบถูกต้อง (+1 คะแนน) [หมวด: ${item.category}]</span>
+            </div>
+            <div style="font-size: 1.05rem; line-height: 1.8; margin-bottom: 8px; color: #fff;">
+              ${item.sentenceBefore}
+              <strong style="color: #34d399; background: rgba(52, 211, 153, 0.2); padding: 2px 10px; border-radius: 6px; border: 1px solid #34d399;">
+                ${item.targetWord}
+              </strong>
+              ${item.sentenceAfter}
+            </div>
+            <div style="font-size: 0.92rem; color: #a7f3d0; margin-bottom: 6px;">
+              <i class="fa-solid fa-check"></i> คำตอบของคุณ: <strong>${userText}</strong> (ถูกต้อง)
+            </div>
+            <div class="feedback-explanation">
+              <strong><i class="fa-solid fa-lightbulb" style="color: var(--fill-gold);"></i> สาระน่ารู้ทางดาราศาสตร์:</strong> ${item.explanation}
+            </div>
+          `;
+        } else {
+          card.innerHTML = `
+            <div class="feedback-header-incorrect">
+              <i class="fa-solid fa-circle-xmark"></i>
+              <span>ข้อที่ ${index + 1} : ตอบไม่ถูกต้อง (0 คะแนน) [หมวด: ${item.category}]</span>
+            </div>
+            <div style="font-size: 1.05rem; line-height: 1.8; margin-bottom: 8px; color: #fff;">
+              ${item.sentenceBefore}
+              <span style="text-decoration: line-through; color: #f87171; margin-right: 6px;">${userText}</span>
+              <strong style="color: #34d399; background: rgba(52, 211, 153, 0.2); padding: 2px 10px; border-radius: 6px; border: 1px solid #34d399;">
+                เฉลย: ${item.targetWord}
+              </strong>
+              ${item.sentenceAfter}
+            </div>
+            <div style="font-size: 0.92rem; color: #fca5a5; margin-bottom: 6px;">
+              <i class="fa-solid fa-xmark"></i> คำตอบที่คุณตอบ: <strong>${userText}</strong>
+            </div>
+            <div class="feedback-explanation">
+              <strong><i class="fa-solid fa-lightbulb" style="color: var(--fill-gold);"></i> สาระน่ารู้ทางดาราศาสตร์:</strong> ${item.explanation}
+            </div>
+          `;
+        }
+
+        breakdownContainer.appendChild(card);
+      });
+
+      // อัปเดตตาราง Top 5
+      renderLeaderboards();
+    }
+
+    // 6. ทำกิจกรรมใหม่อีกครั้ง
+    document.getElementById('retakeActivityBtn').addEventListener('click', () => {
+      stepResult.style.display = 'none';
+      stepRegister.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      renderLeaderboards();
+    });
+
+    /* ============================================================
+       5. ตาราง 5 อันดับแรก (Top 5 Leaderboard Controller)
+       ดึงข้อมูลจาก Google Sheet เพื่อให้ทุกเครื่องเห็น 5 อันดับแรกที่เหมือนกัน
+       ============================================================ */
+    const SPREADSHEET_ID = '1Djr3luVP2gRxsjImrGTXxvFrJdBQQz-ESBEieDFl1kc';
+
+    function fetchGvizViaJsonp(sheetTab) {
+      return new Promise((resolve, reject) => {
+        const callbackName = 'gviz_jsonp_' + Math.floor(Math.random() * 10000000);
+        const script = document.createElement('script');
+        
+        const timeout = setTimeout(() => {
+          cleanup();
+          reject(new Error('Gviz JSONP timeout'));
+        }, 8000);
+
+        function cleanup() {
+          clearTimeout(timeout);
+          try { delete window[callbackName]; } catch (e) { window[callbackName] = undefined; }
+          if (script && script.parentNode) {
+            script.parentNode.removeChild(script);
+          }
+        }
+
+        window[callbackName] = function(data) {
+          cleanup();
+          resolve(data);
+        };
+
+        script.onerror = function(err) {
+          cleanup();
+          reject(err);
+        };
+
+        script.src = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=responseHandler:${callbackName}&sheet=${encodeURIComponent(sheetTab)}&t=${Date.now()}`;
+        document.head.appendChild(script);
+      });
+    }
+
+    async function fetchTop5FromGoogleSheet() {
+      const url = getGoogleSheetUrl();
+      const sheetTab = GOOGLE_SHEET_TAB_NAME;
+
+      // 1. ดึงข้อมูลผ่าน Google Visualization API ด้วย JSONP (ไม่มีปัญหา CORS ทุกเบราว์เซอร์เข้าถึงได้ทันที)
+      try {
+        const data = await fetchGvizViaJsonp(sheetTab);
+        if (data && data.status === 'ok' && data.table) {
+          const cols = data.table.cols || [];
+          let nameColIdx = 0;
+          let scoreColIdx = 3;
+
+          cols.forEach((col, idx) => {
+            const label = String(col.label || '').trim().toLowerCase();
+            if (label.includes('ชื่อ') || label.includes('name')) nameColIdx = idx;
+            if (label.includes('คะแนน') || label.includes('score') || label.includes('point')) scoreColIdx = idx;
+          });
+
+          const list = [];
+          (data.table.rows || []).forEach(r => {
+            if (!r || !r.c || !r.c.length) return;
+            const nameCell = r.c[nameColIdx];
+            const name = nameCell ? String(nameCell.v !== undefined && nameCell.v !== null ? nameCell.v : (nameCell.f || '')).trim() : '';
+
+            if (!name || name === '-' || name === 'ชื่อ' || name === 'ชื่อ - นามสกุล' || name.toLowerCase() === 'name') return;
+
+            const scoreCell = (scoreColIdx < r.c.length && r.c[scoreColIdx]) ? r.c[scoreColIdx] : (r.c.length > 3 && r.c[3] ? r.c[3] : (r.c.length > 1 ? r.c[r.c.length - 1] : null));
+            let score = 0;
+            if (scoreCell) {
+              if (typeof scoreCell.v === 'number') {
+                score = scoreCell.v;
+              } else if (scoreCell.v !== undefined && scoreCell.v !== null) {
+                score = parseFloat(String(scoreCell.v).replace(/[^0-9.-]/g, ''));
+              } else if (scoreCell.f) {
+                score = parseFloat(String(scoreCell.f).replace(/[^0-9.-]/g, ''));
+              }
+            }
+            if (isNaN(score)) score = 0;
+
+            list.push({ name, score });
+          });
+
+          list.sort((a, b) => b.score - a.score);
+          return { items: list.slice(0, 5), source: 'sheet' };
+        }
+      } catch (err) {
+        console.warn('Gviz JSONP fetch failed:', err);
+      }
+
+      // 2. สำรองข้อมูลผ่าน Google Apps Script Web App (doGet)
+      if (url) {
+        try {
+          const sep = url.includes('?') ? '&' : '?';
+          const requestUrl = `${url}${sep}action=read&sheetName=${encodeURIComponent(sheetTab)}&t=${Date.now()}`;
+          const response = await fetch(requestUrl, {
+            method: 'GET',
+            headers: { 'Accept': 'application/json' }
+          });
+          if (response.ok) {
+            const result = await response.json();
+            if (result && result.status === 'success' && (Array.isArray(result.top5) || Array.isArray(result.data))) {
+              const records = (result.top5 && Array.isArray(result.top5) && result.top5.length > 0)
+                ? result.top5
+                : (result.data || []);
+
+              const formatted = records.map(item => ({
+                name: String(item.name || '').trim(),
+                score: (typeof item.score === 'number') ? item.score : (parseFloat(item.score) || 0)
+              })).filter(item => item.name && item.name !== '-');
+
+              formatted.sort((a, b) => b.score - a.score);
+              return { items: formatted.slice(0, 5), source: 'sheet' };
+            }
+          }
+        } catch (err) {
+          console.warn('Apps Script fetch failed:', err);
+        }
+      }
+
+      // 3. สำรองข้อมูลจาก LocalStorage (กรณีออฟไลน์หรือไม่มีอินเทอร์เน็ต)
+      const localRecords = getStoredRecords();
+      if (localRecords && localRecords.length > 0) {
+        const sorted = [...localRecords].sort((a, b) => (b.score - a.score) || (a.timestamp - b.timestamp));
+        return {
+          items: sorted.slice(0, 5).map(item => ({ name: item.name, score: item.score })),
+          source: 'local'
+        };
+      }
+
+      return { items: [], source: 'local' };
+    }
+
+    async function renderLeaderboards() {
+      const containers = [
+        document.getElementById('top5TableContainerFront'),
+        document.getElementById('top5TableContainerResult'),
+        document.getElementById('frontLeaderboard'),
+        document.getElementById('gameLeaderboard')
+      ].filter(Boolean);
+
+      if (containers.length === 0) return;
+
+      const cacheKey = `solar_system_cached_top5_${GOOGLE_SHEET_TAB_NAME}`;
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        try {
+          const cachedObj = JSON.parse(cached);
+          const cachedItems = Array.isArray(cachedObj) ? cachedObj : (cachedObj.items || []);
+          const cachedSource = (cachedObj && cachedObj.source) ? cachedObj.source : 'sheet';
+          if (cachedSource === 'sheet') {
+            const cachedHtml = generateTop5TableHtml(cachedItems, cachedSource);
+            containers.forEach(c => c.innerHTML = cachedHtml);
+          }
+        } catch (e) {}
+      }
+
+      containers.forEach(c => {
+        if (!c.innerHTML || c.innerHTML.includes('แสดงเฉพาะคะแนนในเครื่องนี้')) {
+          c.innerHTML = `
+            <div style="text-align: center; padding: 25px; background: rgba(14,22,54,0.5); border-radius: 12px; color: var(--text-muted, #94a3b8); font-size: 1.05rem;">
+              <i class="fa-solid fa-rotate fa-spin" style="font-size: 1.8rem; margin-bottom: 8px; display: block; color: var(--fill-cyan, #00f0ff);"></i>
+              กำลังดึงข้อมูล 5 อันดับแรกจาก Google Sheet...
+            </div>
+          `;
+        }
+      });
+
+      try {
+        const res = await fetchTop5FromGoogleSheet();
+        if (res && res.items) {
+          localStorage.setItem(cacheKey, JSON.stringify(res));
+          const html = generateTop5TableHtml(res.items, res.source);
+          containers.forEach(c => c.innerHTML = html);
+        }
+      } catch (err) {
+        console.error('Error rendering leaderboards:', err);
+      }
+    }
+
+    function generateTop5TableHtml(items, source = 'sheet') {
+      const statusBanner = (source === 'sheet')
+        ? `
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 0.88rem; color: #10b981; padding: 4px 6px;">
+            <span><i class="fa-solid fa-circle-check"></i> ดึงคะแนนออนไลน์จาก Google Sheet แล้ว (เห็นคะแนนของทุกคน)</span>
+            <button type="button" onclick="renderLeaderboards();" style="background: none; border: none; color: var(--fill-cyan, #00f0ff); cursor: pointer; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 5px;">
+              <i class="fa-solid fa-arrows-rotate"></i> อัปเดตสด
+            </button>
+          </div>
+        `
+        : `
+          <div style="margin-bottom: 14px; font-size: 0.88rem; color: #fbbf24; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); padding: 10px 14px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <span><i class="fa-solid fa-triangle-exclamation"></i> <strong>แสดงเฉพาะคะแนนในเครื่องนี้:</strong> ต้องการให้เห็นคะแนนของเพื่อนทุกคน? โปรดเปิดแชร์ Google Sheet ให้ 'ทุกคนที่มีลิงก์มีสิทธิ์ดู'</span>
+            <button type="button" onclick="renderLeaderboards();" style="background: rgba(245, 158, 11, 0.25); border: 1px solid rgba(245, 158, 11, 0.6); color: #fff; padding: 4px 12px; border-radius: 6px; cursor: pointer; font-size: 0.82rem;">
+              <i class="fa-solid fa-arrows-rotate"></i> โหลดใหม่
+            </button>
+          </div>
+        `;
+
+      if (!items || items.length === 0) {
+        return `
+          ${statusBanner}
+          <div style="text-align: center; padding: 30px; background: rgba(14,22,54,0.5); border-radius: 12px; color: var(--text-muted, #94a3b8); font-size: 1.1rem;">
+            <i class="fa-solid fa-trophy" style="font-size: 2.2rem; margin-bottom: 12px; display: block; color: var(--neon-gold, #ffd700);"></i>
+            ยังไม่มีข้อมูลคะแนนของผู้เข้าทดสอบ เป็นคนแรกที่คว้าอันดับ Top 5!
+          </div>
+        `;
+      }
+
+      let rows = '';
+      items.forEach((item, idx) => {
+        const rank = idx + 1;
+        let rankBadgeClass = 'rank-other';
+        let medalIcon = rank;
+        if (rank === 1) {
+          rankBadgeClass = 'rank-1';
+          medalIcon = '<i class="fa-solid fa-crown"></i>';
+        } else if (rank === 2) {
+          rankBadgeClass = 'rank-2';
+          medalIcon = '<i class="fa-solid fa-medal"></i>';
+        } else if (rank === 3) {
+          rankBadgeClass = 'rank-3';
+          medalIcon = '<i class="fa-solid fa-medal"></i>';
+        }
+
+        const safeName = String(item.name || 'ไม่ระบุชื่อ')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+
+        const scoreNum = (item.score !== undefined && item.score !== null) ? item.score : 0;
+
+        rows += `
+          <tr class="top5-row">
+            <td style="width: 80px; text-align: center;">
+              <span class="rank-badge ${rankBadgeClass}">${medalIcon}</span>
+            </td>
+            <td style="text-align: left;">
+              <strong style="color: #ffffff; font-size: 1.25rem;">${safeName}</strong>
+            </td>
+            <td style="text-align: right; width: 160px;">
+              <span class="score-badge-pill">${scoreNum} คะแนน</span>
+            </td>
+          </tr>
+        `;
+      });
+
+      return `
+        ${statusBanner}
+        <div class="leaderboard-table-responsive">
+          <table class="top5-table">
+            <thead>
+              <tr>
+                <th style="width: 80px; text-align: center;">อันดับ</th>
+                <th style="text-align: left;">ชื่อ</th>
+                <th style="text-align: right; width: 160px;">คะแนนที่ได้</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    window.renderLeaderboards = renderLeaderboards;
+
+    /* ============================================================
+       6. Initializer & Canvas Star Background
+       ============================================================ */
+    document.addEventListener('DOMContentLoaded', () => {
+      renderLeaderboards();
+
+      // Mobile Menu Toggle
+      const mobileToggle = document.getElementById('mobileToggle');
+      const navMenu = document.getElementById('navMenu');
+      if (mobileToggle && navMenu) {
+        mobileToggle.addEventListener('click', () => {
+          navMenu.classList.toggle('open');
+        });
+      }
+
+      // Dropdown แบบทดสอบ
+      const quizDropdown = document.getElementById('quizDropdown');
+      const dropdownTrigger = document.getElementById('dropdownTrigger');
+      if (dropdownTrigger && quizDropdown) {
+        const toggleDropdown = (e) => {
+          if (typeof window.toggleQuizDropdown === 'function') {
+            window.toggleQuizDropdown(e);
+          } else {
+            if (e && e.cancelable) e.preventDefault();
+            e.stopPropagation();
+            const isOpen = quizDropdown.classList.toggle('open');
+            dropdownTrigger.setAttribute('aria-expanded', isOpen);
+          }
+        };
+        dropdownTrigger.addEventListener('click', toggleDropdown);
+        dropdownTrigger.addEventListener('touchend', (e) => {
+          if (e.cancelable) e.preventDefault();
+          toggleDropdown(e);
+        }, { passive: false });
+
+        ['click', 'touchstart'].forEach((evt) => {
+          document.addEventListener(evt, (e) => {
+            if (!quizDropdown.contains(e.target) && !e.target.closest('#dropdownMenu, .dropdown-menu')) {
+              if (typeof window.closeQuizDropdown === 'function') {
+                window.closeQuizDropdown();
+              } else {
+                quizDropdown.classList.remove('open');
+                dropdownTrigger.setAttribute('aria-expanded', 'false');
+              }
+            }
+          }, { passive: true });
+        });
+      }
+
+      // Canvas Animation Background
+      initSpaceCanvas();
+    });
+
+    function initSpaceCanvas() {
+      const canvas = document.getElementById('space-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width = canvas.width = window.innerWidth;
+      let height = canvas.height = window.innerHeight;
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      const stars = [];
+      for (let i = 0; i < 150; i++) {
+        stars.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: Math.random() * 1.5 + 0.5,
+          alpha: Math.random() * 0.8 + 0.2,
+          speed: Math.random() * 0.02 + 0.005
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        stars.forEach(star => {
+          star.alpha += star.speed;
+          if (star.alpha > 1 || star.alpha < 0.2) star.speed = -star.speed;
+          ctx.beginPath();
+          ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${Math.abs(star.alpha)})`;
+          ctx.fill();
+        });
+
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+  </script>
+  <script src="navScroll.js?v=2"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

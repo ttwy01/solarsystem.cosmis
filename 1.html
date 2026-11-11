@@ -1,0 +1,2231 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>แบบทดสอบก่อนเรียน - ห้องเรียนระบบสุริยะ</title>
+  <!-- Google Fonts: Kanit & Orbitron -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css?v=20">
+  <style>
+    /* สไตล์เฉพาะสำหรับหน้าแบบทดสอบก่อนเรียน (1.html) */
+    .quiz-page-container {
+      width: 100%;
+      max-width: 100%;
+      margin: 90px auto 40px;
+      padding: 0 24px;
+      position: relative;
+      z-index: 10;
+      box-sizing: border-box;
+    }
+
+    .glass-panel {
+      background: rgba(10, 16, 40, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border-cyan);
+      border-radius: 20px;
+      padding: 35px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 240, 255, 0.15);
+      margin-bottom: 30px;
+      transition: all 0.3s ease;
+      min-height: calc(100vh - 150px);
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Header ของแบบทดสอบ */
+    .quiz-hero-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .quiz-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid var(--neon-cyan);
+      border-radius: 50px;
+      color: var(--neon-cyan);
+      font-size: 0.85rem;
+      font-family: var(--font-hud);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .quiz-main-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ffffff 30%, var(--neon-cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+
+    .quiz-sub-desc {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* ฟอร์มลงทะเบียนข้อมูลผู้ใช้ */
+    .user-register-card {
+      background: rgba(14, 22, 54, 0.85);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 25px 0;
+      box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.05);
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .id-badge-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+
+    .id-badge-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--neon-cyan);
+    }
+
+    .id-badge-title i {
+      font-size: 1.5rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-bright);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-group label i {
+      color: var(--neon-cyan);
+    }
+
+    .form-control {
+      background: rgba(4, 8, 24, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: #fff;
+      font-family: var(--font-main);
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.25s ease;
+    }
+
+    .form-control:focus {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.35);
+      background: rgba(6, 12, 35, 0.95);
+    }
+
+    /* คำชี้แจงกฎกติกา */
+    .rules-box {
+      background: rgba(255, 183, 3, 0.08);
+      border-left: 4px solid var(--neon-gold);
+      padding: 16px 20px;
+      border-radius: 0 12px 12px 0;
+      margin: 25px 0;
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+    }
+
+    .rules-box i {
+      color: var(--neon-gold);
+      font-size: 1.4rem;
+      margin-top: 2px;
+    }
+
+    .rules-box ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--text-bright);
+      font-size: 0.95rem;
+    }
+
+    .rules-box li {
+      margin-bottom: 6px;
+    }
+
+    .rules-box li strong {
+      color: var(--neon-gold);
+    }
+
+    /* ปุ่ม Action */
+    .btn-cosmic-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      padding: 16px 30px;
+      background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-family: var(--font-main);
+      font-size: 1.15rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0, 180, 216, 0.4);
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn-cosmic-primary:hover {
+      background: linear-gradient(135deg, #00f0ff 0%, #0096c7 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px rgba(0, 240, 255, 0.5);
+      color: #02040a;
+    }
+
+    /* กล่องข้อสอบ */
+    .quiz-progress-hud {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(5, 9, 28, 0.8);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 14px 20px;
+      margin-bottom: 25px;
+    }
+
+    .hud-student-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.95rem;
+      color: var(--text-bright);
+    }
+
+    .hud-student-badge {
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--neon-cyan);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-family: var(--font-hud);
+      font-size: 0.85rem;
+    }
+
+    .hud-progress-info {
+      font-family: var(--font-hud);
+      color: var(--neon-gold);
+      font-weight: 600;
+    }
+
+    .question-card {
+      background: rgba(14, 22, 54, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .question-card.answered {
+      border-color: rgba(0, 240, 255, 0.4);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
+    }
+
+    .question-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      transition: all 0.25s ease;
+    }
+
+    .question-card.answered::before {
+      background: var(--neon-cyan);
+      box-shadow: 0 0 10px var(--neon-cyan);
+    }
+
+    .q-number-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 18px;
+      line-height: 1.5;
+      display: flex;
+      gap: 12px;
+    }
+
+    .q-index-badge {
+      background: rgba(0, 240, 255, 0.15);
+      border: 1px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      font-family: var(--font-hud);
+      font-size: 0.85rem;
+      padding: 2px 10px;
+      border-radius: 6px;
+      height: fit-content;
+      white-space: nowrap;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(4, 8, 24, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 14px 18px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      -webkit-touch-callout: none;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: rgba(0, 240, 255, 0.2);
+      position: relative;
+    }
+
+    /* ป้องกัน iOS WebKit บั๊กล็อคการกด Label ที่มี user-select: none */
+    @supports (-webkit-touch-callout: none) {
+      .option-label {
+        -webkit-user-select: auto !important;
+      }
+    }
+
+    .option-label:hover {
+      background: rgba(0, 240, 255, 0.08);
+      border-color: rgba(0, 240, 255, 0.4);
+      transform: translateX(4px);
+    }
+
+    .option-label:active {
+      transform: scale(0.98);
+      background: rgba(0, 240, 255, 0.18);
+    }
+
+    .option-label input[type="radio"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 24px;
+      height: 24px;
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      border-radius: 50%;
+      outline: none;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+      background-color: rgba(4, 8, 24, 0.85);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .option-label input[type="radio"]:checked,
+    .option-label.selected input[type="radio"] {
+      border-color: var(--neon-cyan) !important;
+      background-color: var(--neon-cyan) !important;
+      box-shadow: inset 0 0 0 5px #040818, 0 0 14px var(--neon-cyan) !important;
+    }
+
+    .option-label.selected {
+      background: rgba(0, 240, 255, 0.18) !important;
+      border-color: var(--neon-cyan) !important;
+      box-shadow: 0 0 16px rgba(0, 240, 255, 0.3) !important;
+    }
+
+    .option-text {
+      color: var(--text-bright);
+      font-size: 0.98rem;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* ผลลัพธ์คะแนน (Result Screen) */
+    .score-banner-card {
+      text-align: center;
+      background: radial-gradient(circle at center, rgba(0, 240, 255, 0.15) 0%, rgba(10, 16, 40, 0.8) 70%);
+      border: 1px solid var(--neon-cyan);
+      border-radius: 20px;
+      padding: 40px 20px;
+      margin-bottom: 30px;
+      box-shadow: 0 0 40px rgba(0, 240, 255, 0.2);
+    }
+
+    .score-circle {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 4px solid var(--neon-cyan);
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.5), inset 0 0 20px rgba(0, 240, 255, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      background: rgba(2, 4, 10, 0.6);
+    }
+
+    .score-number {
+      font-family: var(--font-hud);
+      font-size: 3.2rem;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1;
+      text-shadow: 0 0 15px var(--neon-cyan);
+    }
+
+    .score-total {
+      font-family: var(--font-hud);
+      font-size: 1rem;
+      color: var(--neon-cyan);
+    }
+
+    .student-result-details {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 15px 0;
+      flex-wrap: wrap;
+    }
+
+    .student-result-pill {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      color: var(--text-bright);
+    }
+
+    /* การ์ดเฉลยแบบมีเงื่อนไข (Conditional Feedback Cards) */
+    .feedback-card {
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    /* ข้อที่ตอบถูกต้อง */
+    .feedback-card.correct {
+      background: rgba(16, 185, 129, 0.08);
+      border-color: rgba(16, 185, 129, 0.4);
+      box-shadow: 0 5px 20px rgba(16, 185, 129, 0.1);
+    }
+
+    .feedback-header-correct {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #34d399;
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 12px;
+    }
+
+    .feedback-explanation {
+      background: rgba(4, 8, 24, 0.6);
+      border-left: 3px solid #34d399;
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: var(--text-bright);
+    }
+
+    .feedback-explanation strong {
+      color: #34d399;
+    }
+
+    /* ข้อที่ตอบผิด: ซ่อนเฉลยตามที่สั่ง */
+    .feedback-card.incorrect {
+      background: rgba(239, 68, 68, 0.06);
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    .feedback-header-incorrect {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #f87171;
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 10px;
+    }
+
+    .hidden-answer-notice {
+      background: rgba(4, 8, 24, 0.6);
+      border-left: 3px solid #f87171;
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ตาราง Top 5 Leaderboard */
+    .leaderboard-section {
+      margin-top: 40px;
+    }
+
+    .leaderboard-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .leaderboard-title h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--neon-gold);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .top5-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 8px;
+    }
+
+    .top5-table th {
+      padding: 12px 18px;
+      text-align: left;
+      font-family: var(--font-hud);
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .top5-row {
+      background: rgba(14, 22, 54, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .top5-row:hover {
+      background: rgba(20, 32, 75, 0.9);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .top5-row td {
+      padding: 16px 18px;
+      color: var(--text-bright);
+      font-size: 1.15rem;
+    }
+
+    .top5-row td:first-child {
+      border-top-left-radius: 12px;
+      border-bottom-left-radius: 12px;
+    }
+
+    .top5-row td:last-child {
+      border-top-right-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+
+    .rank-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      font-family: var(--font-hud);
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
+
+    .rank-1 { background: linear-gradient(135deg, #ffd700, #b8860b); color: #000; box-shadow: 0 0 12px rgba(255, 215, 0, 0.6); }
+    .rank-2 { background: linear-gradient(135deg, #e0e0e0, #9e9e9e); color: #000; box-shadow: 0 0 10px rgba(224, 224, 224, 0.5); }
+    .rank-3 { background: linear-gradient(135deg, #cd7f32, #8b4513); color: #fff; box-shadow: 0 0 10px rgba(205, 127, 50, 0.5); }
+    .rank-other { background: rgba(255, 255, 255, 0.1); color: var(--text-muted); }
+
+    .score-badge-pill {
+      font-family: var(--font-hud);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--neon-cyan);
+      background: rgba(0, 240, 255, 0.1);
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    /* แผงควบคุมแอดมิน (Admin Portal Modal) */
+    .admin-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(2, 4, 10, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .admin-modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .admin-modal-box {
+      background: #0a112c;
+      border: 1px solid var(--neon-cyan);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 950px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 240, 255, 0.25);
+      overflow: hidden;
+    }
+
+    .admin-modal-header {
+      padding: 20px 25px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(14, 24, 60, 0.8);
+    }
+
+    .admin-modal-header h3 {
+      font-size: 1.3rem;
+      color: var(--neon-cyan);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .admin-modal-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .admin-modal-close:hover {
+      color: var(--neon-mars);
+    }
+
+    .admin-modal-body {
+      padding: 25px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    /* หน้าต่าง Login ของ Admin */
+    .admin-login-box {
+      max-width: 400px;
+      margin: 40px auto;
+      text-align: center;
+    }
+
+    .admin-login-box i.lock-icon {
+      font-size: 3rem;
+      color: var(--neon-gold);
+      margin-bottom: 20px;
+    }
+
+    /* แดชบอร์ดข้อมูลคะแนนทั้งหมดสำหรับ Admin */
+    .admin-stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .stat-mini-card {
+      background: rgba(16, 26, 65, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .stat-mini-card .val {
+      font-family: var(--font-hud);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--neon-cyan);
+      margin-top: 5px;
+    }
+
+    .stat-mini-card .label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .admin-controls-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .admin-search-input {
+      background: rgba(4, 8, 24, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #fff;
+      font-family: var(--font-main);
+      width: 250px;
+      outline: none;
+    }
+
+    .admin-search-input:focus {
+      border-color: var(--neon-cyan);
+    }
+
+    .btn-admin-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-main);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .btn-export-csv {
+      background: #10b981;
+      color: #fff;
+    }
+
+    .btn-export-csv:hover {
+      background: #059669;
+    }
+
+    .btn-danger-clear {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid #ef4444;
+      color: #fca5a5;
+    }
+
+    .btn-danger-clear:hover {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .admin-table th, .admin-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.92rem;
+      text-align: left;
+    }
+
+    .admin-table th {
+      background: rgba(14, 24, 60, 0.9);
+      color: var(--neon-cyan);
+      font-family: var(--font-hud);
+      font-size: 0.82rem;
+    }
+
+    .admin-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 183, 3, 0.12);
+      border: 1px solid var(--neon-gold);
+      color: var(--neon-gold);
+      padding: 7px 16px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-family: var(--font-main);
+      transition: all 0.2s ease;
+      margin-left: 10px;
+    }
+
+    .admin-nav-btn:hover {
+      background: var(--neon-gold);
+      color: #02040a;
+      box-shadow: 0 0 15px rgba(255, 183, 3, 0.4);
+    }
+
+    /* Mobile & Tablet Responsiveness for 1.html */
+    @media (max-width: 768px) {
+      .quiz-page-container {
+        padding: 0 max(12px, env(safe-area-inset-left, 0px)) calc(30px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-right, 0px));
+        margin-top: calc(75px + env(safe-area-inset-top, 0px));
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+      .glass-panel {
+        padding: 20px 12px;
+        border-radius: 18px;
+        margin-bottom: 20px;
+        min-height: auto;
+      }
+      .quiz-main-title {
+        font-size: clamp(1.5rem, 5vw, 2rem);
+      }
+      .user-register-card {
+        padding: 18px 12px;
+      }
+      .quiz-progress-hud {
+        padding: 12px 14px;
+        flex-wrap: wrap;
+        gap: 10px;
+        position: sticky;
+        top: calc(env(safe-area-inset-top, 0px) + 54px);
+        z-index: 50;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        background: rgba(5, 9, 28, 0.94);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      }
+      .question-card {
+        padding: 16px 12px;
+      }
+      .option-label {
+        padding: 12px 14px;
+      }
+      .score-banner-card {
+        padding: 28px 14px;
+      }
+      .score-circle {
+        width: 120px;
+        height: 120px;
+      }
+      .score-number {
+        font-size: 2.5rem;
+      }
+      .admin-modal-box {
+        padding: 16px 10px;
+        max-width: 96vw;
+        max-height: 90vh;
+      }
+      .form-control, .admin-search-input {
+        font-size: 16px !important;
+        min-height: 44px;
+      }
+      .btn-cosmic-primary {
+        min-height: 48px;
+        touch-action: manipulation;
+      }
+      .leaderboard-table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- พื้นหลังอวกาศ 3 มิติ -->
+  <canvas id="space-canvas"></canvas>
+
+  <!-- แสงบรรยากาศอวกาศ -->
+  <div class="cosmic-aura aura-1"></div>
+  <div class="cosmic-aura aura-2"></div>
+  <div class="cosmic-aura aura-3"></div>
+
+  <!-- แถบนำทาง (Navbar) -->
+  <header class="header">
+    <nav class="navbar" id="navbar">
+      <a href="index.html" class="brand">
+        <div class="brand-orbit-ring">
+          <div class="brand-planet-dot"></div>
+          <div class="brand-icon">
+            <i class="fa-solid fa-sun"></i>
+          </div>
+        </div>
+        <div class="brand-text">
+          <span class="brand-main">ระบบสุริยะ</span>
+          <span class="brand-sub">SOLAR SYSTEM OBSERVATORY</span>
+        </div>
+      </a>
+
+      <!-- ปุ่มเปิดปิดเมนูสำหรับมือถือ -->
+      <button class="mobile-toggle" id="mobileToggle" aria-label="เมนู">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <!-- เมนูนำทาง -->
+      <div class="nav-menu" id="navMenu">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">
+              <i class="fa-solid fa-layer-group"></i> องค์ประกอบ
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="a.html" class="nav-link">
+              <i class="fa-solid fa-book-open"></i> พื้นฐาน
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="b.html" class="nav-link">
+              <i class="fa-solid fa-atom"></i> จำลองโคจร
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="c.html" class="nav-link">
+              <i class="fa-solid fa-scale-balanced"></i> เปรียบเทียบ
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="d.html" class="nav-link">
+              <i class="fa-solid fa-spell-check"></i> คำศัพท์
+            </a>
+          </li>
+          <!-- ขวาสุด: เมนูดรอปดาวน์ แบบทดสอบ -->
+          <li class="nav-item dropdown" id="quizDropdown">
+            <button class="dropdown-trigger" id="dropdownTrigger" aria-expanded="false">
+              <i class="fa-solid fa-clipboard-question"></i> แบบทดสอบ
+              <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </button>
+            <ul class="dropdown-menu" id="dropdownMenu">
+              <li>
+                <a href="1.html" class="dropdown-item" data-quiz="pre">
+                  <span class="drop-badge">01</span>
+                  <span class="drop-text">ก่อนเรียน</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li>
+                <a href="2.html" class="dropdown-item" data-quiz="post">
+                  <span class="drop-badge">02</span>
+                  <span class="drop-text">หลังเรียน</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li>
+                <a href="3.html" class="dropdown-item" data-quiz="act1">
+                  <span class="drop-badge">03</span>
+                  <span class="drop-text">กิจกรรม 1</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li>
+                <a href="4.html" class="dropdown-item" data-quiz="act2">
+                  <span class="drop-badge">04</span>
+                  <span class="drop-text">กิจกรรม 2</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li class="dropdown-divider" style="margin: 6px 0; border-top: 1px solid rgba(255, 255, 255, 0.12);"></li>
+              <li>
+                <a href="javascript:void(0)" class="dropdown-item admin-dropdown-item" onclick="openAdminModal();">
+                  <span class="drop-badge" style="background: rgba(0, 240, 255, 0.2);"><i class="fa-solid fa-shield-halved"></i></span>
+                  <span class="drop-text" style="font-weight: 600; color: var(--neon-cyan);">ศูนย์แอดมิน (คะแนน 1-4)</span>
+                  <i class="fa-solid fa-lock drop-arrow"></i>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <!-- ปุ่มศูนย์แอดมิน -->
+          <li class="nav-item admin-nav-item">
+            <button class="admin-nav-btn" id="openAdminNavBtn" onclick="openAdminModal();" title="ศูนย์ควบคุมแอดมิน / ดูคะแนน 1, 2, 3, 4 (Alt+A)">
+              <i class="fa-solid fa-shield-halved"></i>
+              <span>แอดมิน</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- เนื้อหาหลักของแบบทดสอบก่อนเรียน -->
+  <main class="quiz-page-container">
+
+    <!-- ส่วนที่ 1: ลงทะเบียนข้อมูลนักเรียน (แสดงเป็นขั้นตอนแรก) -->
+    <section id="stepRegister" class="glass-panel">
+      <div class="quiz-hero-header">
+        <div class="quiz-tag">
+          <i class="fa-solid fa-satellite"></i> PRE-ASSESSMENT MISSION
+        </div>
+        <h1 class="quiz-main-title">แบบทดสอบวัดความรู้ก่อนเรียน</h1>
+        <p class="quiz-sub-desc">
+          การสำรวจและประเมินมโนทัศน์เบื้องต้นเกี่ยวกับระบบสุริยะจักรวาล จำนวน 15 ข้อ
+        </p>
+      </div>
+
+      <!-- บัตรข้อมูลนักเรียน -->
+      <div class="user-register-card">
+        <div class="id-badge-header">
+          <div class="id-badge-title">
+            <i class="fa-solid fa-id-card"></i>
+            <span>ข้อมูลผู้เข้าสอบ (ASTRONAUT CADET IDENTIFICATION)</span>
+          </div>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">กรุณากรอกข้อมูลให้ครบถ้วน</span>
+        </div>
+
+        <form id="studentRegisterForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="studentName"><i class="fa-solid fa-user"></i> ชื่อ - นามสกุล *</label>
+              <input type="text" id="studentName" class="form-control" placeholder="เช่น ด.ช. ดวงดาว ส่องแสง หรือ นายจักรวาล" required autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label for="studentGrade"><i class="fa-solid fa-graduation-cap"></i> ชั้น / ห้อง *</label>
+              <input type="text" id="studentGrade" class="form-control" placeholder="เช่น ม.3/1" required>
+            </div>
+            <div class="form-group">
+              <label for="studentNo"><i class="fa-solid fa-hashtag"></i> เลขที่ *</label>
+              <input type="number" id="studentNo" class="form-control" placeholder="เช่น 15" min="1" max="99" required>
+            </div>
+          </div>
+
+          <div class="rules-box">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <div>
+              <strong>คำชี้แจงในการทำแบบทดสอบ:</strong>
+              <ul>
+                <li>แบบทดสอบมีทั้งหมด <strong>15 ข้อ</strong> ข้อละ 1 คะแนน รวม 15 คะแนน</li>
+                <li>เป็นข้อสอบแบบปรนัย 4 ตัวเลือก ให้เลือกคำตอบที่ถูกต้องที่สุดเพียงข้อเดียว</li>
+                <li>เมื่อส่งคำตอบ ระบบจะบันทึกคะแนน และ <strong>เฉลยเฉพาะข้อที่ตอบถูกเท่านั้น</strong> เพื่อให้นักเรียนได้ศึกษาค้นคว้าต่อในข้อที่ตอบผิด</li>
+                <li>ระบบจะแสดง <strong>5 อันดับแรก (Top 5)</strong> ที่ทำคะแนนได้สูงสุดบนบอร์ดเกียรติยศ</li>
+              </ul>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-cosmic-primary" id="startQuizBtn">
+            <i class="fa-solid fa-rocket"></i> เริ่มทำแบบทดสอบก่อนเรียน
+          </button>
+        </form>
+      </div>
+
+      <!-- ตาราง 5 อันดับแรกปัจจุบันบนหน้าแรก -->
+      <div class="leaderboard-section">
+        <div class="leaderboard-title">
+          <h3><i class="fa-solid fa-trophy"></i> 5 อันดับคะแนนสูงสุด (TOP 5 LEADERBOARD)</h3>
+          <span style="font-size: 0.85rem; color: var(--neon-cyan);">อัปเดตแบบเรียลไทม์</span>
+        </div>
+        <div id="top5TableContainerFront">
+          <!-- ตาราง Top 5 โหลดด้วย JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ส่วนที่ 2: หน้าต่างทำข้อสอบ 15 ข้อ (ซ่อนอยู่จนกว่าจะกรอกข้อมูล) -->
+    <section id="stepQuiz" class="glass-panel" style="display: none;">
+      <!-- แถบข้อมูลผู้สอบ & ความคืบหน้า -->
+      <div class="quiz-progress-hud">
+        <div class="hud-student-info">
+          <i class="fa-solid fa-user-astronaut" style="color: var(--neon-cyan);"></i>
+          <span id="hudStudentDisplay">ผู้เข้าสอบ: -</span>
+          <span class="hud-student-badge" id="hudClassDisplay">ม.-/-</span>
+        </div>
+        <div class="hud-progress-info" id="hudProgressText">
+          ตอบแล้ว: 0 / 15 ข้อ
+        </div>
+      </div>
+
+      <!-- ฟอร์มข้อสอบ 15 ข้อ -->
+      <form id="quizForm">
+        <div id="quizQuestionsWrapper">
+          <!-- คำถาม 15 ข้อจะถูก Render ด้วย JavaScript -->
+        </div>
+
+        <div style="margin-top: 30px; text-align: center;">
+          <button type="submit" class="btn-cosmic-primary" id="submitAnswersBtn">
+            <i class="fa-solid fa-paper-plane"></i> ส่งคำตอบและตรวจคะแนน
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ส่วนที่ 3: สรุปคะแนน & เฉลยเฉพาะข้อที่ทำถูก (Results Screen) -->
+    <section id="stepResult" class="glass-panel" style="display: none;">
+      <div class="quiz-hero-header">
+        <div class="quiz-tag" style="border-color: var(--neon-emerald); color: var(--neon-emerald); background: rgba(16, 185, 129, 0.1);">
+          <i class="fa-solid fa-flag-checkered"></i> MISSION COMPLETED
+        </div>
+        <h1 class="quiz-main-title">ผลการทดสอบก่อนเรียน</h1>
+        <p class="quiz-sub-desc">
+          คะแนนและเฉลยเฉพาะข้อที่คุณตอบถูกต้องตามเงื่อนไขของภารกิจ
+        </p>
+      </div>
+
+      <!-- การ์ดแสดงคะแนน -->
+      <div class="score-banner-card">
+        <div class="score-circle">
+          <span class="score-number" id="resultScoreNum">0</span>
+          <span class="score-total">จาก 15 คะแนน</span>
+        </div>
+
+        <h2 id="resultEvaluation" style="font-size: 1.5rem; margin-bottom: 10px; color: #fff;">-</h2>
+        <p id="resultFeedbackMsg" style="color: var(--text-muted); max-width: 500px; margin: 0 auto 15px;">-</p>
+
+        <div class="student-result-details">
+          <span class="student-result-pill"><i class="fa-solid fa-user"></i> <strong id="resName">-</strong></span>
+          <span class="student-result-pill"><i class="fa-solid fa-graduation-cap"></i> ชั้น: <strong id="resGrade">-</strong></span>
+          <span class="student-result-pill"><i class="fa-solid fa-hashtag"></i> เลขที่: <strong id="resNo">-</strong></span>
+          <span class="student-result-pill"><i class="fa-solid fa-clock"></i> บันทึกเมื่อ: <strong id="resTime">-</strong></span>
+        </div>
+
+        <!-- แถบแสดงสถานะเชื่อมต่อ Google Sheet -->
+        <div style="margin-top: 20px; text-align: center;">
+          <div id="sheetSyncStatus" style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 22px; border-radius: 30px; background: rgba(5, 9, 28, 0.85); border: 1px solid rgba(0, 240, 255, 0.35); font-size: 0.92rem; color: var(--text-bright); box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: all 0.3s ease;">
+            <i class="fa-solid fa-cloud-arrow-up" style="color: var(--neon-cyan);"></i>
+            <span>พร้อมบันทึกคะแนนเข้าสู่ระบบ Google Sheet</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ส่วนเฉลยเฉพาะข้อที่ตอบถูกต้องเท่านั้น -->
+      <div style="margin: 35px 0;">
+        <h3 style="font-size: 1.3rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; color: var(--neon-cyan);">
+          <i class="fa-solid fa-square-check"></i> ตรวจสอบผลรายข้อ (เฉลยเฉพาะข้อที่ทำถูกเท่านั้น)
+        </h3>
+        <div id="resultsBreakdownContainer">
+          <!-- ข้อสอบพร้อมเฉลยเฉพาะข้อที่ถูกจะใส่ที่นี่ -->
+        </div>
+      </div>
+
+      <!-- ตาราง 5 อันดับแรกหลังสอบเสร็จ -->
+      <div class="leaderboard-section">
+        <div class="leaderboard-title">
+          <h3><i class="fa-solid fa-trophy"></i> 5 อันดับคะแนนสูงสุด (TOP 5 LEADERBOARD)</h3>
+          <span style="font-size: 0.85rem; color: var(--neon-gold);">จัดอันดับคะแนนสูงสุด</span>
+        </div>
+        <div id="top5TableContainerResult">
+          <!-- ตาราง Top 5 โหลดด้วย JS -->
+        </div>
+      </div>
+
+      <!-- แผงปุ่มเชื่อมต่อไปยังทุกหน้าในระบบ -->
+      <div style="margin-top: 40px; padding: 25px; background: rgba(5, 9, 28, 0.7); border: 1px solid var(--glass-border-cyan); border-radius: 16px;">
+        <h4 style="text-align: center; font-size: 1.15rem; color: var(--neon-cyan); margin-bottom: 20px;">
+          <i class="fa-solid fa-map-location-dot"></i> สำรวจเนื้อหาห้องเรียนระบบสุริยะต่อไป
+        </h4>
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+          <a href="index.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2);">
+            <i class="fa-solid fa-layer-group"></i> 1. องค์ประกอบ (หน้าหลัก)
+          </a>
+          <a href="a.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem;">
+            <i class="fa-solid fa-book-open"></i> 2. บทเรียนพื้นฐาน
+          </a>
+          <a href="b.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(168, 85, 247, 0.2); border: 1px solid var(--neon-purple); color: #fff;">
+            <i class="fa-solid fa-atom"></i> 3. จำลองโคจร 3D
+          </a>
+          <a href="c.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(255, 183, 3, 0.15); border: 1px solid var(--neon-gold); color: #fff;">
+            <i class="fa-solid fa-scale-balanced"></i> 4. เปรียบเทียบดาว
+          </a>
+          <a href="d.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(16, 185, 129, 0.15); border: 1px solid var(--neon-emerald); color: #fff;">
+            <i class="fa-solid fa-spell-check"></i> 5. คำศัพท์ดาราศาสตร์
+          </a>
+          <a href="3.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(255, 183, 3, 0.2); border: 1px solid var(--neon-gold); color: #fff;">
+            <i class="fa-solid fa-rocket"></i> กิจกรรม 1 (เรียงดาว)
+          </a>
+          <a href="4.html" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(0, 240, 255, 0.2); border: 1px solid var(--neon-cyan); color: #fff;">
+            <i class="fa-solid fa-spell-check"></i> กิจกรรม 2
+          </a>
+          <button type="button" id="retakeQuizBtn" class="btn-cosmic-primary" style="width: auto; padding: 12px 22px; font-size: 0.95rem; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #fca5a5;">
+            <i class="fa-solid fa-rotate-right"></i> ทำแบบทดสอบอีกครั้ง
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- JavaScript หลักของหน้าแบบทดสอบ 1.html -->
+  <script>
+    /* ============================================================
+       1. ชุดข้อสอบก่อนเรียน 15 ข้อ (Pre-test 15 Questions Bank)
+       ============================================================ */
+    const PRE_TEST_QUESTIONS = [
+      {
+        id: 1,
+        question: "ข้อใดอธิบายความหมายของ “ระบบสุริยะ” ได้ถูกต้องที่สุด",
+        options: [
+          "กลุ่มดาวฤกษ์ทั้งหมดที่มองเห็นจากโลก",
+          "ระบบที่มีดวงอาทิตย์เป็นศูนย์กลางและมีวัตถุต่าง ๆ โคจรรอบ",
+          "กลุ่มดาวเคราะห์ที่โคจรรอบโลก",
+          "กลุ่มดาวฤกษ์ที่อยู่ใกล้โลกที่สุด"
+        ],
+        answer: 1,
+        explanation: "ระบบสุริยะมีดวงอาทิตย์เป็นศูนย์กลาง และมีวัตถุต่าง ๆ เช่น ดาวเคราะห์ ดาวเคราะห์น้อย และดาวหาง โคจรรอบภายใต้แรงโน้มถ่วง"
+      },
+      {
+        id: 2,
+        question: "ระบบสุริยะถือกำเนิดขึ้นเมื่อประมาณกี่ล้านปีที่แล้ว",
+        options: [
+          "460 ล้านปี",
+          "1,000 ล้านปี",
+          "4,600 ล้านปี",
+          "10,000 ล้านปี"
+        ],
+        answer: 2,
+        explanation: "ระบบสุริยะเริ่มก่อตัวจากกลุ่มฝุ่นและแก๊สในอวกาศที่เรียกว่า เนบิวลาสุริยะ (Solar Nebula) เมื่อประมาณ 4,600 ล้านปีที่แล้ว"
+      },
+      {
+        id: 3,
+        question: "ข้อใดเป็นดาวเคราะห์ชั้นในทั้งหมด",
+        options: [
+          "โลก ดาวอังคาร ดาวพฤหัสบดี ดาวเสาร์",
+          "ดาวพุธ ดาวศุกร์ โลก ดาวอังคาร",
+          "ดาวศุกร์ โลก ดาวเสาร์ ดาวยูเรนัส",
+          "ดาวพุธ ดาวพฤหัสบดี ดาวยูเรนัส ดาวเนปจูน"
+        ],
+        answer: 1,
+        explanation: "ดาวเคราะห์ชั้นในหรือดาวเคราะห์หิน ได้แก่ ดาวพุธ ดาวศุกร์ โลก และดาวอังคาร โดยมีองค์ประกอบส่วนใหญ่เป็นหินและเหล็ก"
+      },
+      {
+        id: 4,
+        question: "ดาวเคราะห์แคระมีลักษณะสำคัญตามสไลด์อย่างไร?",
+        options: [
+          "โคจรรอบโลก",
+          "เป็นดาวบริวารของดวงอาทิตย์",
+          "โคจรรอบดวงอาทิตย์และมีรูปร่างเป็นทรงกลม",
+          "เป็นดาวฤกษ์ขนาดเล็ก"
+        ],
+        answer: 2,
+        explanation: "ดาวเคราะห์แคระโคจรรอบดวงอาทิตย์ ไม่เป็นดาวบริวาร และมีสัณฐานเป็นทรงกลม"
+      },
+      {
+        id: 5,
+        question: "องค์ประกอบหลักของดาวหางคืออะไร?",
+        options: [
+          "เหล็ก",
+          "น้ำแข็ง",
+          "หิน",
+          "ไฮโดรเจน"
+        ],
+        answer: 1,
+        explanation: "ดาวหางมีองค์ประกอบหลักเป็นน้ำแข็ง เมื่อเข้าใกล้ดวงอาทิตย์ น้ำแข็งจะระเหิดและเกิดหางแก๊สกับหางฝุ่น"
+      },
+      {
+        id: 6,
+        question: "เหตุใดดาวฤกษ์จึงสามารถส่องแสงได้ด้วยตัวเอง",
+        options: [
+          "สะท้อนแสงจากดาวเคราะห์",
+          "เกิดจากปฏิกิริยานิวเคลียร์ฟิวชัน",
+          "ได้รับแสงจากดวงอาทิตย์",
+          "เกิดจากการสะท้อนแสงของดวงจันทร์"
+        ],
+        answer: 1,
+        explanation: "ดาวฤกษ์สามารถสร้างพลังงานและแสงได้ด้วยตัวเองจาก ปฏิกิริยานิวเคลียร์ฟิวชัน"
+      },
+      {
+        id: 7,
+        question: "เมื่อดาวหางเข้าใกล้ดวงอาทิตย์จะเกิดอะไรขึ้น?",
+        options: [
+          "หยุดการเคลื่อนที่",
+          "กลายเป็นดาวเคราะห์",
+          "น้ำแข็งระเหิดและเกิดหาง",
+          "มีขนาดใหญ่ขึ้นทันที"
+        ],
+        answer: 2,
+        explanation: "ความร้อนจากดวงอาทิตย์ทำให้น้ำแข็งในดาวหางระเหิดออก จึงเกิดหางแก๊สและหางฝุ่น"
+      },
+      {
+        id: 8,
+        question: "ดาวบริวารหรือลักษณะที่เรียกว่า “ดวงจันทร์บริวาร” หมายถึงอะไร?",
+        options: [
+          "วัตถุที่โคจรรอบดวงอาทิตย์เท่านั้น",
+          "วัตถุที่โคจรรอบวัตถุที่ใหญ่กว่าและไม่ใช่ดวงอาทิตย์",
+          "วัตถุที่อยู่ระหว่างดาวเคราะห์",
+          "ดาวฤกษ์ที่อยู่ใกล้ดาวเคราะห์"
+        ],
+        answer: 1,
+        explanation: "ดาวบริวารสามารถโคจรรอบดาวเคราะห์หรือดาวเคราะห์แคระได้"
+      },
+      {
+        id: 9,
+        question: "ดาวเคราะห์ดวงใดมีคาบการโคจรรอบดวงอาทิตย์เพียงประมาณ 88 วัน",
+        options: [
+          "ดาวศุกร์",
+          "โลก",
+          "ดาวพุธ",
+          "ดาวอังคาร"
+        ],
+        answer: 2,
+        explanation: "ดาวพุธเป็นดาวเคราะห์ที่อยู่ใกล้ดวงอาทิตย์ที่สุดและโคจรรอบดวงอาทิตย์เร็วที่สุด ใช้เวลาเพียง 88 วัน"
+      },
+      {
+        id: 10,
+        question: "เหตุใดดาวศุกร์จึงมีอุณหภูมิพื้นผิวสูงมาก",
+        options: [
+          "เพราะอยู่ใกล้ดวงจันทร์",
+          "เพราะมีวงแหวนจำนวนมาก",
+          "เพราะเกิดปรากฏการณ์เรือนกระจกแบบกู่ไม่กลับ",
+          "เพราะไม่มีบรรยากาศ"
+        ],
+        answer: 2,
+        explanation: "ดาวศุกร์มีบรรยากาศหนาแน่นและมีคาร์บอนไดออกไซด์เป็นองค์ประกอบหลัก ทำให้เกิด Runaway Greenhouse Effect ส่งผลให้อุณหภูมิพื้นผิวเฉลี่ยสูงถึงประมาณ 464°C"
+      },
+      {
+        id: 11,
+        question: "ข้อใดเป็นสาเหตุสำคัญที่ทำให้โลกเกิดฤดูกาล",
+        options: [
+          "โลกอยู่ใกล้ดวงอาทิตย์ตลอดเวลา",
+          "แกนหมุนของโลกเอียงประมาณ 23.44°",
+          "ดวงจันทร์โคจรรอบโลก",
+          "โลกมีสนามแม่เหล็ก"
+        ],
+        answer: 1,
+        explanation: "แกนหมุนของโลกเอียงประมาณ 23.44 องศา ทำให้แต่ละช่วงของปีแต่ละพื้นที่ได้รับพลังงานจากแสงอาทิตย์แตกต่างกัน จึงเกิดฤดูกาล"
+      },
+      {
+        id: 12,
+        question: "เหตุใดดาวเนปจูนจึงมีสภาพหนาวเย็นสุดขั้ว?",
+        options: [
+          "เพราะไม่มีดวงจันทร์",
+          "เพราะอยู่ห่างจากดวงอาทิตย์มากที่สุด",
+          "เพราะมีวงแหวนจำนวนมาก",
+          "เพราะอยู่ใกล้ดาวพฤหัสบดี"
+        ],
+        answer: 1,
+        explanation: "ดาวเนปจูนอยู่ห่างจากดวงอาทิตย์มากที่สุดในบรรดาดาวเคราะห์ จึงมีสภาพหนาวเย็นสุดขั้ว"
+      },
+      {
+        id: 13,
+        question: "ดาวอังคารมีสีแดงเนื่องจากสาเหตุใด",
+        options: [
+          "มีมหาสมุทรสีแดง",
+          "พื้นผิวปกคลุมด้วยฝุ่นของสนิมเหล็ก",
+          "มีแก๊สออกซิเจนจำนวนมาก",
+          "สะท้อนแสงสีแดงจากดวงอาทิตย์"
+        ],
+        answer: 1,
+        explanation: "พื้นผิวดาวอังคารปกคลุมด้วยฝุ่นของ สนิมเหล็ก เมื่อมองจากโลกจึงปรากฏเป็นสีแดง"
+      },
+      {
+        id: 14,
+        question: "แถบดาวเคราะห์น้อยส่วนใหญ่อยู่บริเวณใด",
+        options: [
+          "ระหว่างดาวพุธกับดาวศุกร์",
+          "ระหว่างโลกกับดาวอังคาร",
+          "ระหว่างดาวอังคารกับดาวพฤหัสบดี",
+          "ระหว่างดาวเสาร์กับดาวยูเรนัส"
+        ],
+        answer: 2,
+        explanation: "แถบดาวเคราะห์น้อยเป็นบริเวณที่มีวัตถุขนาดเล็กจำนวนมากโคจรรอบดวงอาทิตย์ โดยอยู่ระหว่างวงโคจรของ ดาวอังคารและดาวพฤหัสบดี"
+      },
+      {
+        id: 15,
+        question: "ข้อใดกล่าวถูกต้องเกี่ยวกับดาวพฤหัสบดี",
+        options: [
+          "เป็นดาวเคราะห์ที่เล็กที่สุดในระบบสุริยะ",
+          "เป็นดาวเคราะห์หินที่อยู่ใกล้ดวงอาทิตย์ที่สุด",
+          "เป็นดาวเคราะห์แก๊สยักษ์ที่มีขนาดใหญ่ที่สุดในระบบสุริยะ",
+          "เป็นดาวเคราะห์ที่ไม่มีดาวบริวาร"
+        ],
+        answer: 2,
+        explanation: "ดาวพฤหัสบดีเป็นดาวเคราะห์ลำดับที่ 5 และเป็น ดาวเคราะห์แก๊สยักษ์ที่มีขนาดใหญ่ที่สุดในระบบสุริยะ อีกทั้งมีดาวบริวารจำนวนมาก"
+      }
+    ];
+
+    /* ============================================================
+       2. การจัดการหน่วยเก็บข้อมูล & Google Sheets (Storage & Database Controller)
+       ============================================================ */
+    const STORAGE_KEY = 'solar_system_quiz_pre_records';
+    const ADMIN_PASS_KEY = 'solar_system_admin_pass';
+    const DEFAULT_ADMIN_PASS = '123456';
+
+    // การเชื่อมต่อ Google Sheet: สเปรดชีต "จักรวาลปลายนิ้ว" > แผ่นงาน "ก่อนเรียน"
+    const GOOGLE_SHEET_KEY = 'solar_system_google_sheet_url';
+    const DEFAULT_GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycby-dYF1bxJ_XQutaOV4_Em88C8t1SAUh98t5mWYiq24aj2r3FNdTWafXEsLN9oHIMHI/exec';
+    const GOOGLE_SHEET_TAB_NAME = 'ก่อนเรียน';
+
+    function getGoogleSheetUrl() {
+      const saved = localStorage.getItem(GOOGLE_SHEET_KEY);
+      if (saved && saved.trim() !== '') {
+        return saved.trim();
+      }
+      return DEFAULT_GOOGLE_SHEET_URL.trim();
+    }
+
+    function setGoogleSheetUrl(url) {
+      if (url && url.trim() !== '') {
+        localStorage.setItem(GOOGLE_SHEET_KEY, url.trim());
+      } else {
+        localStorage.removeItem(GOOGLE_SHEET_KEY);
+      }
+    }
+
+    // ฟังก์ชันส่งข้อมูล 1 รายการไปยัง Google Sheet
+    async function sendRecordToGoogleSheet(record) {
+      const url = getGoogleSheetUrl();
+      if (!url) {
+        return { success: false, reason: 'NO_URL' };
+      }
+
+      const payload = {
+        sheetName: GOOGLE_SHEET_TAB_NAME,
+        name: record.name,
+        grade: record.grade,
+        studentNo: record.studentNo,
+        score: record.score
+      };
+
+      try {
+        await fetch(url, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8'
+          },
+          body: JSON.stringify(payload)
+        });
+        return { success: true };
+      } catch (err) {
+        console.error("ส่งข้อมูลไปยัง Google Sheet ล้มเหลว:", err);
+        return { success: false, reason: err.message };
+      }
+    }
+
+    function getStoredRecords() {
+      try {
+        const data = localStorage.getItem(STORAGE_KEY);
+        return data ? JSON.parse(data) : [];
+      } catch (e) {
+        console.error("Storage error:", e);
+        return [];
+      }
+    }
+
+    function saveRecord(record) {
+      const records = getStoredRecords();
+      records.push(record);
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+      } catch (e) {
+        console.error("Save error:", e);
+      }
+      return records;
+    }
+
+    function getAdminPassword() {
+      const saved = localStorage.getItem(ADMIN_PASS_KEY);
+      if (!saved || saved === 'admin1234') {
+        localStorage.setItem(ADMIN_PASS_KEY, DEFAULT_ADMIN_PASS);
+        return DEFAULT_ADMIN_PASS;
+      }
+      return saved;
+    }
+
+    /* ============================================================
+       3. ตัวแปรสถานะของผู้ใช้ปัจจุบัน (Current Session State)
+       ============================================================ */
+    let currentStudent = {
+      name: '',
+      grade: '',
+      studentNo: '',
+      startTime: null
+    };
+
+    let userAnswers = {}; // { 0: 1, 1: 2, ... }
+
+    /* ============================================================
+       4. การทำงานของ UI & Form Handling
+       ============================================================ */
+    const stepRegister = document.getElementById('stepRegister');
+    const stepQuiz = document.getElementById('stepQuiz');
+    const stepResult = document.getElementById('stepResult');
+
+    const studentRegisterForm = document.getElementById('studentRegisterForm');
+    const quizQuestionsWrapper = document.getElementById('quizQuestionsWrapper');
+    const hudStudentDisplay = document.getElementById('hudStudentDisplay');
+    const hudClassDisplay = document.getElementById('hudClassDisplay');
+    const hudProgressText = document.getElementById('hudProgressText');
+    const quizForm = document.getElementById('quizForm');
+
+    // 1. เริ่มทำข้อสอบเมื่อกดฟอร์มลงทะเบียน
+    studentRegisterForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('studentName').value.trim();
+      const grade = document.getElementById('studentGrade').value.trim();
+      const studentNo = document.getElementById('studentNo').value.trim();
+
+      if (!name || !grade || !studentNo) {
+        alert('กรุณากรอกข้อมูลให้ครบถ้วนทั้ง ชื่อ-นามสกุล, ชั้น และเลขที่');
+        return;
+      }
+
+      // ปิดคีย์บอร์ดบน iOS / สมาร์ตโฟน
+      if (document.activeElement && typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
+      }
+
+      currentStudent = {
+        name,
+        grade,
+        studentNo,
+        startTime: new Date()
+      };
+
+      // สลับหน้าจอไปยังขั้นตอนทำข้อสอบ
+      stepRegister.style.display = 'none';
+      stepQuiz.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // อัปเดต HUD ด้านบน
+      hudStudentDisplay.textContent = `ผู้เข้าสอบ: ${name} (เลขที่ ${studentNo})`;
+      hudClassDisplay.textContent = `ชั้น ${grade}`;
+
+      // เรนเดอร์ข้อสอบ 15 ข้อ
+      renderQuestions();
+    });
+
+    // 2. ฟังก์ชันเรนเดอร์คำถาม 15 ข้อ
+    function renderQuestions() {
+      quizQuestionsWrapper.innerHTML = '';
+      userAnswers = {};
+
+      PRE_TEST_QUESTIONS.forEach((q, qIndex) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        card.id = `qCard_${qIndex}`;
+
+        let optionsHtml = '';
+        const choiceLabels = ['ก.', 'ข.', 'ค.', 'ง.'];
+        q.options.forEach((optText, optIndex) => {
+          optionsHtml += `
+            <label class="option-label" id="optLabel_${qIndex}_${optIndex}" data-q="${qIndex}" data-opt="${optIndex}">
+              <input type="radio" name="question_${qIndex}" value="${optIndex}" data-q="${qIndex}" data-opt="${optIndex}">
+              <span class="option-text"><strong style="color: var(--neon-cyan); margin-right: 6px;">${choiceLabels[optIndex]}</strong>${optText}</span>
+            </label>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="q-number-title">
+            <span class="q-index-badge">ข้อที่ ${qIndex + 1}</span>
+            <span>${q.question.replace(/^\d+\.\s*/, '')}</span>
+          </div>
+          <div class="options-grid">
+            ${optionsHtml}
+          </div>
+        `;
+
+        quizQuestionsWrapper.appendChild(card);
+      });
+
+      // ฟังก์ชันจัดการเลือกคำตอบอย่างแม่นยำ (รองรับทั้ง iOS / iPadOS / Android / Desktop)
+      function selectOption(qIdx, optIdx) {
+        userAnswers[qIdx] = optIdx;
+
+        // อัปเดต checked ให้ radio ทุกตัวในข้อนี้อย่างชัดเจน
+        const radios = document.querySelectorAll(`input[name="question_${qIdx}"]`);
+        radios.forEach(r => {
+          r.checked = (parseInt(r.value, 10) === optIdx);
+        });
+
+        // ไฮไลต์ตัวเลือกในการ์ด
+        document.querySelectorAll(`[id^="optLabel_${qIdx}_"]`).forEach(l => l.classList.remove('selected'));
+        const selectedLabel = document.getElementById(`optLabel_${qIdx}_${optIdx}`);
+        if (selectedLabel) {
+          selectedLabel.classList.add('selected');
+        }
+
+        // ทำเครื่องหมายว่าข้อนี้ตอบแล้ว
+        const qCard = document.getElementById(`qCard_${qIdx}`);
+        if (qCard) {
+          qCard.classList.add('answered');
+        }
+
+        // อัปเดตสถานะความคืบหน้า
+        updateProgressHUD();
+      }
+
+      // ตัวควบคุมป้องกัน Double-trigger ระหว่าง touchend กับ synthetic click บน iOS WebKit
+      let lastSelectionTime = 0;
+      function triggerOptionSelect(qIdx, optIdx) {
+        const now = Date.now();
+        if (now - lastSelectionTime < 60) return;
+        lastSelectionTime = now;
+        selectOption(qIdx, optIdx);
+      }
+
+      // ดัก Event ทั้ง click, touchend และ change เพื่อให้ iOS และอุปกรณ์สัมผัสแตะติดทันที
+      document.querySelectorAll('.option-label').forEach(label => {
+        const qIdx = parseInt(label.getAttribute('data-q'), 10);
+        const optIdx = parseInt(label.getAttribute('data-opt'), 10);
+        if (isNaN(qIdx) || isNaN(optIdx)) return;
+
+        label.addEventListener('click', (e) => {
+          triggerOptionSelect(qIdx, optIdx);
+        });
+
+        label.addEventListener('touchend', (e) => {
+          triggerOptionSelect(qIdx, optIdx);
+        }, { passive: true });
+      });
+
+      document.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+          const qIdx = parseInt(e.target.getAttribute('data-q'), 10);
+          const optIdx = parseInt(e.target.getAttribute('data-opt'), 10);
+          if (!isNaN(qIdx) && !isNaN(optIdx)) {
+            triggerOptionSelect(qIdx, optIdx);
+          }
+        });
+      });
+
+      // สำรอง Event Delegation เพิ่มเติมเพื่อให้แตะได้ทุกจุดของการ์ดคำถามบน iOS Safari
+      if (quizQuestionsWrapper) {
+        quizQuestionsWrapper.addEventListener('click', (e) => {
+          const label = e.target.closest('.option-label');
+          if (!label) return;
+          const qIdx = parseInt(label.getAttribute('data-q'), 10);
+          const optIdx = parseInt(label.getAttribute('data-opt'), 10);
+          if (!isNaN(qIdx) && !isNaN(optIdx)) {
+            triggerOptionSelect(qIdx, optIdx);
+          }
+        });
+      }
+
+      updateProgressHUD();
+    }
+
+    function updateProgressHUD() {
+      const answeredCount = Object.keys(userAnswers).length;
+      hudProgressText.textContent = `ตอบแล้ว: ${answeredCount} / 15 ข้อ`;
+      if (answeredCount === 15) {
+        hudProgressText.style.color = 'var(--neon-emerald)';
+      } else {
+        hudProgressText.style.color = 'var(--neon-gold)';
+      }
+    }
+
+    // 3. ส่งคำตอบและตรวจผล
+    quizForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const answeredCount = Object.keys(userAnswers).length;
+
+      if (answeredCount < 15) {
+        const confirmSubmit = confirm(`คุณยังตอบไม่ครบ 15 ข้อ (ตอบไปแล้ว ${answeredCount}/15 ข้อ) ต้องการส่งคำตอบเลยหรือไม่?`);
+        if (!confirmSubmit) return;
+      }
+
+      // คำนวณคะแนน
+      let score = 0;
+      const questionResults = [];
+
+      PRE_TEST_QUESTIONS.forEach((q, idx) => {
+        const userSelected = userAnswers[idx] !== undefined ? userAnswers[idx] : null;
+        const isCorrect = userSelected === q.answer;
+        if (isCorrect) score++;
+
+        questionResults.push({
+          questionId: q.id,
+          questionText: q.question,
+          userSelected,
+          correctAnswer: q.answer,
+          isCorrect,
+          explanation: q.explanation,
+          options: q.options
+        });
+      });
+
+      // วันเวลาปัจจุบัน
+      const now = new Date();
+      const timeStr = now.toLocaleDateString('th-TH', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      // ประเมินผลข้อความ
+      let evalText = '';
+      if (score >= 12) {
+        evalText = 'ยอดเยี่ยมมาก';
+      } else if (score >= 8) {
+        evalText = 'ดีมาก';
+      } else {
+        evalText = 'พร้อมเรียนรู้';
+      }
+
+      // สร้าง Object บันทึกข้อมูล
+      const studentRecord = {
+        id: 'QUIZ_' + Date.now(),
+        name: currentStudent.name,
+        grade: currentStudent.grade,
+        studentNo: currentStudent.studentNo,
+        score: score,
+        total: 15,
+        percentage: Math.round((score / 15) * 100),
+        evaluation: evalText,
+        time: timeStr,
+        timestamp: now.getTime()
+      };
+
+      // บันทึกลงหน่วยเก็บข้อมูล (localStorage)
+      saveRecord(studentRecord);
+
+      // ส่งข้อมูลเข้าสู่ Google Sheet (สเปรดชีต "จักรวาลปลายนิ้ว" ➔ แผ่นงาน "ก่อนเรียน")
+      syncToGoogleSheetUI(studentRecord);
+
+      // แสดงผลลัพธ์
+      displayResults(studentRecord, questionResults);
+    });
+
+    // ฟังก์ชันซิงค์คะแนนลง Google Sheet และอัปเดตสถานะบนหน้าจอ
+    async function syncToGoogleSheetUI(record) {
+      const statusBadge = document.getElementById('sheetSyncStatus');
+      if (!statusBadge) return;
+
+      const sheetUrl = getGoogleSheetUrl();
+      if (!sheetUrl) {
+        statusBadge.innerHTML = '<i class="fa-solid fa-cloud-arrow-up" style="color: var(--neon-gold);"></i> <span>บันทึกคะแนนในเครื่องเรียบร้อย (ยังไม่ได้ตั้งค่า Google Sheet URL)</span>';
+        statusBadge.style.borderColor = 'rgba(255, 215, 0, 0.4)';
+        statusBadge.style.color = 'var(--neon-gold)';
+        return;
+      }
+
+      statusBadge.innerHTML = '<i class="fa-solid fa-rotate fa-spin" style="color: var(--neon-cyan);"></i> <span>กำลังบันทึกคะแนนเข้าสู่ Google Sheet (ก่อนเรียน)...</span>';
+      statusBadge.style.borderColor = 'rgba(0, 240, 255, 0.4)';
+      statusBadge.style.color = 'var(--neon-cyan)';
+
+      const res = await sendRecordToGoogleSheet(record);
+      if (res.success) {
+        statusBadge.innerHTML = '<i class="fa-solid fa-circle-check" style="color: #34d399;"></i> <span>บันทึกคะแนนเข้าสู่ Google Sheet (ก่อนเรียน) เรียบร้อยแล้ว ✓</span>';
+        statusBadge.style.borderColor = 'rgba(52, 211, 153, 0.5)';
+        statusBadge.style.color = '#34d399';
+        setTimeout(() => { renderLeaderboards(); }, 1200);
+      } else {
+        statusBadge.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color: #f87171;"></i> <span>บันทึกในเครื่องแล้ว (ไม่สามารถส่งไปยัง Google Sheet ได้)</span>';
+        statusBadge.style.borderColor = 'rgba(248, 113, 113, 0.4)';
+        statusBadge.style.color = '#f87171';
+      }
+    }
+
+    // 4. แสดงผลลัพธ์คะแนน & เฉลยเฉพาะข้อที่ทำถูก
+    function displayResults(record, results) {
+      stepQuiz.style.display = 'none';
+      stepResult.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // ตัวเลขคะแนน
+      document.getElementById('resultScoreNum').textContent = record.score;
+      document.getElementById('resName').textContent = record.name;
+      document.getElementById('resGrade').textContent = record.grade;
+      document.getElementById('resNo').textContent = record.studentNo;
+      document.getElementById('resTime').textContent = record.time;
+
+      // ประเมินผล
+      const evalElem = document.getElementById('resultEvaluation');
+      const feedbackElem = document.getElementById('resultFeedbackMsg');
+      if (record.score >= 12) {
+        evalElem.textContent = 'ยอดเยี่ยมมาก! 🌟 (ความรู้พื้นฐานระดับสูง)';
+        evalElem.style.color = '#34d399';
+        feedbackElem.textContent = 'คุณมีความรู้รอบตัวเกี่ยวกับระบบสุริยะและดาราศาสตร์ดีเยี่ยม พร้อมสำหรับการสำรวจบทเรียนเชิงลึก!';
+      } else if (record.score >= 8) {
+        evalElem.textContent = 'ดีมาก! 🚀 (มีความรู้พื้นฐานปานกลาง)';
+        evalElem.style.color = 'var(--neon-cyan)';
+        feedbackElem.textContent = 'คุณมีพื้นฐานความเข้าใจที่ดี และบทเรียนนี้จะช่วยเติมเต็มความรู้ให้แม่นยำยิ่งขึ้น';
+      } else {
+        evalElem.textContent = 'พร้อมเรียนรู้! 🔭 (จุดเริ่มต้นที่ดี)';
+        evalElem.style.color = 'var(--neon-gold)';
+        feedbackElem.textContent = 'ไม่ต้องกังวล นี่เป็นเพียงแบบทดสอบก่อนเรียน เข้าไปสำรวจเนื้อหาในบทเรียนเพื่อค้นพบความลับของจักรวาลกันเลย!';
+      }
+
+      // แสดงเฉลยรายข้อ โดยเฉลยเฉพาะข้อที่ทำถูกเท่านั้นตามเงื่อนไขของผู้ใช้
+      const breakdownContainer = document.getElementById('resultsBreakdownContainer');
+      breakdownContainer.innerHTML = '';
+
+      results.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = `feedback-card ${item.isCorrect ? 'correct' : 'incorrect'}`;
+
+        const choiceLetters = ['ก.', 'ข.', 'ค.', 'ง.'];
+        const userChosenText = item.userSelected !== null ? `${choiceLetters[item.userSelected]} ${item.options[item.userSelected]}` : 'ไม่ได้ตอบ';
+
+        if (item.isCorrect) {
+          // ข้อที่ตอบถูก: แสดงเฉลยและคำอธิบายอย่างละเอียด
+          card.innerHTML = `
+            <div class="feedback-header-correct">
+              <i class="fa-solid fa-circle-check"></i>
+              <span>ข้อที่ ${index + 1} : ตอบถูกต้อง (+1 คะแนน)</span>
+            </div>
+            <div style="font-weight: 500; margin-bottom: 8px; color: #fff;">
+              ${item.questionText}
+            </div>
+            <div style="font-size: 0.95rem; color: #a7f3d0; margin-bottom: 6px;">
+              <i class="fa-solid fa-check"></i> คำตอบของคุณ: <strong>${userChosenText}</strong> (ถูกต้อง)
+            </div>
+            <div class="feedback-explanation">
+              <strong><i class="fa-solid fa-lightbulb"></i> คำอธิบายเฉลย:</strong> ${item.explanation}
+            </div>
+          `;
+        } else {
+          // ข้อที่ตอบผิด: ซ่อนเฉลยตามคำสั่งอย่างเคร่งครัด
+          card.innerHTML = `
+            <div class="feedback-header-incorrect">
+              <i class="fa-solid fa-circle-xmark"></i>
+              <span>ข้อที่ ${index + 1} : ตอบไม่ถูกต้อง (0 คะแนน)</span>
+            </div>
+            <div style="font-weight: 500; margin-bottom: 8px; color: #fff;">
+              ${item.questionText}
+            </div>
+            <div style="font-size: 0.95rem; color: #fca5a5; margin-bottom: 6px;">
+              <i class="fa-solid fa-xmark"></i> คำตอบของคุณ: <strong>${userChosenText}</strong>
+            </div>
+            <div class="hidden-answer-notice">
+              <i class="fa-solid fa-lock"></i>
+              <span>ระบบซ่อนเฉลยสำหรับข้อที่ตอบผิด เพื่อให้นักเรียนได้ศึกษาค้นคว้าคำตอบที่ถูกต้องจากบทเรียนด้วยตนเอง</span>
+            </div>
+          `;
+        }
+
+        breakdownContainer.appendChild(card);
+      });
+
+      // อัปเดตตาราง Top 5
+      renderLeaderboards();
+    }
+
+    // 5. ทำแบบทดสอบใหม่อีกครั้ง
+    document.getElementById('retakeQuizBtn').addEventListener('click', () => {
+      stepResult.style.display = 'none';
+      stepRegister.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      renderLeaderboards();
+    });
+
+    /* ============================================================
+       5. ตาราง 5 อันดับแรก (Top 5 Leaderboard Controller)
+       ดึงข้อมูลจาก Google Sheet เพื่อให้ทุกเครื่องเห็น 5 อันดับแรกที่เหมือนกัน
+       ============================================================ */
+    const SPREADSHEET_ID = '1Djr3luVP2gRxsjImrGTXxvFrJdBQQz-ESBEieDFl1kc';
+
+    function fetchGvizViaJsonp(sheetTab) {
+      return new Promise((resolve, reject) => {
+        const callbackName = 'gviz_jsonp_' + Math.floor(Math.random() * 10000000);
+        const script = document.createElement('script');
+        
+        const timeout = setTimeout(() => {
+          cleanup();
+          reject(new Error('Gviz JSONP timeout'));
+        }, 8000);
+
+        function cleanup() {
+          clearTimeout(timeout);
+          try { delete window[callbackName]; } catch (e) { window[callbackName] = undefined; }
+          if (script && script.parentNode) {
+            script.parentNode.removeChild(script);
+          }
+        }
+
+        window[callbackName] = function(data) {
+          cleanup();
+          resolve(data);
+        };
+
+        script.onerror = function(err) {
+          cleanup();
+          reject(err);
+        };
+
+        script.src = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=responseHandler:${callbackName}&sheet=${encodeURIComponent(sheetTab)}&t=${Date.now()}`;
+        document.head.appendChild(script);
+      });
+    }
+
+    async function fetchTop5FromGoogleSheet() {
+      const url = getGoogleSheetUrl();
+      const sheetTab = GOOGLE_SHEET_TAB_NAME;
+
+      // 1. ดึงข้อมูลผ่าน Google Visualization API ด้วย JSONP (ไม่มีปัญหา CORS ทุกเบราว์เซอร์เข้าถึงได้ทันที)
+      try {
+        const data = await fetchGvizViaJsonp(sheetTab);
+        if (data && data.status === 'ok' && data.table) {
+          const cols = data.table.cols || [];
+          let nameColIdx = 0;
+          let scoreColIdx = 3;
+
+          cols.forEach((col, idx) => {
+            const label = String(col.label || '').trim().toLowerCase();
+            if (label.includes('ชื่อ') || label.includes('name')) nameColIdx = idx;
+            if (label.includes('คะแนน') || label.includes('score') || label.includes('point')) scoreColIdx = idx;
+          });
+
+          const list = [];
+          (data.table.rows || []).forEach(r => {
+            if (!r || !r.c || !r.c.length) return;
+            const nameCell = r.c[nameColIdx];
+            const name = nameCell ? String(nameCell.v !== undefined && nameCell.v !== null ? nameCell.v : (nameCell.f || '')).trim() : '';
+
+            if (!name || name === '-' || name === 'ชื่อ' || name === 'ชื่อ - นามสกุล' || name.toLowerCase() === 'name') return;
+
+            const scoreCell = (scoreColIdx < r.c.length && r.c[scoreColIdx]) ? r.c[scoreColIdx] : (r.c.length > 3 && r.c[3] ? r.c[3] : (r.c.length > 1 ? r.c[r.c.length - 1] : null));
+            let score = 0;
+            if (scoreCell) {
+              if (typeof scoreCell.v === 'number') {
+                score = scoreCell.v;
+              } else if (scoreCell.v !== undefined && scoreCell.v !== null) {
+                score = parseFloat(String(scoreCell.v).replace(/[^0-9.-]/g, ''));
+              } else if (scoreCell.f) {
+                score = parseFloat(String(scoreCell.f).replace(/[^0-9.-]/g, ''));
+              }
+            }
+            if (isNaN(score)) score = 0;
+
+            list.push({ name, score });
+          });
+
+          list.sort((a, b) => b.score - a.score);
+          return { items: list.slice(0, 5), source: 'sheet' };
+        }
+      } catch (err) {
+        console.warn('Gviz JSONP fetch failed:', err);
+      }
+
+      // 2. สำรองข้อมูลผ่าน Google Apps Script Web App (doGet)
+      if (url) {
+        try {
+          const sep = url.includes('?') ? '&' : '?';
+          const requestUrl = `${url}${sep}action=read&sheetName=${encodeURIComponent(sheetTab)}&t=${Date.now()}`;
+          const response = await fetch(requestUrl, {
+            method: 'GET',
+            headers: { 'Accept': 'application/json' }
+          });
+          if (response.ok) {
+            const result = await response.json();
+            if (result && result.status === 'success' && (Array.isArray(result.top5) || Array.isArray(result.data))) {
+              const records = (result.top5 && Array.isArray(result.top5) && result.top5.length > 0)
+                ? result.top5
+                : (result.data || []);
+
+              const formatted = records.map(item => ({
+                name: String(item.name || '').trim(),
+                score: (typeof item.score === 'number') ? item.score : (parseFloat(item.score) || 0)
+              })).filter(item => item.name && item.name !== '-');
+
+              formatted.sort((a, b) => b.score - a.score);
+              return { items: formatted.slice(0, 5), source: 'sheet' };
+            }
+          }
+        } catch (err) {
+          console.warn('Apps Script fetch failed:', err);
+        }
+      }
+
+      // 3. สำรองข้อมูลจาก LocalStorage (กรณีออฟไลน์หรือไม่มีอินเทอร์เน็ต)
+      const localRecords = getStoredRecords();
+      if (localRecords && localRecords.length > 0) {
+        const sorted = [...localRecords].sort((a, b) => (b.score - a.score) || (a.timestamp - b.timestamp));
+        return {
+          items: sorted.slice(0, 5).map(item => ({ name: item.name, score: item.score })),
+          source: 'local'
+        };
+      }
+
+      return { items: [], source: 'local' };
+    }
+
+    async function renderLeaderboards() {
+      const containers = [
+        document.getElementById('top5TableContainerFront'),
+        document.getElementById('top5TableContainerResult'),
+        document.getElementById('frontLeaderboard'),
+        document.getElementById('gameLeaderboard')
+      ].filter(Boolean);
+
+      if (containers.length === 0) return;
+
+      const cacheKey = `solar_system_cached_top5_${GOOGLE_SHEET_TAB_NAME}`;
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        try {
+          const cachedObj = JSON.parse(cached);
+          const cachedItems = Array.isArray(cachedObj) ? cachedObj : (cachedObj.items || []);
+          const cachedSource = (cachedObj && cachedObj.source) ? cachedObj.source : 'sheet';
+          if (cachedSource === 'sheet') {
+            const cachedHtml = generateTop5TableHtml(cachedItems, cachedSource);
+            containers.forEach(c => c.innerHTML = cachedHtml);
+          }
+        } catch (e) {}
+      }
+
+      containers.forEach(c => {
+        if (!c.innerHTML || c.innerHTML.includes('แสดงเฉพาะคะแนนในเครื่องนี้')) {
+          c.innerHTML = `
+            <div style="text-align: center; padding: 25px; background: rgba(14,22,54,0.5); border-radius: 12px; color: var(--text-muted, #94a3b8); font-size: 1.05rem;">
+              <i class="fa-solid fa-rotate fa-spin" style="font-size: 1.8rem; margin-bottom: 8px; display: block; color: var(--neon-cyan, #00f0ff);"></i>
+              กำลังดึงข้อมูล 5 อันดับแรกจาก Google Sheet...
+            </div>
+          `;
+        }
+      });
+
+      try {
+        const res = await fetchTop5FromGoogleSheet();
+        if (res && res.items) {
+          localStorage.setItem(cacheKey, JSON.stringify(res));
+          const html = generateTop5TableHtml(res.items, res.source);
+          containers.forEach(c => c.innerHTML = html);
+        }
+      } catch (err) {
+        console.error('Error rendering leaderboards:', err);
+      }
+    }
+
+    function generateTop5TableHtml(items, source = 'sheet') {
+      const statusBanner = (source === 'sheet')
+        ? `
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 0.88rem; color: #10b981; padding: 4px 6px;">
+            <span><i class="fa-solid fa-circle-check"></i> ดึงคะแนนออนไลน์จาก Google Sheet แล้ว (เห็นคะแนนของทุกคน)</span>
+            <button type="button" onclick="renderLeaderboards();" style="background: none; border: none; color: var(--neon-cyan, #00f0ff); cursor: pointer; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 5px;">
+              <i class="fa-solid fa-arrows-rotate"></i> อัปเดตสด
+            </button>
+          </div>
+        `
+        : `
+          <div style="margin-bottom: 14px; font-size: 0.88rem; color: #fbbf24; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); padding: 10px 14px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <span><i class="fa-solid fa-triangle-exclamation"></i> <strong>แสดงเฉพาะคะแนนในเครื่องนี้:</strong> ต้องการให้เห็นคะแนนของเพื่อนทุกคน? โปรดเปิดแชร์ Google Sheet ให้ 'ทุกคนที่มีลิงก์มีสิทธิ์ดู'</span>
+            <button type="button" onclick="renderLeaderboards();" style="background: rgba(245, 158, 11, 0.25); border: 1px solid rgba(245, 158, 11, 0.6); color: #fff; padding: 4px 12px; border-radius: 6px; cursor: pointer; font-size: 0.82rem;">
+              <i class="fa-solid fa-arrows-rotate"></i> โหลดใหม่
+            </button>
+          </div>
+        `;
+
+      if (!items || items.length === 0) {
+        return `
+          ${statusBanner}
+          <div style="text-align: center; padding: 30px; background: rgba(14,22,54,0.5); border-radius: 12px; color: var(--text-muted, #94a3b8); font-size: 1.1rem;">
+            <i class="fa-solid fa-trophy" style="font-size: 2.2rem; margin-bottom: 12px; display: block; color: var(--neon-gold, #ffd700);"></i>
+            ยังไม่มีข้อมูลคะแนนของผู้เข้าสอบ เป็นคนแรกที่คว้าอันดับ Top 5!
+          </div>
+        `;
+      }
+
+      let rows = '';
+      items.forEach((item, idx) => {
+        const rank = idx + 1;
+        let rankBadgeClass = 'rank-other';
+        let medalIcon = rank;
+        if (rank === 1) {
+          rankBadgeClass = 'rank-1';
+          medalIcon = '<i class="fa-solid fa-crown"></i>';
+        } else if (rank === 2) {
+          rankBadgeClass = 'rank-2';
+          medalIcon = '<i class="fa-solid fa-medal"></i>';
+        } else if (rank === 3) {
+          rankBadgeClass = 'rank-3';
+          medalIcon = '<i class="fa-solid fa-medal"></i>';
+        }
+
+        const safeName = String(item.name || 'ไม่ระบุชื่อ')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+
+        const scoreNum = (item.score !== undefined && item.score !== null) ? item.score : 0;
+
+        rows += `
+          <tr class="top5-row">
+            <td style="width: 80px; text-align: center;">
+              <span class="rank-badge ${rankBadgeClass}">${medalIcon}</span>
+            </td>
+            <td style="text-align: left;">
+              <strong style="color: #ffffff; font-size: 1.25rem;">${safeName}</strong>
+            </td>
+            <td style="text-align: right; width: 160px;">
+              <span class="score-badge-pill">${scoreNum} คะแนน</span>
+            </td>
+          </tr>
+        `;
+      });
+
+      return `
+        ${statusBanner}
+        <div class="leaderboard-table-responsive">
+          <table class="top5-table">
+            <thead>
+              <tr>
+                <th style="width: 80px; text-align: center;">อันดับ</th>
+                <th style="text-align: left;">ชื่อ</th>
+                <th style="text-align: right; width: 160px;">คะแนนที่ได้</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    // ส่งออกฟังก์ชันสู่ Window เพื่อให้ศูนย์ควบคุมแอดมิน (admin.js) เรียกอัปเดตตารางได้
+    window.renderLeaderboards = renderLeaderboards;
+
+
+
+    /* ============================================================
+       7. Initializer & Canvas Star Background
+       ============================================================ */
+    document.addEventListener('DOMContentLoaded', () => {
+      renderLeaderboards();
+
+      // Mobile Menu Toggle
+      const mobileToggle = document.getElementById('mobileToggle');
+      const navMenu = document.getElementById('navMenu');
+      if (mobileToggle && navMenu) {
+        mobileToggle.addEventListener('click', () => {
+          navMenu.classList.toggle('open');
+        });
+      }
+
+      // Dropdown แบบทดสอบ (รองรับทั้ง Click และ Touchend บน iOS)
+      const quizDropdown = document.getElementById('quizDropdown');
+      const dropdownTrigger = document.getElementById('dropdownTrigger');
+      if (dropdownTrigger && quizDropdown) {
+        const toggleDropdown = (e) => {
+          if (typeof window.toggleQuizDropdown === 'function') {
+            window.toggleQuizDropdown(e);
+          } else {
+            if (e && e.cancelable) e.preventDefault();
+            e.stopPropagation();
+            const isOpen = quizDropdown.classList.toggle('open');
+            dropdownTrigger.setAttribute('aria-expanded', isOpen);
+          }
+        };
+        dropdownTrigger.addEventListener('click', toggleDropdown);
+        dropdownTrigger.addEventListener('touchend', (e) => {
+          if (e.cancelable) e.preventDefault();
+          toggleDropdown(e);
+        }, { passive: false });
+
+        ['click', 'touchstart'].forEach((evt) => {
+          document.addEventListener(evt, (e) => {
+            if (!quizDropdown.contains(e.target) && !e.target.closest('#dropdownMenu, .dropdown-menu')) {
+              if (typeof window.closeQuizDropdown === 'function') {
+                window.closeQuizDropdown();
+              } else {
+                quizDropdown.classList.remove('open');
+                dropdownTrigger.setAttribute('aria-expanded', 'false');
+              }
+            }
+          }, { passive: true });
+        });
+      }
+
+      // Canvas Animation Background
+      initSpaceCanvas();
+    });
+
+    function initSpaceCanvas() {
+      const canvas = document.getElementById('space-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width = canvas.width = window.innerWidth;
+      let height = canvas.height = window.innerHeight;
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      const stars = [];
+      for (let i = 0; i < 150; i++) {
+        stars.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: Math.random() * 1.5 + 0.5,
+          alpha: Math.random() * 0.8 + 0.2,
+          speed: Math.random() * 0.02 + 0.005
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        stars.forEach(star => {
+          star.alpha += star.speed;
+          if (star.alpha > 1 || star.alpha < 0.2) star.speed = -star.speed;
+          ctx.beginPath();
+          ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${Math.abs(star.alpha)})`;
+          ctx.fill();
+        });
+
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+  </script>
+  <script src="navScroll.js?v=2"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

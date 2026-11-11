@@ -1,0 +1,978 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="referrer" content="no-referrer">
+  <title>ห้องเรียนระบบสุริยะ (Solar System)</title>
+  <!-- Google Fonts: Kanit & Orbitron -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css?v=20">
+  <!-- Three.js 3D WebGL Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+  <!-- พื้นหลังอวกาศ 3 มิติ (เนบิวลา ละอองสะเก็ดดาว และดาวตก) -->
+  <canvas id="space-canvas"></canvas>
+
+  <!-- แสงบรรยากาศอวกาศ (Cosmic Ambient Aura) -->
+  <div class="cosmic-aura aura-1"></div>
+  <div class="cosmic-aura aura-2"></div>
+  <div class="cosmic-aura aura-3"></div>
+
+  <!-- แถบนำทาง (Navbar) -->
+  <header class="header">
+    <nav class="navbar" id="navbar">
+      <!-- ซ้ายสุด: ชื่อเว็บ -->
+      <a href="#" class="brand">
+        <div class="brand-orbit-ring">
+          <div class="brand-planet-dot"></div>
+          <div class="brand-icon">
+            <i class="fa-solid fa-sun"></i>
+          </div>
+        </div>
+        <div class="brand-text">
+          <span class="brand-main">ระบบสุริยะ</span>
+          <span class="brand-sub">SOLAR SYSTEM OBSERVATORY</span>
+        </div>
+      </a>
+
+      <!-- ปุ่มเปิดปิดเมนูสำหรับมือถือ -->
+      <button class="mobile-toggle" id="mobileToggle" aria-label="เมนู">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <!-- เมนูนำทาง -->
+      <div class="nav-menu" id="navMenu">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="#elements" class="nav-link active">
+              <i class="fa-solid fa-layer-group"></i> องค์ประกอบ
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="a.html" class="nav-link">
+              <i class="fa-solid fa-book-open"></i> พื้นฐาน
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="b.html" class="nav-link">
+              <i class="fa-solid fa-atom"></i> จำลองโคจร
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="c.html" class="nav-link">
+              <i class="fa-solid fa-scale-balanced"></i> เปรียบเทียบ
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="d.html" class="nav-link">
+              <i class="fa-solid fa-spell-check"></i> คำศัพท์
+            </a>
+          </li>
+          <!-- ขวาสุด: เมนูดรอปดาวน์ แบบทดสอบ -->
+          <li class="nav-item dropdown" id="quizDropdown">
+            <button class="dropdown-trigger" id="dropdownTrigger" aria-expanded="false">
+              <i class="fa-solid fa-clipboard-question"></i> แบบทดสอบ
+              <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </button>
+            <ul class="dropdown-menu" id="dropdownMenu">
+              <li>
+                <a href="1.html" class="dropdown-item" data-quiz="pre">
+                  <span class="drop-badge">01</span>
+                  <span class="drop-text">ก่อนเรียน</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li>
+                <a href="2.html" class="dropdown-item" data-quiz="post">
+                  <span class="drop-badge">02</span>
+                  <span class="drop-text">หลังเรียน</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li>
+                <a href="3.html" class="dropdown-item" data-quiz="act1">
+                  <span class="drop-badge">03</span>
+                  <span class="drop-text">กิจกรรม 1</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li>
+                <a href="4.html" class="dropdown-item" data-quiz="act2">
+                  <span class="drop-badge">04</span>
+                  <span class="drop-text">กิจกรรม 2</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li class="dropdown-divider" style="margin: 6px 0; border-top: 1px solid rgba(255, 255, 255, 0.12);"></li>
+              <li>
+                <a href="javascript:void(0)" class="dropdown-item admin-dropdown-item" onclick="openAdminModal();">
+                  <span class="drop-badge" style="background: rgba(0, 240, 255, 0.2);"><i class="fa-solid fa-shield-halved"></i></span>
+                  <span class="drop-text" style="font-weight: 600; color: var(--neon-cyan);">ศูนย์แอดมิน (คะแนน 1-4)</span>
+                  <i class="fa-solid fa-lock drop-arrow"></i>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <!-- ปุ่มศูนย์แอดมิน -->
+          <li class="nav-item admin-nav-item">
+            <button class="admin-nav-btn" id="openAdminNavBtn" onclick="openAdminModal();" title="ศูนย์ควบคุมแอดมิน / ดูคะแนน 1, 2, 3, 4 (Alt+A)">
+              <i class="fa-solid fa-shield-halved"></i>
+              <span>แอดมิน</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- เนื้อหาหลัก -->
+  <main class="main-content">
+    <!-- Hero Section: หัวข้อและระบบค้นหา -->
+    <section class="hero-section">
+      <!-- ข้อมูลพิกัดดาราศาสตร์แบบ HUD -->
+      <div class="hud-telemetry">
+        <span class="telemetry-item"><i class="fa-solid fa-satellite-dish"></i> LIVE TELEMETRY</span>
+        <span class="telemetry-sep">•</span>
+        <span class="telemetry-item">MILKY WAY // ORION ARM</span>
+        <span class="telemetry-sep">•</span>
+        <span class="telemetry-item">SOL SYSTEM [4.6 BYA]</span>
+      </div>
+
+      <div class="hero-badge">
+        <span class="badge-pulse"></span>
+        <i class="fa-solid fa-sparkles"></i> ศูนย์การเรียนรู้ออนไลน์แห่งจักรวาล • 3D INTERACTIVE CLASSROOM
+      </div>
+
+      <h1 class="hero-title">
+        ห้องเรียนระบบสุริยะ
+        <span class="en-tag">
+          <span class="glow-letter">s</span><span class="glow-letter">o</span><span class="glow-letter">l</span><span class="glow-letter">a</span><span class="glow-letter">r</span> 
+          <span class="glow-letter">s</span><span class="glow-letter">y</span><span class="glow-letter">s</span><span class="glow-letter">t</span><span class="glow-letter">e</span><span class="glow-letter">m</span>
+        </span>
+      </h1>
+
+      <p class="hero-desc">
+        เดินทางข้ามห้วงอวกาศลึก สำรวจดาวฤกษ์ศูนย์กลางและดาวเคราะห์ทั้ง 8 ดวง ด้วยแบบจำลองสามมิติเสมือนจริง 
+        โครงสร้างบรรยากาศ แอนิเมชันการหมุนรอบตัวเอง และเกร็ดวิทยาศาสตร์ดาราศาสตร์ระดับโลก
+      </p>
+
+      <!-- แถบค้นหาชื่อดวงดาว (Sci-Fi Cyber Search) -->
+      <div class="search-container">
+        <div class="search-box">
+          <div class="search-radar-sweep"></div>
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input 
+            type="text" 
+            id="planetSearchInput" 
+            class="search-input" 
+            placeholder="ค้นหาชื่อดวงดาว (เช่น โลก, ดาวอังคาร, ดวงอาทิตย์, Saturn)..."
+            autocomplete="off"
+          >
+          <button type="button" id="clearSearchBtn" class="clear-btn" title="ล้างการค้นหา">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+          <button type="button" id="searchBtn" class="search-action-btn">
+            <span>ค้นหาดาว</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+        <div class="search-quick-tags">
+          <span class="tag-label"><i class="fa-solid fa-crosshairs"></i> เป้าหมายด่วน:</span>
+          <button class="quick-tag" data-search="ทั้งหมด">ทั้งหมด (All)</button>
+          <button class="quick-tag" data-search="ดวงอาทิตย์">ดวงอาทิตย์ ☀️</button>
+          <button class="quick-tag" data-search="โลก">โลก 🌍</button>
+          <button class="quick-tag" data-search="ดาวพฤหัส">ดาวพฤหัสบดี 🪐</button>
+          <button class="quick-tag" data-search="ดาวเสาร์">ดาวเสาร์ 🪐</button>
+          <button class="quick-tag" data-search="ดาวอังคาร">ดาวอังคาร 🔴</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- สี่เหลี่ยมโปร่งใสรวมดวงดาวทั้งหมด (Glassmorphism Cybernetic Showcase) -->
+    <section class="planets-section" id="elements">
+      <div class="glass-master-container" id="planetsMasterBox">
+        <!-- Sci-Fi HUD Corner Brackets -->
+        <span class="hud-corner corner-tl"></span>
+        <span class="hud-corner corner-tr"></span>
+        <span class="hud-corner corner-bl"></span>
+        <span class="hud-corner corner-br"></span>
+
+        <!-- เส้นรังวัดวงโคจรพื้นหลัง (Orbital Grid Line) -->
+        <div class="orbital-path-line"></div>
+
+        <!-- หัวแถบของกล่องกระจกโปร่งใส -->
+        <div class="glass-header">
+          <div class="glass-header-left">
+            <div class="status-indicator">
+              <span class="status-dot"></span>
+              <span class="status-radar"></span>
+            </div>
+            <div class="title-wrap">
+              <h2 class="glass-title">
+                <i class="fa-solid fa-atom fa-spin-pulse"></i> องค์ประกอบระบบสุริยะ
+                <span class="title-sub-en">// CELESTIAL OBSERVATION DECK</span>
+              </h2>
+              <p class="glass-subtitle">ดาวฤกษ์ศูนย์กลางและระบบบริวารดาวเคราะห์ 8 ดวงแห่งสุริยะจักรวาล</p>
+            </div>
+            <span class="planet-count-badge">
+              <i class="fa-solid fa-microchip"></i> 9 วัตถุอวกาศหลัก
+            </span>
+          </div>
+
+          <div class="glass-header-controls">
+            <!-- สวิตช์ปรับความเร็วการหมุน -->
+            <div class="speed-control-group">
+              <span class="speed-label"><i class="fa-solid fa-gauge-high"></i> การหมุน:</span>
+              <button class="speed-btn active" data-speed="1">1x</button>
+              <button class="speed-btn" data-speed="2">2x</button>
+              <button class="speed-btn" data-speed="5">5x</button>
+            </div>
+
+            <div class="scroll-buttons">
+              <button class="scroll-btn" id="scrollLeftBtn" title="เลื่อนซ้าย">
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+              <button class="scroll-btn" id="scrollRightBtn" title="เลื่อนขวา">
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- รางแสดงดวงดาวเรียงกัน 9 ดวง บรรจุอยู่ในสี่เหลี่ยมโปร่งใสเดียวกัน -->
+        <div class="planets-track" id="planetsTrack">
+
+          <!-- 1. ดวงอาทิตย์ (The Sun) -->
+          <div class="planet-card" data-id="sun" data-name="ดวงอาทิตย์ sun ดาวฤกษ์ solar" tabindex="0" onclick="openPlanetModal('sun')" role="button" aria-label="ดูข้อมูลดวงอาทิตย์">
+            <div class="card-glass-glow card-glow-sun"></div>
+            <div class="planet-order-tag">01 // STAR</div>
+            <div class="planet-distance-badge">0.00 AU • ศูนย์กลาง</div>
+
+            <div class="planet-visual-wrapper">
+              <!-- แสงเรืองรอบนอก (Corona & Solar Flares) -->
+              <div class="sun-corona-outer"></div>
+              <div class="sun-flare-ring flare-ring-1"></div>
+              <div class="sun-flare-ring flare-ring-2"></div>
+              <div class="sun-prominence-burst p1"></div>
+              <div class="sun-prominence-burst p2"></div>
+              <div class="sun-prominence-burst p3"></div>
+              
+              <!-- ตัวทรงกลมดวงอาทิตย์ -->
+              <div class="planet-body planet-sun">
+                <div class="sun-plasma-surface"></div>
+                <div class="sun-light-hotspot"></div>
+              </div>
+
+              <!-- แท่นโฮโลแกรมต่อต้านแรงโน้มถ่วง -->
+              <div class="hologram-pedestal ped-sun">
+                <div class="ped-ring"></div>
+                <div class="ped-beam"></div>
+              </div>
+            </div>
+
+            <div class="planet-info">
+              <h3 class="planet-name-th">ดวงอาทิตย์</h3>
+              <p class="planet-name-en">The Sun</p>
+              <span class="planet-type-tag tag-star">
+                <i class="fa-solid fa-certificate"></i> ดาวฤกษ์ศูนย์กลาง
+              </span>
+            </div>
+
+            <button class="planet-card-open-btn" type="button" onclick="event.stopPropagation(); openPlanetModal('sun');">
+              <i class="fa-solid fa-circle-info"></i> ดูข้อมูลดาว
+            </button>
+
+            <div class="planet-card-hover-hint">
+              <i class="fa-solid fa-fingerprint"></i> คลิกเพื่อเปิดข้อมูลเจาะลึก
+            </div>
+          </div>
+
+          <!-- 2. ดาวพุธ (Mercury) -->
+          <div class="planet-card" data-id="mercury" data-name="ดาวพุธ mercury ดาวเคราะห์หิน" tabindex="0" onclick="openPlanetModal('mercury')" role="button" aria-label="ดูข้อมูลดาวพุธ">
+            <div class="card-glass-glow card-glow-mercury"></div>
+            <div class="planet-order-tag">02 // PLANET</div>
+            <div class="planet-distance-badge">0.39 AU • 57.9 ล้านกม.</div>
+
+            <div class="planet-visual-wrapper">
+              <div class="planet-halo halo-mercury"></div>
+              <div class="planet-body planet-mercury">
+                <div class="planet-surface-texture mercury-texture"></div>
+                <div class="planet-spherical-shadow"></div>
+                <div class="planet-specular"></div>
+              </div>
+              <div class="hologram-pedestal ped-mercury">
+                <div class="ped-ring"></div>
+                <div class="ped-beam"></div>
+              </div>
+            </div>
+
+            <div class="planet-info">
+              <h3 class="planet-name-th">ดาวพุธ</h3>
+              <p class="planet-name-en">Mercury</p>
+              <span class="planet-type-tag tag-rock">
+                <i class="fa-solid fa-cube"></i> ดาวเคราะห์หิน
+              </span>
+            </div>
+
+            <button class="planet-card-open-btn" type="button" onclick="event.stopPropagation(); openPlanetModal('mercury');">
+              <i class="fa-solid fa-circle-info"></i> ดูข้อมูลดาว
+            </button>
+
+            <div class="planet-card-hover-hint">
+              <i class="fa-solid fa-fingerprint"></i> คลิกเพื่อเปิดข้อมูลเจาะลึก
+            </div>
+          </div>
+
+          <!-- 3. ดาวศุกร์ (Venus) -->
+          <div class="planet-card" data-id="venus" data-name="ดาวศุกร์ venus ดาวเคราะห์หิน ดาวประกายพรึก" tabindex="0" onclick="openPlanetModal('venus')" role="button" aria-label="ดูข้อมูลดาวศุกร์">
+            <div class="card-glass-glow card-glow-venus"></div>
+            <div class="planet-order-tag">03 // PLANET</div>
+            <div class="planet-distance-badge">0.72 AU • 108.2 ล้านกม.</div>
+
+            <div class="planet-visual-wrapper">
+              <div class="planet-halo halo-venus"></div>
+              <div class="planet-body planet-venus">
+                <div class="planet-surface-texture venus-texture"></div>
+                <div class="venus-atmosphere-layer"></div>
+                <div class="planet-spherical-shadow"></div>
+                <div class="planet-specular"></div>
+              </div>
+              <div class="hologram-pedestal ped-venus">
+                <div class="ped-ring"></div>
+                <div class="ped-beam"></div>
+              </div>
+            </div>
+
+            <div class="planet-info">
+              <h3 class="planet-name-th">ดาวศุกร์</h3>
+              <p class="planet-name-en">Venus</p>
+              <span class="planet-type-tag tag-rock">
+                <i class="fa-solid fa-fire-flame-curved"></i> ดาวเคราะห์หิน (ร้อนสุด)
+              </span>
+            </div>
+
+            <button class="planet-card-open-btn" type="button" onclick="event.stopPropagation(); openPlanetModal('venus');">
+              <i class="fa-solid fa-circle-info"></i> ดูข้อมูลดาว
+            </button>
+
+            <div class="planet-card-hover-hint">
+              <i class="fa-solid fa-fingerprint"></i> คลิกเพื่อเปิดข้อมูลเจาะลึก
+            </div>
+          </div>
+
+          <!-- 4. โลก (Earth) -->
+          <div class="planet-card" data-id="earth" data-name="โลก earth ดาวเคราะห์หิน บลูมาร์เบิล" tabindex="0" onclick="openPlanetModal('earth')" role="button" aria-label="ดูข้อมูลโลก">
+            <div class="card-glass-glow card-glow-earth"></div>
+            <div class="planet-order-tag">04 // HOME</div>
+            <div class="planet-distance-badge">1.00 AU • 149.6 ล้านกม.</div>
+
+            <div class="planet-visual-wrapper">
+              <!-- แสงโอโซนชั้นบรรยากาศสีฟ้า (Atmospheric Rayleigh Glow) -->
+              <div class="planet-halo halo-earth"></div>
+              <div class="planet-body planet-earth">
+                <div class="earth-oceans"></div>
+                <div class="earth-continents"></div>
+                <!-- เมฆหมุนวนอิสระ 2 ชั้น -->
+                <div class="earth-clouds-dynamic cloud-layer-1"></div>
+                <div class="earth-clouds-dynamic cloud-layer-2"></div>
+                <div class="planet-spherical-shadow"></div>
+                <div class="planet-specular earth-specular"></div>
+              </div>
+              <div class="hologram-pedestal ped-earth">
+                <div class="ped-ring"></div>
+                <div class="ped-beam"></div>
+              </div>
+            </div>
+
+            <div class="planet-info">
+              <h3 class="planet-name-th">โลก</h3>
+              <p class="planet-name-en">Earth</p>
+              <span class="planet-type-tag tag-life">
+                <i class="fa-solid fa-seedling"></i> ดาวเคราะห์แห่งชีวิต
+              </span>
+            </div>
+
+            <button class="planet-card-open-btn" type="button" onclick="event.stopPropagation(); openPlanetModal('earth');">
+              <i class="fa-solid fa-circle-info"></i> ดูข้อมูลดาว
+            </button>
+
+            <div class="planet-card-hover-hint">
+              <i class="fa-solid fa-fingerprint"></i> คลิกเพื่อเปิดข้อมูลเจาะลึก
+            </div>
+          </div>
+
+          <!-- 5. ดาวอังคาร (Mars) -->
+          <div class="planet-card" data-id="mars" data-name="ดาวอังคาร mars ดาวเคราะห์หิน ดาวเคราะห์สีแดง" tabindex="0" onclick="openPlanetModal('mars')" role="button" aria-label="ดูข้อมูลดาวอังคาร">
+            <div class="card-glass-glow card-glow-mars"></div>
+            <div class="planet-order-tag">05 // PLANET</div>
+            <div class="planet-distance-badge">1.52 AU • 227.9 ล้านกม.</div>
+
+            <div class="planet-visual-wrapper">
+              <div class="planet-halo halo-mars"></div>
+              <div class="planet-body planet-mars">
+                <div class="planet-surface-texture mars-texture"></div>
+                <!-- ขั้วน้ำแข็งสีขาว (Polar Ice Cap) -->
+                <div class="mars-polar-cap"></div>
+                <div class="planet-spherical-shadow"></div>
+                <div class="planet-specular"></div>
+              </div>
+              <div class="hologram-pedestal ped-mars">
+                <div class="ped-ring"></div>
+                <div class="ped-beam"></div>
+              </div>
+            </div>
+
+            <div class="planet-info">
+              <h3 class="planet-name-th">ดาวอังคาร</h3>
+              <p class="planet-name-en">Mars</p>
+              <span class="planet-type-tag tag-rock">
+                <i class="fa-solid fa-mountain"></i> ดาวเคราะห์หินสีแดง
+              </span>
+            </div>
+
+            <button class="planet-card-open-btn" type="button" onclick="event.stopPropagation(); openPlanetModal('mars');">
+              <i class="fa-solid fa-circle-info"></i> ดูข้อมูลดาว
+            </button>
+
+            <div class="planet-card-hover-hint">
+              <i class="fa-solid fa-fingerprint"></i> คลิกเพื่อเปิดข้อมูลเจาะลึก
+            </div>
+          </div>
+
+          <!-- 6. ดาวพฤหัสบดี (Jupiter) -->
+          <div class="planet-card" data-id="jupiter" data-name="ดาวพฤหัส ดาวพฤหัสบดี jupiter ดาวเคราะห์แก๊ส" tabindex="0" onclick="openPlanetModal('jupiter')" role="button" aria-label="ดูข้อมูลดาวพฤหัสบดี">
+            <div class="card-glass-glow card-glow-jupiter"></div>
+            <div class="planet-order-tag">06 // GIANT</div>
+            <div class="planet-distance-badge">5.20 AU • 778.5 ล้านกม.</div>
+
+            <div class="planet-visual-wrapper">
+              <div class="planet-halo halo-jupiter"></div>
+              <div class="planet-body planet-jupiter">
+                <div class="jupiter-clouds-bands"></div>
+                <div class="jupiter-turbulence"></div>
+                <!-- จุดแดงใหญ่ (Great Red Spot) มีพายุหมุน -->
+                <div class="jupiter-great-red-spot">
+                  <span class="spot-core"></span>
+                </div>
+                <div class="planet-spherical-shadow"></div>
+                <div class="planet-specular"></div>
+              </div>
+              <div class="hologram-pedestal ped-jupiter">
+                <div class="ped-ring"></div>
+                <div class="ped-beam"></div>
+              </div>
+            </div>
+
+            <div class="planet-info">
+              <h3 class="planet-name-th">ดาวพฤหัสบดี</h3>
+              <p class="planet-name-en">Jupiter</p>
+              <span class="planet-type-tag tag-gas">
+                <i class="fa-solid fa-wind"></i> ดาวยักษ์แก๊ส (ใหญ่ที่สุด)
+              </span>
+            </div>
+
+            <button class="planet-card-open-btn" type="button" onclick="event.stopPropagation(); openPlanetModal('jupiter');">
+              <i class="fa-solid fa-circle-info"></i> ดูข้อมูลดาว
+            </button>
+
+            <div class="planet-card-hover-hint">
+              <i class="fa-solid fa-fingerprint"></i> คลิกเพื่อเปิดข้อมูลเจาะลึก
+            </div>
+          </div>
+
+          <!-- 7. ดาวเสาร์ (Saturn & Majestic 3D Rings) -->
+          <div class="planet-card" data-id="saturn" data-name="ดาวเสาร์ saturn ดาวเคราะห์แก๊ส วงแหวน" tabindex="0" onclick="openPlanetModal('saturn')" role="button" aria-label="ดูข้อมูลดาวเสาร์">
+            <div class="card-glass-glow card-glow-saturn"></div>
+            <div class="planet-order-tag">07 // RINGS</div>
+            <div class="planet-distance-badge">9.58 AU • 1.43 พันล้านกม.</div>
+
+            <div class="planet-visual-wrapper saturn-wrapper">
+              <div class="planet-halo halo-saturn"></div>
+              
+              <!-- วงแหวน 3D ส่วนหลัง (Back Ring) ลอดอยู่ด้านหลังดาว -->
+              <div class="saturn-ring-system ring-back-layer">
+                <div class="ring-a"></div>
+                <div class="ring-cassini"></div>
+                <div class="ring-b"></div>
+                <div class="ring-c"></div>
+              </div>
+
+              <!-- ทรงกลมดาวเสาร์ -->
+              <div class="planet-body planet-saturn">
+                <div class="saturn-cloud-bands"></div>
+                <div class="saturn-ring-shadow"></div>
+                <div class="planet-spherical-shadow"></div>
+                <div class="planet-specular"></div>
+              </div>
+
+              <!-- วงแหวน 3D ส่วนหน้า (Front Ring) พาดอยู่ด้านหน้าดาว -->
+              <div class="saturn-ring-system ring-front-layer">
+                <div class="ring-a"></div>
+                <div class="ring-cassini"></div>
+                <div class="ring-b"></div>
+                <div class="ring-c"></div>
+              </div>
+
+              <div class="hologram-pedestal ped-saturn">
+                <div class="ped-ring"></div>
+                <div class="ped-beam"></div>
+              </div>
+            </div>
+
+            <div class="planet-info">
+              <h3 class="planet-name-th">ดาวเสาร์</h3>
+              <p class="planet-name-en">Saturn</p>
+              <span class="planet-type-tag tag-gas">
+                <i class="fa-solid fa-ring"></i> ดาวยักษ์แก๊ส (วงแหวนวิจิตร)
+              </span>
+            </div>
+
+            <button class="planet-card-open-btn" type="button" onclick="event.stopPropagation(); openPlanetModal('saturn');">
+              <i class="fa-solid fa-circle-info"></i> ดูข้อมูลดาว
+            </button>
+
+            <div class="planet-card-hover-hint">
+              <i class="fa-solid fa-fingerprint"></i> คลิกเพื่อเปิดข้อมูลเจาะลึก
+            </div>
+          </div>
+
+          <!-- 8. ดาวยูเรนัส (Uranus) -->
+          <div class="planet-card" data-id="uranus" data-name="ดาวยูเรนัส uranus ดาวเคราะห์น้ำแข็ง" tabindex="0" onclick="openPlanetModal('uranus')" role="button" aria-label="ดูข้อมูลดาวยูเรนัส">
+            <div class="card-glass-glow card-glow-uranus"></div>
+            <div class="planet-order-tag">08 // ICE GIANT</div>
+            <div class="planet-distance-badge">19.2 AU • 2.87 พันล้านกม.</div>
+
+            <div class="planet-visual-wrapper">
+              <div class="planet-halo halo-uranus"></div>
+              <!-- วงแหวนแกนเอียง 98 องศา -->
+              <div class="uranus-vertical-ring"></div>
+              <div class="planet-body planet-uranus">
+                <div class="uranus-cyan-haze"></div>
+                <div class="planet-spherical-shadow"></div>
+                <div class="planet-specular"></div>
+              </div>
+              <div class="hologram-pedestal ped-uranus">
+                <div class="ped-ring"></div>
+                <div class="ped-beam"></div>
+              </div>
+            </div>
+
+            <div class="planet-info">
+              <h3 class="planet-name-th">ดาวยูเรนัส</h3>
+              <p class="planet-name-en">Uranus</p>
+              <span class="planet-type-tag tag-ice">
+                <i class="fa-solid fa-icicles"></i> ดาวยักษ์น้ำแข็ง (แกนตะแคง)
+              </span>
+            </div>
+
+            <button class="planet-card-open-btn" type="button" onclick="event.stopPropagation(); openPlanetModal('uranus');">
+              <i class="fa-solid fa-circle-info"></i> ดูข้อมูลดาว
+            </button>
+
+            <div class="planet-card-hover-hint">
+              <i class="fa-solid fa-fingerprint"></i> คลิกเพื่อเปิดข้อมูลเจาะลึก
+            </div>
+          </div>
+
+          <!-- 9. ดาวเนปจูน (Neptune) -->
+          <div class="planet-card" data-id="neptune" data-name="ดาวเนปจูน neptune ดาวเคราะห์น้ำแข็ง พายุ" tabindex="0" onclick="openPlanetModal('neptune')" role="button" aria-label="ดูข้อมูลดาวเนปจูน">
+            <div class="card-glass-glow card-glow-neptune"></div>
+            <div class="planet-order-tag">09 // VOYAGER</div>
+            <div class="planet-distance-badge">30.1 AU • 4.50 พันล้านกม.</div>
+
+            <div class="planet-visual-wrapper">
+              <div class="planet-halo halo-neptune"></div>
+              <div class="planet-body planet-neptune">
+                <div class="neptune-deep-azure"></div>
+                <div class="neptune-white-cirrus"></div>
+                <div class="neptune-dark-spot"></div>
+                <div class="planet-spherical-shadow"></div>
+                <div class="planet-specular"></div>
+              </div>
+              <div class="hologram-pedestal ped-neptune">
+                <div class="ped-ring"></div>
+                <div class="ped-beam"></div>
+              </div>
+            </div>
+
+            <div class="planet-info">
+              <h3 class="planet-name-th">ดาวเนปจูน</h3>
+              <p class="planet-name-en">Neptune</p>
+              <span class="planet-type-tag tag-ice">
+                <i class="fa-solid fa-snowflake"></i> ดาวยักษ์น้ำแข็ง (ลมพายุเร็วสุด)
+              </span>
+            </div>
+
+            <button class="planet-card-open-btn" type="button" onclick="event.stopPropagation(); openPlanetModal('neptune');">
+              <i class="fa-solid fa-circle-info"></i> ดูข้อมูลดาว
+            </button>
+
+            <div class="planet-card-hover-hint">
+              <i class="fa-solid fa-fingerprint"></i> คลิกเพื่อเปิดข้อมูลเจาะลึก
+            </div>
+          </div>
+
+        </div> <!-- /planets-track -->
+
+        <!-- ท้ายกล่องกระจก: แสดงสถานะและคำแนะนำ -->
+        <div class="glass-footer">
+          <div class="hint-drag">
+            <span class="pulse-indicator"></span>
+            <i class="fa-solid fa-arrows-left-right"></i> เลื่อนในแนวนอนเพื่อสำรวจดาวเคราะห์ทั้งหมด • คลิกดาวดวงใดก็ได้เพื่อเปิดโฮโลแกรม
+          </div>
+          <div class="summary-stats">
+            <span class="stat-badge"><i class="fa-solid fa-ruler-horizontal"></i> รัศมีระบบสุริยะ: ~4.5 พันล้าน กม.</span>
+            <span class="stat-badge"><i class="fa-solid fa-moon"></i> ดวงจันทร์รวม: > 290 ดวง</span>
+          </div>
+        </div>
+      </div> <!-- /glass-master-container -->
+    </section>
+
+    <!-- ส่วนแหล่งเรียนรู้เพิ่มเติม (YouTube Cinematic Resources) -->
+    <section class="learning-section" id="resources">
+      <div class="section-title-wrap">
+        <div class="section-badge">
+          <i class="fa-brands fa-youtube"></i> คลังความรู้วิทยาศาสตร์ดาราศาสตร์
+        </div>
+        <h2 class="section-heading">แหล่งเรียนรู้เพิ่มเติม</h2>
+        <p class="section-subheading" style="max-width: 1000px;">ชมสารคดีและบทเรียนดาราศาสตร์ระบบสุริยะ เพื่อการเรียนรู้ที่เข้าใจง่ายและตื่นตาตื่นใจ</p>
+      </div>
+
+      <div class="video-grid">
+        <!-- วิดีโอที่ 1: The Kuiper Belt -->
+        <article class="video-card">
+          <div class="video-thumbnail-wrapper">
+            <img 
+              src="https://img.youtube.com/vi/WPvI-Zr2gfc/hqdefault.jpg" 
+              alt="The Kuiper Belt: ประตูสู่สุดขอบระบบสุริยะ | จักรวาลไม่รู้จบ" 
+              class="video-thumbnail"
+              loading="lazy"
+            >
+            <div class="video-play-overlay">
+              <a 
+                href="https://youtu.be/WPvI-Zr2gfc?si=8q7wSVYggFQiiry3" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="play-btn"
+                title="รับชมบน YouTube"
+              >
+                <i class="fa-brands fa-youtube"></i>
+              </a>
+            </div>
+            <span class="video-time-badge"><i class="fa-regular fa-clock"></i> รับชม</span>
+          </div>
+          <div class="video-details">
+            <div class="video-tag">สุดขอบระบบสุริยะ</div>
+            <h3 class="video-title">The Kuiper Belt: ประตูสู่สุดขอบระบบสุริยะ | จักรวาลไม่รู้จบ</h3>
+            <p class="video-channel"><i class="fa-solid fa-circle-check"></i> จักรวาลไม่รู้จบ</p>
+            <p class="video-desc">
+              เจาะลึกแถบไคเปอร์ (Kuiper Belt) ดินแดนอันไกลโพ้น วัตถุน้ำแข็งและดาวเคราะห์แคระ ณ ขอบนอกของระบบสุริยะจักรวาล
+            </p>
+            <a 
+              href="https://youtu.be/WPvI-Zr2gfc?si=8q7wSVYggFQiiry3" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="video-link-btn"
+            >
+              <span>รับชมบน YouTube</span>
+              <i class="fa-solid fa-up-right-from-square"></i>
+            </a>
+          </div>
+        </article>
+
+        <!-- วิดีโอที่ 2: ดาวศุกร์ จากดาวมหาสมุทร -->
+        <article class="video-card">
+          <div class="video-thumbnail-wrapper">
+            <img 
+              src="https://img.youtube.com/vi/wB3DRjQp6-4/hqdefault.jpg" 
+              alt="ดาวศุกร์ จากดาวมหาสมุทร สู่ดาวเคราะห์ที่ร้อนที่สุดในระบบสุริยะ" 
+              class="video-thumbnail"
+              loading="lazy"
+            >
+            <div class="video-play-overlay">
+              <a 
+                href="https://youtu.be/wB3DRjQp6-4?si=R-ko5cX0eMZa4Nau" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="play-btn"
+                title="รับชมบน YouTube"
+              >
+                <i class="fa-brands fa-youtube"></i>
+              </a>
+            </div>
+            <span class="video-time-badge"><i class="fa-regular fa-clock"></i> รับชม</span>
+          </div>
+          <div class="video-details">
+            <div class="video-tag">ดาวเคราะห์ฝาแฝด</div>
+            <h3 class="video-title">ดาวศุกร์ จากดาวมหาสมุทร สู่ดาวเคราะห์ที่ร้อนที่สุดในระบบสุริยะ</h3>
+            <p class="video-channel"><i class="fa-solid fa-circle-check"></i> Curiosity Channel คนช่างสงสัย</p>
+            <p class="video-desc">
+              สำรวจวิวัฒนาการดาวศุกร์ จากดาวเคราะห์ที่อาจเคยมีมหาสมุทร สู่ดาวที่ร้อนจัดที่สุดจากภาวะเรือนกระจกขั้นรุนแรง
+            </p>
+            <a 
+              href="https://youtu.be/wB3DRjQp6-4?si=R-ko5cX0eMZa4Nau" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="video-link-btn"
+            >
+              <span>รับชมบน YouTube</span>
+              <i class="fa-solid fa-up-right-from-square"></i>
+            </a>
+          </div>
+        </article>
+
+        <!-- วิดีโอที่ 3: กำเนิดจักรวาล -->
+        <article class="video-card">
+          <div class="video-thumbnail-wrapper">
+            <img 
+              src="https://img.youtube.com/vi/QvOTxKlTr3M/hqdefault.jpg" 
+              alt="การเปิดเผยต้นกำเนิดของจักรวาลของเรา: การขุดค้นความจริง" 
+              class="video-thumbnail"
+              loading="lazy"
+            >
+            <div class="video-play-overlay">
+              <a 
+                href="https://youtu.be/QvOTxKlTr3M?si=1bgIF0NetTQvnBMm" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="play-btn"
+                title="รับชมบน YouTube"
+              >
+                <i class="fa-brands fa-youtube"></i>
+              </a>
+            </div>
+            <span class="video-time-badge"><i class="fa-regular fa-clock"></i> รับชม</span>
+          </div>
+          <div class="video-details">
+            <div class="video-tag">กำเนิดจักรวาล</div>
+            <h3 class="video-title">การเปิดเผยต้นกำเนิดของจักรวาลของเรา: การขุดค้นความจริง</h3>
+            <p class="video-channel"><i class="fa-solid fa-circle-check"></i> ชีวิตสดใส / Bright Side Thai</p>
+            <p class="video-desc">
+              ค้นพบเรื่องราวการกำเนิดของเอกภพ ดวงดาว และระบบสุริยะ ผ่านการจำลองแอนิเมชันที่ตื่นตาตื่นใจเข้าใจง่าย
+            </p>
+            <a 
+              href="https://youtu.be/QvOTxKlTr3M?si=1bgIF0NetTQvnBMm" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="video-link-btn"
+            >
+              <span>รับชมบน YouTube</span>
+              <i class="fa-solid fa-up-right-from-square"></i>
+            </a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- โมดอลรายละเอียดดวงดาว (Holographic Planet Detail Modal) -->
+  <div class="modal-overlay" id="planetModal" aria-hidden="true" role="dialog">
+    <div class="modal-box">
+      <!-- Sci-Fi HUD Corner Brackets -->
+      <span class="hud-corner corner-tl"></span>
+      <span class="hud-corner corner-tr"></span>
+      <span class="hud-corner corner-bl"></span>
+      <span class="hud-corner corner-br"></span>
+
+      <button class="modal-close" id="modalCloseBtn" aria-label="ปิดหน้าต่าง">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="modal-content-grid">
+        <!-- ฝั่งซ้าย (Left Panel): โมเดล 3D, ชื่อดาว, เสียงบรรยาย AI, บทความ และปุ่มการเรียนรู้ -->
+        <div class="modal-visual-side">
+          <div class="modal-planet-header-box">
+            <div class="modal-planet-render-wrap" id="modalPlanetRenderBox">
+              <canvas id="modalPlanetCanvas"></canvas>
+              <div class="modal-scanner-line"></div>
+            </div>
+            <h2 class="modal-planet-name" id="modalPlanetNameTh">ชื่อดาว</h2>
+            <p class="modal-planet-en" id="modalPlanetNameEn">Planet Name</p>
+            <span class="modal-badge" id="modalPlanetType">ประเภท</span>
+          </div>
+
+          <!-- แผงควบคุมระบบเสียงอ่านบรรยาย (Text-to-Speech Voice Synthesizer) -->
+          <div class="dossier-tts-card" id="modalTtsCard">
+            <div class="dossier-tts-top">
+              <div class="dossier-tts-info">
+                <span class="dossier-tts-badge"><i class="fa-solid fa-headset"></i> AI VOICE NARRATOR</span>
+                <span class="dossier-tts-status" id="modalTtsStatus">พร้อมเปิดเสียงบรรยาย</span>
+              </div>
+              <div class="tts-equalizer-bars" id="modalTtsWave">
+                <span class="eq-bar"></span>
+                <span class="eq-bar"></span>
+                <span class="eq-bar"></span>
+                <span class="eq-bar"></span>
+                <span class="eq-bar"></span>
+              </div>
+            </div>
+            <!-- กล่องแสดงข้อความเสียงบรรยายที่กำลังอ่าน (Live Subtitle) -->
+            <div class="dossier-tts-subtitle" id="modalTtsSubtitle"></div>
+            <div class="dossier-tts-controls">
+              <button class="tts-ctrl-btn tts-btn-play" id="modalTtsPlayBtn" title="เริ่มฟังคำบรรยายเสียง">
+                <i class="fa-solid fa-volume-high" id="modalTtsPlayIcon"></i>
+                <span id="modalTtsPlayText">ฟังคำบรรยาย</span>
+              </button>
+              <button class="tts-ctrl-btn tts-btn-stop" id="modalTtsStopBtn" title="หยุดอ่านเสียง">
+                <i class="fa-solid fa-stop"></i> หยุด
+              </button>
+              <button class="tts-ctrl-btn tts-btn-rate" id="modalTtsRateBtn" title="ปรับความเร็วการอ่าน">
+                <span id="modalTtsRateText">1.0x</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- บทความดาราศาสตร์ -->
+          <div class="modal-article-wrap">
+            <h4 class="modal-section-title">
+              <i class="fa-solid fa-book-open"></i> บทความดาราศาสตร์
+            </h4>
+            <p class="modal-description" id="modalDescription">-</p>
+          </div>
+
+          <!-- ปุ่ม Action ชมวิดีโอ & วิกิพีเดีย -->
+          <div class="modal-action-bar">
+            <a class="modal-action-btn modal-action-yt" id="modalYoutubeBtn" href="#" target="_blank" rel="noopener noreferrer">
+              <i class="fa-brands fa-youtube"></i> ชมวิดีโอแนะนำบน YouTube
+            </a>
+            <button class="modal-action-btn modal-action-wiki" id="modalExploreMore">
+              <i class="fa-brands fa-wikipedia-w"></i> อ่านบทความฉบับเต็มบน Wikipedia
+            </button>
+          </div>
+        </div>
+
+        <!-- ฝั่งขวา (Right Panel): ข้อมูลทางดาราศาสตร์เชิงตัวเลข และจุดเด่นข้อเท็จจริงสำคัญ -->
+        <div class="modal-info-side">
+          <h4 class="modal-section-title">
+            <i class="fa-solid fa-chart-simple"></i> ข้อมูลทางดาราศาสตร์ (Physical & Orbital Metrics)
+          </h4>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <span class="stat-icon"><i class="fa-solid fa-ruler-combined"></i></span>
+              <div class="stat-text">
+                <span class="stat-label">เส้นผ่านศูนย์กลาง</span>
+                <strong class="stat-val" id="statDiameter">-</strong>
+              </div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-icon"><i class="fa-solid fa-route"></i></span>
+              <div class="stat-text">
+                <span class="stat-label">ระยะห่างจากดวงอาทิตย์</span>
+                <strong class="stat-val" id="statDistance">-</strong>
+              </div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-icon"><i class="fa-solid fa-arrows-spin"></i></span>
+              <div class="stat-text">
+                <span class="stat-label">เวลาหมุนรอบตัวเอง</span>
+                <strong class="stat-val" id="statRotation">-</strong>
+              </div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-icon"><i class="fa-solid fa-circle-notch"></i></span>
+              <div class="stat-text">
+                <span class="stat-label">คาบการโคจรรอบดวงอาทิตย์</span>
+                <strong class="stat-val" id="statOrbit">-</strong>
+              </div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-icon"><i class="fa-solid fa-temperature-half"></i></span>
+              <div class="stat-text">
+                <span class="stat-label">อุณหภูมิเฉลี่ย</span>
+                <strong class="stat-val" id="statTemp">-</strong>
+              </div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-icon"><i class="fa-solid fa-moon"></i></span>
+              <div class="stat-text">
+                <span class="stat-label">ดวงจันทร์บริวาร</span>
+                <strong class="stat-val" id="statMoons">-</strong>
+              </div>
+            </div>
+          </div>
+
+          <h4 class="modal-section-title">
+            <i class="fa-solid fa-star-of-life"></i> จุดเด่นและข้อเท็จจริงสำคัญ
+          </h4>
+          <ul class="modal-bullets-list" id="modalBulletsList">
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- โมดอลแบบทดสอบ (Quiz & Activities Modal) -->
+  <div class="modal-overlay" id="quizModal" aria-hidden="true" role="dialog">
+    <div class="modal-box quiz-modal-box">
+      <!-- Sci-Fi HUD Corner Brackets -->
+      <span class="hud-corner corner-tl"></span>
+      <span class="hud-corner corner-tr"></span>
+      <span class="hud-corner corner-bl"></span>
+      <span class="hud-corner corner-br"></span>
+
+      <button class="modal-close" id="quizModalCloseBtn" aria-label="ปิดหน้าต่าง">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="quiz-container">
+        <div class="quiz-header">
+          <div class="quiz-type-badge" id="quizBadge">แบบทดสอบ</div>
+          <h2 class="quiz-title" id="quizTitle">หัวข้อแบบทดสอบ</h2>
+          <p class="quiz-desc" id="quizDesc">คำชี้แจงในการทำแบบทดสอบ</p>
+        </div>
+
+        <div class="quiz-body" id="quizQuestionsContainer">
+          <!-- คำถามแทรกด้วย JavaScript -->
+        </div>
+
+        <div class="quiz-footer" id="quizFooter">
+          <button class="quiz-submit-btn" id="quizSubmitBtn">
+            <i class="fa-solid fa-paper-plane"></i> ส่งคำตอบและประเมินผล
+          </button>
+          <div class="quiz-score-result" id="quizScoreResult" style="display: none;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ส่วนท้ายเว็บ (Footer) -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="brand-orbit-ring" style="width:34px;height:34px;">
+          <div class="brand-icon" style="width:26px;height:26px;font-size:0.9rem;">
+            <i class="fa-solid fa-sun"></i>
+          </div>
+        </div>
+        <span>ห้องเรียนระบบสุริยะ (Solar System Observatory Classroom)</span>
+      </div>
+      <p class="footer-copy">
+        สื่อการเรียนรู้วิทยาศาสตร์ดาราศาสตร์เชิงโต้ตอบ 3 มิติ • ออกแบบเพื่อสร้างแรงบันดาลใจแห่งการสำรวจอวกาศ
+      </p>
+      <div class="footer-nav">
+        <a href="#elements">องค์ประกอบ</a>
+        <a href="a.html">พื้นฐาน</a>
+        <a href="b.html">จำลองโคจร</a>
+        <a href="c.html">เปรียบเทียบ</a>
+        <a href="d.html">คำศัพท์</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- เครื่องเล่นเสียงบรรยายดาวเคราะห์ -->
+  <audio id="sharedPlanetAudio" preload="auto"></audio>
+
+  <!-- สคริปต์ JavaScript -->
+  <script src="audioData.js?v=2"></script>
+  <script src="script.js?v=12"></script>
+  <script src="navScroll.js?v=2"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

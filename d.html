@@ -1,0 +1,2295 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>ห้องเรียนระบบสุริยะ - คำศัพท์ที่ต้องรู้เกี่ยวกับระบบสุริยะ (Glossary & Audio Deck)</title>
+  <!-- Google Fonts: Kanit & Orbitron -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css?v=20">
+
+  <style>
+    /* ============================================================
+       Custom Styles for Next-Gen Sci-Fi Glossary Deck (d.html)
+       ============================================================ */
+    :root {
+      --neon-cyan: #00f0ff;
+      --neon-blue: #38bdf8;
+      --neon-purple: #c084fc;
+      --neon-gold: #ffb703;
+      --neon-red: #ff5e57;
+      --neon-emerald: #10b981;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #e2e8f0;
+      background-color: #02040a;
+      overflow-x: hidden;
+    }
+
+    .main-wrapper {
+      flex: 1 0 auto;
+      max-width: 1360px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 100px 1.5rem 60px;
+      position: relative;
+      z-index: 5;
+    }
+
+    /* 1. Hero Banner Header */
+    .glossary-hero {
+      text-align: center;
+      margin-bottom: 2.2rem;
+      position: relative;
+    }
+
+    .hero-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 22px;
+      background: rgba(0, 240, 255, 0.12);
+      border: 1px solid rgba(0, 240, 255, 0.45);
+      border-radius: 30px;
+      color: var(--neon-cyan);
+      font-family: 'Orbitron', monospace;
+      font-size: 0.82rem;
+      letter-spacing: 2px;
+      margin-bottom: 1.1rem;
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.25), inset 0 0 15px rgba(0, 240, 255, 0.1);
+      animation: pulseGlow 3s infinite alternate ease-in-out;
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 15px rgba(0, 240, 255, 0.2), inset 0 0 8px rgba(0, 240, 255, 0.05); }
+      100% { box-shadow: 0 0 32px rgba(0, 240, 255, 0.45), inset 0 0 18px rgba(0, 240, 255, 0.2); }
+    }
+
+    .hero-title-main {
+      font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.85rem;
+      line-height: 1.25;
+      text-shadow: 0 4px 25px rgba(0, 0, 0, 0.7);
+    }
+
+    .hero-title-main .gradient-text {
+      background: linear-gradient(135deg, #00f0ff 0%, #38bdf8 35%, #a855f7 70%, #ffb703 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.3));
+    }
+
+    .hero-description-text {
+      font-size: 1.08rem;
+      color: #94a3b8;
+      max-width: 820px;
+      margin: 0 auto;
+      line-height: 1.75;
+    }
+
+    /* Sound Waveform Visualization (Used in Modal Audio Controls) */
+    .tts-waveform {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      height: 22px;
+      padding: 0 4px;
+    }
+
+    .wave-bar {
+      width: 3.5px;
+      height: 5px;
+      background: #00f0ff;
+      border-radius: 2px;
+      transition: height 0.15s ease;
+      opacity: 0.4;
+    }
+
+    .modal-voice-controls.is-speaking .wave-bar {
+      opacity: 1;
+      animation: waveDance 0.9s infinite ease-in-out alternate;
+    }
+
+    .wave-bar:nth-child(1) { animation-delay: 0.1s; height: 12px; }
+    .wave-bar:nth-child(2) { animation-delay: 0.25s; height: 20px; }
+    .wave-bar:nth-child(3) { animation-delay: 0.4s; height: 15px; }
+    .wave-bar:nth-child(4) { animation-delay: 0.15s; height: 18px; }
+    .wave-bar:nth-child(5) { animation-delay: 0.3s; height: 10px; }
+
+    @keyframes waveDance {
+      0% { height: 4px; }
+      100% { height: 22px; }
+    }
+
+    .voice-rate-badge {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.8rem;
+      background: rgba(0, 240, 255, 0.15);
+      padding: 2px 7px;
+      border-radius: 6px;
+      color: #00f0ff;
+    }
+
+    /* 3. Search & Filter Toolbar */
+    .toolbar-container {
+      background: rgba(10, 16, 40, 0.72);
+      border: 1px solid rgba(0, 240, 255, 0.28);
+      border-radius: 20px;
+      padding: 1.15rem 1.6rem;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), inset 0 0 25px rgba(0, 240, 255, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    @media (min-width: 840px) {
+      .toolbar-container {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .search-box-wrap {
+      position: relative;
+      flex: 1;
+      max-width: 480px;
+    }
+
+    .search-input-field {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.8rem;
+      background: rgba(3, 7, 20, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      color: #fff;
+      font-family: 'Kanit', sans-serif;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .search-input-field:focus {
+      outline: none;
+      border-color: #00f0ff;
+      box-shadow: 0 0 18px rgba(0, 240, 255, 0.35);
+      background: rgba(8, 16, 42, 0.95);
+    }
+
+    .search-input-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #00f0ff;
+      font-size: 0.95rem;
+      pointer-events: none;
+    }
+
+    .clear-search-btn {
+      position: absolute;
+      right: 0.8rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #64748b;
+      cursor: pointer;
+      font-size: 0.9rem;
+      padding: 4px;
+      display: none;
+      transition: color 0.2s;
+    }
+
+    .clear-search-btn:hover {
+      color: #ff5e57;
+    }
+
+    .filter-tags-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    .filter-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #94a3b8;
+      padding: 0.45rem 1rem;
+      border-radius: 20px;
+      font-size: 0.88rem;
+      cursor: pointer;
+      font-family: 'Kanit', sans-serif;
+      transition: all 0.25s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: rgba(0, 240, 255, 0.5);
+      color: #fff;
+      background: rgba(0, 240, 255, 0.1);
+    }
+
+    .filter-btn.active {
+      background: rgba(0, 240, 255, 0.2);
+      border-color: #00f0ff;
+      color: #00f0ff;
+      font-weight: 500;
+      box-shadow: 0 0 14px rgba(0, 240, 255, 0.35);
+    }
+
+    /* Counter indicator */
+    .results-count-bar {
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #94a3b8;
+      font-size: 0.92rem;
+      padding: 0 0.5rem;
+    }
+
+    .count-highlight {
+      color: #00f0ff;
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+    }
+
+    /* 4. Grid of Topic Preview Cards (การ์ดหัวข้อย่อกระชับ) */
+    .vocab-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 680px) {
+      .vocab-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1100px) {
+      .vocab-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* Next-Gen Sci-Fi Topic Preview Card */
+    .topic-card {
+      background: rgba(10, 16, 42, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 22px;
+      padding: 1.6rem 1.5rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: all 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55);
+      cursor: pointer;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* Holographic Laser Beam */
+    .topic-card .card-laser {
+      position: absolute;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: 35px;
+      background: linear-gradient(180deg, transparent 0%, var(--card-accent-glow, rgba(0, 240, 255, 0.35)) 50%, transparent 100%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .topic-card:hover .card-laser {
+      opacity: 0.85;
+      animation: scanLaser 2s infinite ease-in-out;
+    }
+
+    @keyframes scanLaser {
+      0% { top: -20%; }
+      100% { top: 120%; }
+    }
+
+    /* Top Accent Line */
+    .topic-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent 5%, var(--card-accent, #00f0ff) 50%, transparent 95%);
+      opacity: 0.75;
+      transition: all 0.3s ease;
+    }
+
+    /* HUD Corner Brackets */
+    .topic-card .card-corner {
+      position: absolute;
+      width: 11px;
+      height: 11px;
+      border-color: var(--card-accent, #00f0ff);
+      border-style: solid;
+      pointer-events: none;
+      opacity: 0.45;
+      transition: all 0.3s ease;
+    }
+    .topic-card .c-corner-tl { top: 0; left: 0; border-width: 2.5px 0 0 2.5px; border-top-left-radius: 22px; }
+    .topic-card .c-corner-tr { top: 0; right: 0; border-width: 2.5px 2.5px 0 0; border-top-right-radius: 22px; }
+    .topic-card .c-corner-bl { bottom: 0; left: 0; border-width: 0 0 2.5px 2.5px; border-bottom-left-radius: 22px; }
+    .topic-card .c-corner-br { bottom: 0; right: 0; border-width: 0 2.5px 2.5px 0; border-bottom-right-radius: 22px; }
+
+    .topic-card:hover {
+      transform: translateY(-8px) scale(1.015);
+      border-color: var(--card-accent, #00f0ff);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 35px var(--card-accent-glow, rgba(0, 240, 255, 0.3));
+    }
+
+    .topic-card:hover::before {
+      opacity: 1;
+      height: 4.5px;
+      box-shadow: 0 0 15px var(--card-accent, #00f0ff);
+    }
+
+    .topic-card:hover .card-corner {
+      opacity: 1;
+      transform: scale(1.18);
+    }
+
+    /* Speaking active state on card */
+    .topic-card.is-card-speaking {
+      border-color: #00f0ff !important;
+      box-shadow: 0 0 40px rgba(0, 240, 255, 0.6) !important;
+      background: rgba(14, 26, 68, 0.88);
+      animation: speakingPulse 1.5s infinite alternate ease-in-out;
+    }
+
+    /* Card Header */
+    .card-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.1rem;
+    }
+
+    .card-icon-container {
+      position: relative;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .card-icon-orbit-ring {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      border: 1px dashed var(--card-accent, #00f0ff);
+      border-radius: 50%;
+      opacity: 0.65;
+      animation: orbitRotate 12s linear infinite;
+    }
+
+    @keyframes orbitRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .card-icon-orb {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--card-icon-bg, rgba(0, 240, 255, 0.12));
+      border: 1px solid var(--card-accent, #00f0ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--card-accent, #00f0ff);
+      font-size: 1.25rem;
+      box-shadow: 0 0 15px var(--card-accent-glow, rgba(0, 240, 255, 0.25));
+      transition: transform 0.3s ease;
+      z-index: 2;
+    }
+
+    .topic-card:hover .card-icon-orb {
+      transform: scale(1.1) rotate(6deg);
+    }
+
+    .card-meta-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-id-pill {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #94a3b8;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 2px 7px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .card-category-tag {
+      font-size: 0.74rem;
+      color: var(--card-accent, #00f0ff);
+      background: var(--card-icon-bg, rgba(0, 240, 255, 0.1));
+      padding: 3px 9px;
+      border-radius: 15px;
+      border: 1px solid var(--card-accent, #00f0ff);
+      font-weight: 500;
+    }
+
+    .card-title-th {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.2rem;
+      line-height: 1.35;
+    }
+
+    .card-title-en {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.82rem;
+      color: var(--card-accent, #00f0ff);
+      letter-spacing: 0.6px;
+      margin-bottom: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-preview-text {
+      font-size: 0.92rem;
+      color: #cbd5e1;
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+      flex-grow: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Card Action Bar */
+    .card-bottom-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 0.85rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      margin-top: auto;
+    }
+
+    .btn-open-detail {
+      width: 100%;
+      justify-content: center;
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid var(--card-accent, #00f0ff);
+      color: #ffffff;
+      padding: 0.55rem 1rem;
+      border-radius: 12px;
+      font-family: 'Kanit', sans-serif;
+      font-size: 0.88rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-weight: 500;
+    }
+
+    .btn-open-detail:hover {
+      background: var(--card-accent, #00f0ff);
+      color: #02040a;
+      box-shadow: 0 0 15px var(--card-accent-glow, rgba(0, 240, 255, 0.4));
+      transform: translateY(-2px);
+    }
+
+    .btn-quick-voice {
+      display: none !important;
+    }
+
+    /* Color Themes for Cards */
+    .topic-card.theme-cyan {
+      --card-accent: #00f0ff;
+      --card-accent-glow: rgba(0, 240, 255, 0.28);
+      --card-icon-bg: rgba(0, 240, 255, 0.12);
+    }
+
+    .topic-card.theme-gold {
+      --card-accent: #ffb703;
+      --card-accent-glow: rgba(255, 183, 3, 0.28);
+      --card-icon-bg: rgba(255, 183, 3, 0.12);
+    }
+
+    .topic-card.theme-blue {
+      --card-accent: #38bdf8;
+      --card-accent-glow: rgba(56, 189, 248, 0.28);
+      --card-icon-bg: rgba(56, 189, 248, 0.12);
+    }
+
+    .topic-card.theme-red {
+      --card-accent: #ff6b6b;
+      --card-accent-glow: rgba(255, 107, 107, 0.28);
+      --card-icon-bg: rgba(255, 107, 107, 0.12);
+    }
+
+    .topic-card.theme-purple {
+      --card-accent: #c084fc;
+      --card-accent-glow: rgba(192, 132, 252, 0.28);
+      --card-icon-bg: rgba(192, 132, 252, 0.12);
+    }
+
+    .topic-card.theme-emerald {
+      --card-accent: #10b981;
+      --card-accent-glow: rgba(16, 185, 129, 0.28);
+      --card-icon-bg: rgba(16, 185, 129, 0.12);
+    }
+
+    /* ============================================================
+       5. Holographic Full Detail Modal (หน้าต่างข้อมูลเต็ม)
+       ============================================================ */
+    .detail-modal-box {
+      max-width: 820px;
+      width: 95%;
+      background: rgba(6, 11, 30, 0.95);
+      border: 1px solid rgba(0, 240, 255, 0.55);
+      border-radius: 26px;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.9), 0 0 50px rgba(0, 240, 255, 0.35);
+      padding: 2.2rem 2.2rem 1.8rem;
+      position: relative;
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      color: #fff;
+      overflow-y: auto;
+      max-height: 90vh;
+      animation: modalFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalFadeIn {
+      0% { opacity: 0; transform: scale(0.92) translateY(20px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .detail-modal-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .modal-icon-orb-large {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      background: rgba(0, 240, 255, 0.15);
+      border: 2px solid #00f0ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.85rem;
+      color: #00f0ff;
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.4);
+      flex-shrink: 0;
+    }
+
+    .modal-header-text {
+      flex: 1;
+    }
+
+    .modal-tag-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .modal-term-id {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #94a3b8;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 3px 9px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .modal-category-pill {
+      font-size: 0.78rem;
+      color: #00f0ff;
+      background: rgba(0, 240, 255, 0.12);
+      padding: 3px 12px;
+      border-radius: 20px;
+      border: 1px solid #00f0ff;
+      font-weight: 500;
+    }
+
+    .modal-topic-title-th {
+      font-size: clamp(1.6rem, 3vw, 2.1rem);
+      font-weight: 700;
+      color: #fff;
+      margin: 0;
+      line-height: 1.25;
+    }
+
+    .modal-topic-title-en {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.95rem;
+      color: #00f0ff;
+      margin-top: 4px;
+      letter-spacing: 0.8px;
+    }
+
+    /* Modal Voice Player Bar */
+    .modal-voice-controls {
+      background: rgba(14, 24, 60, 0.8);
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      border-radius: 16px;
+      padding: 0.85rem 1.25rem;
+      margin-bottom: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+    }
+
+    .modal-voice-controls.is-speaking {
+      border-color: #00f0ff;
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.35);
+    }
+
+    .modal-voice-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .modal-voice-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.8rem;
+      color: #00f0ff;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+    }
+
+    .modal-voice-btns {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-speech-btn {
+      background: rgba(0, 240, 255, 0.15);
+      border: 1px solid #00f0ff;
+      color: #00f0ff;
+      padding: 0.45rem 1.1rem;
+      border-radius: 20px;
+      font-family: 'Kanit', sans-serif;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+      font-weight: 500;
+    }
+
+    .modal-speech-btn:hover {
+      background: #00f0ff;
+      color: #02040a;
+      box-shadow: 0 0 18px rgba(0, 240, 255, 0.5);
+    }
+
+    .modal-speech-btn.playing {
+      background: #00f0ff;
+      color: #02040a;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.7);
+    }
+
+    /* ปุ่มหยุดพูดสีแดงนีออน ชัดเจน */
+    .modal-stop-btn {
+      background: rgba(255, 94, 87, 0.18) !important;
+      border: 1px solid #ff5e57 !important;
+      color: #ff5e57 !important;
+      padding: 0.45rem 1.1rem;
+      border-radius: 20px;
+      font-family: 'Kanit', sans-serif;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+      font-weight: 500;
+    }
+
+    .modal-stop-btn:hover {
+      background: #ff5e57 !important;
+      color: #02040a !important;
+      box-shadow: 0 0 20px rgba(255, 94, 87, 0.65) !important;
+      transform: translateY(-2px);
+    }
+
+    /* ปุ่มปรับความเร็วเสียงใน Modal */
+    .modal-speed-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(0, 240, 255, 0.45);
+      color: #00f0ff;
+      padding: 0.45rem 1rem;
+      border-radius: 20px;
+      font-family: 'Kanit', sans-serif;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.25s ease;
+      font-weight: 500;
+    }
+
+    .modal-speed-btn:hover {
+      background: rgba(0, 240, 255, 0.25);
+      border-color: #00f0ff;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+      transform: translateY(-2px);
+    }
+
+    /* Floating Quick Audio Stop Bar ลอยตัวมุมจอด้านล่าง */
+    #floatingStopBar {
+      position: fixed;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%) translateY(120px);
+      background: rgba(8, 14, 38, 0.96);
+      border: 1.5px solid #ff5e57;
+      border-radius: 50px;
+      padding: 10px 22px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.85), 0 0 30px rgba(255, 94, 87, 0.45);
+      z-index: 1050;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #floatingStopBar.show-bar {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .float-status-text {
+      font-size: 0.92rem;
+      color: #e2e8f0;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .float-stop-btn {
+      background: #ff5e57;
+      color: #02040a;
+      border: none;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-family: 'Kanit', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: 0 0 15px rgba(255, 94, 87, 0.6);
+      transition: all 0.2s ease;
+    }
+
+    .float-stop-btn:hover {
+      background: #ffffff;
+      color: #ff5e57;
+      box-shadow: 0 0 25px rgba(255, 94, 87, 0.9);
+      transform: scale(1.06);
+    }
+
+    /* Modal Content Layout */
+    .detail-body-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .detail-section-card {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 1.25rem 1.4rem;
+    }
+
+    .detail-section-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #00f0ff;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .detail-text-content {
+      font-size: 1.02rem;
+      color: #e2e8f0;
+      line-height: 1.8;
+    }
+
+    /* Points list inside modal */
+    .modal-points-list {
+      list-style: none;
+      padding: 0;
+      margin: 0.75rem 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .modal-point-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.98rem;
+      color: #e2e8f0;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 10px 14px;
+      border-radius: 12px;
+      border-left: 3.5px solid #00f0ff;
+    }
+
+    .modal-point-num {
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      color: #00f0ff;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      padding-top: 1px;
+    }
+
+    /* Cosmic highlight note */
+    .detail-fact-card {
+      background: rgba(0, 240, 255, 0.06);
+      border: 1px dashed rgba(0, 240, 255, 0.35);
+      border-radius: 14px;
+      padding: 0.95rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.92rem;
+      color: #bae6fd;
+    }
+
+    .detail-fact-card i {
+      color: #00f0ff;
+      font-size: 1.15rem;
+      flex-shrink: 0;
+    }
+
+    /* Modal Navigation & Tools Bottom Bar */
+    .modal-bottom-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      flex-wrap: wrap;
+    }
+
+    .modal-nav-btns-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-nav-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      padding: 0.45rem 1rem;
+      border-radius: 12px;
+      font-family: 'Kanit', sans-serif;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .modal-nav-btn:hover {
+      border-color: #00f0ff;
+      color: #00f0ff;
+      background: rgba(0, 240, 255, 0.15);
+    }
+
+    /* Highlight badge inside text */
+    .highlight-badge {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: 7px;
+      font-weight: 600;
+      color: #ffffff;
+      background: rgba(0, 240, 255, 0.18);
+      border: 1px solid rgba(0, 240, 255, 0.45);
+      font-family: 'Orbitron', monospace;
+      letter-spacing: 0.6px;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+    }
+
+    /* Toast Notification for Copy/Audio */
+    #glossaryToast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: rgba(8, 14, 38, 0.95);
+      border: 1px solid #00f0ff;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 240, 255, 0.4);
+      z-index: 1000;
+      font-family: 'Kanit', sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+
+    #glossaryToast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Empty search result */
+    .empty-search-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4.5rem 1rem;
+      background: rgba(10, 16, 40, 0.55);
+      border: 1px dashed rgba(255, 255, 255, 0.18);
+      border-radius: 22px;
+      display: none;
+    }
+
+    .empty-search-state i {
+      font-size: 3.2rem;
+      color: #64748b;
+      margin-bottom: 1rem;
+    }
+
+    .empty-search-state h3 {
+      font-size: 1.35rem;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-search-state p {
+      color: #94a3b8;
+    }
+
+    /* Mobile & Tablet Responsiveness for d.html Body */
+    @media (max-width: 768px) {
+      .dict-container {
+        padding: 0 12px 30px;
+        margin-top: 85px;
+      }
+      .toolbar-container {
+        padding: 1rem 1.1rem;
+        border-radius: 16px;
+        gap: 1rem;
+      }
+      .search-box-wrap {
+        max-width: 100%;
+        width: 100%;
+      }
+      .topic-card {
+        padding: 1.25rem 1.1rem;
+        border-radius: 18px;
+      }
+      .card-title-th {
+        font-size: 1.25rem;
+      }
+      .card-desc-snippet {
+        font-size: 0.88rem;
+      }
+      .modal-box {
+        padding: 1.4rem 1rem 1.2rem;
+        border-radius: 18px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title-main {
+        font-size: clamp(1.6rem, 6vw, 2.2rem);
+      }
+      .hero-description-text {
+        font-size: 0.9rem;
+      }
+      .filter-chips-row {
+        gap: 6px;
+      }
+      .filter-chip {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+      }
+      .search-input-field {
+        font-size: 16px !important;
+      }
+    }
+
+    /* Footer adjustments */
+    .footer {
+      margin-top: auto;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- พื้นหลังอวกาศ (Space Canvas) และแสงออร่า -->
+  <canvas id="space-canvas"></canvas>
+  <div class="cosmic-aura aura-1"></div>
+  <div class="cosmic-aura aura-2"></div>
+  <div class="cosmic-aura aura-3"></div>
+
+  <!-- แถบนำทาง (Navbar) ที่ตรงตามมาตรฐานของทุกหน้า -->
+  <header class="header">
+    <nav class="navbar" id="navbar">
+      <!-- ซ้ายสุด: โลโก้แบรนด์ -->
+      <a href="index.html" class="brand">
+        <div class="brand-orbit-ring">
+          <div class="brand-planet-dot"></div>
+          <div class="brand-icon">
+            <i class="fa-solid fa-sun"></i>
+          </div>
+        </div>
+        <div class="brand-text">
+          <span class="brand-main">ระบบสุริยะ</span>
+          <span class="brand-sub">SOLAR SYSTEM OBSERVATORY</span>
+        </div>
+      </a>
+
+      <!-- ปุ่มเปิดปิดเมนูสำหรับมือถือ -->
+      <button class="mobile-toggle" id="mobileToggle" aria-label="เมนู">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <!-- เมนูนำทาง -->
+      <div class="nav-menu" id="navMenu">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="index.html#elements" class="nav-link">
+              <i class="fa-solid fa-layer-group"></i> องค์ประกอบ
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="a.html" class="nav-link">
+              <i class="fa-solid fa-book-open"></i> พื้นฐาน
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="b.html" class="nav-link">
+              <i class="fa-solid fa-atom"></i> จำลองโคจร
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="c.html" class="nav-link">
+              <i class="fa-solid fa-scale-balanced"></i> เปรียบเทียบ
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="d.html" class="nav-link active">
+              <i class="fa-solid fa-spell-check"></i> คำศัพท์
+            </a>
+          </li>
+          
+          <!-- เมนูดรอปดาวน์ แบบทดสอบ -->
+          <li class="nav-item dropdown" id="quizDropdown">
+            <button class="dropdown-trigger" id="dropdownTrigger" aria-expanded="false">
+              <i class="fa-solid fa-clipboard-question"></i> แบบทดสอบ
+              <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            </button>
+            <ul class="dropdown-menu" id="dropdownMenu">
+              <li>
+                <a href="1.html" class="dropdown-item" data-quiz="pre">
+                  <span class="drop-badge">01</span>
+                  <span class="drop-text">ก่อนเรียน</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li>
+                <a href="2.html" class="dropdown-item" data-quiz="post">
+                  <span class="drop-badge">02</span>
+                  <span class="drop-text">หลังเรียน</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li>
+                <a href="3.html" class="dropdown-item" data-quiz="act1">
+                  <span class="drop-badge">03</span>
+                  <span class="drop-text">กิจกรรม 1</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li>
+                <a href="4.html" class="dropdown-item" data-quiz="act2">
+                  <span class="drop-badge">04</span>
+                  <span class="drop-text">กิจกรรม 2</span>
+                  <i class="fa-solid fa-arrow-right drop-arrow"></i>
+                </a>
+              </li>
+              <li class="dropdown-divider" style="margin: 6px 0; border-top: 1px solid rgba(255, 255, 255, 0.12);"></li>
+              <li>
+                <a href="javascript:void(0)" class="dropdown-item admin-dropdown-item" onclick="openAdminModal();">
+                  <span class="drop-badge" style="background: rgba(0, 240, 255, 0.2);"><i class="fa-solid fa-shield-halved"></i></span>
+                  <span class="drop-text" style="font-weight: 600; color: var(--neon-cyan);">ศูนย์แอดมิน (คะแนน 1-4)</span>
+                  <i class="fa-solid fa-lock drop-arrow"></i>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <!-- ปุ่มศูนย์แอดมิน -->
+          <li class="nav-item admin-nav-item">
+            <button class="admin-nav-btn" id="openAdminNavBtn" onclick="openAdminModal();" title="ศูนย์ควบคุมแอดมิน / ดูคะแนน 1, 2, 3, 4 (Alt+A)">
+              <i class="fa-solid fa-shield-halved"></i>
+              <span>แอดมิน</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- เนื้อหาหลัก (Main Content) -->
+  <main class="main-wrapper">
+    
+    <!-- Hero Banner -->
+    <div class="glossary-hero">
+      <div class="hero-badge-pill">
+        <i class="fa-solid fa-brain"></i> ASTRONOMICAL LEXICON & AUDIO DECK
+      </div>
+      <h1 class="hero-title-main">
+        คำศัพท์ที่ต้องรู้เกี่ยวกับ<span class="gradient-text">ระบบสุริยะ</span>
+      </h1>
+      <p class="hero-description-text">
+        คลิกที่การ์ดเพื่อเปิดอ่านข้อมูลและนิยามฉบับเต็ม พร้อมระบบเสียงบรรยาย AI อัจฉริยะในแต่ละหัวข้อ
+      </p>
+    </div>
+
+    <!-- Search & Filter Toolbar -->
+    <div class="toolbar-container">
+      <div class="search-box-wrap">
+        <i class="fa-solid fa-magnifying-glass search-input-icon"></i>
+        <input 
+          type="text" 
+          id="glossarySearchInput" 
+          class="search-input-field" 
+          placeholder="ค้นหาคำศัพท์ เช่น AU, ดาวเคราะห์, ดาวหาง, ดาวฤกษ์..."
+          autocomplete="off"
+        >
+        <button id="clearSearchBtn" class="clear-search-btn" title="ล้างการค้นหา">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="filter-tags-wrap" id="filterTagsWrap">
+        <button class="filter-btn active" data-filter="all">ทั้งหมด (10)</button>
+        <button class="filter-btn" data-filter="unit">หน่วยดาราศาสตร์</button>
+        <button class="filter-btn" data-filter="stars-planets">ดวงดาว & ดาวเคราะห์</button>
+        <button class="filter-btn" data-filter="minor-objects">วัตถุขนาดเล็ก & รอบนอก</button>
+      </div>
+    </div>
+
+    <!-- Results Count Bar -->
+    <div class="results-count-bar">
+      <div>
+        แสดงหัวข้อคำศัพท์: <span class="count-highlight" id="shownCount">10</span> / 10 หัวข้อ
+      </div>
+      <div style="font-size: 0.85rem; color: #64748b;">
+        <i class="fa-solid fa-hand-pointer"></i> คลิกการ์ดเพื่อเปิดข้อมูลเต็ม • มีเสียงบรรยายทุกข้อ
+      </div>
+    </div>
+
+    <!-- 10 Sci-Fi Topic Preview Cards Grid -->
+    <div class="vocab-grid" id="vocabGrid">
+      <!-- สร้างผ่าน JavaScript จากฐานข้อมูล DataBank อัตโนมัติ เพื่อการจัดสรรข้อมูลที่แม่นยำและยืดหยุ่น -->
+    </div>
+
+    <!-- เมื่อค้นหาไม่พบข้อมูล (Empty State) -->
+    <div class="empty-search-state" id="emptySearchState">
+      <i class="fa-solid fa-satellite-dish"></i>
+      <h3>ไม่พบคำศัพท์ที่ตรงกับการค้นหา</h3>
+      <p>ลองค้นหาด้วยคำอื่น เช่น "AU", "ดาวเคราะห์", "ดาวหาง" หรือกดปุ่ม "ทั้งหมด"</p>
+    </div>
+
+  </main>
+
+  <!-- ============================================================
+       Holographic Full Detail Modal (หน้าต่างข้อมูลเต็มเมื่อคลิกหัวข้อ)
+       ============================================================ -->
+  <div class="modal-overlay" id="detailModal" aria-hidden="true" role="dialog">
+    <div class="detail-modal-box">
+      <!-- Sci-Fi HUD Corner Brackets -->
+      <span class="hud-corner corner-tl"></span>
+      <span class="hud-corner corner-tr"></span>
+      <span class="hud-corner corner-bl"></span>
+      <span class="hud-corner corner-br"></span>
+
+      <button class="modal-close" id="detailModalCloseBtn" aria-label="ปิดหน้าต่าง">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- ส่วนหัวของหน้าต่างข้อมูลเต็ม -->
+      <div class="detail-modal-header">
+        <div class="modal-icon-orb-large" id="modalIconOrb">
+          <i class="fa-solid fa-star" id="modalIcon"></i>
+        </div>
+        <div class="modal-header-text">
+          <div class="modal-tag-row">
+            <span class="modal-term-id" id="modalTermId">TERM // 01</span>
+            <span class="modal-category-pill" id="modalCategoryPill">หมวดหมู่</span>
+          </div>
+          <h2 class="modal-topic-title-th" id="modalTitleTh">ชื่อหัวข้อคำศัพท์</h2>
+          <div class="modal-topic-title-en" id="modalTitleEn">English Term Title</div>
+        </div>
+      </div>
+
+      <!-- แผงเครื่องเล่นเสียงบรรยาย AI ภายใน Modal -->
+      <div class="modal-voice-controls" id="modalVoiceControls">
+        <div class="modal-voice-left">
+          <button class="modal-speech-btn" id="modalSpeechBtn">
+            <i class="fa-solid fa-volume-high" id="modalSpeechIcon"></i>
+            <span id="modalSpeechText">ฟังเสียงบรรยาย</span>
+          </button>
+          <button class="modal-speech-btn modal-stop-btn" id="modalStopSpeechBtn" title="หยุดเสียงพูดทันที">
+            <i class="fa-solid fa-stop"></i>
+            <span>หยุดพูด</span>
+          </button>
+          <button class="modal-speed-btn" id="modalSpeedBtn" title="ปรับความเร็วการอ่าน">
+            <i class="fa-solid fa-gauge-high"></i>
+            <span id="modalSpeedText">1.0x</span>
+          </button>
+          <div class="tts-waveform">
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+          </div>
+        </div>
+        <div class="modal-voice-title" id="modalVoiceStatus">AI AUDIO NARRATOR READY</div>
+      </div>
+
+      <!-- เนื้อหาข้อมูลเต็ม -->
+      <div class="detail-body-container">
+        
+        <!-- กล่องนิยามหลัก -->
+        <div class="detail-section-card">
+          <div class="detail-section-title">
+            <i class="fa-solid fa-book-bookmark"></i> คำจำกัดความและนิยามสำคัญ
+          </div>
+          <div class="detail-text-content" id="modalDefinitionText">
+            -
+          </div>
+        </div>
+
+        <!-- กล่องคุณสมบัติและข้อกำหนดเพิ่มเติม -->
+        <div class="detail-section-card" id="modalExtraSection">
+          <div class="detail-section-title" id="modalExtraTitle">
+            <i class="fa-solid fa-list-check"></i> คุณสมบัติและรายละเอียดเพิ่มเติม
+          </div>
+          <div id="modalExtraContent">
+            -
+          </div>
+        </div>
+
+        <!-- กล่องเกร็ดดาราศาสตร์ -->
+        <div class="detail-fact-card" id="modalFactCard">
+          <i class="fa-solid fa-lightbulb"></i>
+          <span id="modalFactText">-</span>
+        </div>
+
+      </div>
+
+      <!-- ส่วนล่าง: นำทางระหว่างหัวข้อ และปุ่มคัดลอก -->
+      <div class="modal-bottom-actions">
+        <div class="modal-nav-btns-group">
+          <button class="modal-nav-btn" id="modalPrevBtn">
+            <i class="fa-solid fa-chevron-left"></i> หัวข้อก่อนหน้า
+          </button>
+          <button class="modal-nav-btn" id="modalNextBtn">
+            หัวข้อถัดไป <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+
+        <button class="modal-nav-btn" id="modalCopyBtn" style="border-color:#00f0ff;color:#00f0ff;">
+          <i class="fa-regular fa-copy"></i> คัดลอกข้อมูล
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- โมดอลแบบทดสอบ (Quiz & Activities Modal เพื่อรองรับเมนู Navbar) -->
+  <div class="modal-overlay" id="quizModal" aria-hidden="true" role="dialog">
+    <div class="modal-box quiz-modal-box">
+      <!-- Sci-Fi HUD Corner Brackets -->
+      <span class="hud-corner corner-tl"></span>
+      <span class="hud-corner corner-tr"></span>
+      <span class="hud-corner corner-bl"></span>
+      <span class="hud-corner corner-br"></span>
+
+      <button class="modal-close" id="quizModalCloseBtn" aria-label="ปิดหน้าต่าง">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="quiz-container">
+        <div class="quiz-header">
+          <div class="quiz-type-badge" id="quizBadge">แบบทดสอบ</div>
+          <h2 class="quiz-title" id="quizTitle">หัวข้อแบบทดสอบ</h2>
+          <p class="quiz-desc" id="quizDesc">คำชี้แจงในการทำแบบทดสอบ</p>
+        </div>
+
+        <div class="quiz-body" id="quizQuestionsContainer">
+          <!-- คำถามแทรกด้วย JavaScript -->
+        </div>
+
+        <div class="quiz-footer" id="quizFooter">
+          <button class="quiz-submit-btn" id="quizSubmitBtn">
+            <i class="fa-solid fa-paper-plane"></i> ส่งคำตอบและประเมินผล
+          </button>
+          <div class="quiz-score-result" id="quizScoreResult" style="display: none;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Quick Audio Stop Bar (แถบลอยหยุดพูดทุกที่บนหน้าจอ) -->
+  <div id="floatingStopBar">
+    <div class="float-status-text">
+      <i class="fa-solid fa-waveform-lines fa-fade" style="color:#00f0ff;"></i>
+      <span id="floatStatusText">กำลังบรรยายเสียง...</span>
+    </div>
+    <button class="float-stop-btn" id="floatStopBtn" title="หยุดเสียงพูดทันที">
+      <i class="fa-solid fa-stop"></i>
+      <span>หยุดพูด</span>
+    </button>
+  </div>
+
+  <!-- Toast Notification Message -->
+  <div id="glossaryToast">
+    <i class="fa-solid fa-circle-check" style="color: #00f0ff; font-size: 1.2rem;"></i>
+    <span id="glossaryToastText">คัดลอกข้อความสำเร็จ</span>
+  </div>
+
+  <!-- ส่วนท้ายเว็บ (Footer) เหมือน index.html -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="brand-orbit-ring" style="width:34px;height:34px;">
+          <div class="brand-icon" style="width:26px;height:26px;font-size:0.9rem;">
+            <i class="fa-solid fa-sun"></i>
+          </div>
+        </div>
+        <span>ห้องเรียนระบบสุริยะ (Solar System Observatory Classroom)</span>
+      </div>
+      <p class="footer-copy">
+        สื่อการเรียนรู้วิทยาศาสตร์ดาราศาสตร์เชิงโต้ตอบ 3 มิติ • ออกแบบเพื่อสร้างแรงบันดาลใจแห่งการสำรวจอวกาศ
+      </p>
+      <div class="footer-nav">
+        <a href="index.html#elements">องค์ประกอบ</a>
+        <a href="a.html">พื้นฐาน</a>
+        <a href="b.html">จำลองโคจร</a>
+        <a href="c.html">เปรียบเทียบ</a>
+        <a href="d.html">คำศัพท์</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- สคริปต์หลักและระบบแบบทดสอบ -->
+  <script src="script.js?v=3"></script>
+
+  <!-- สคริปต์ระบบคำศัพท์, Modal ข้อมูลเต็ม, เสียงบรรยาย AI, ตัวกรอง และเสียง SFX -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      /* ============================================================
+         1. ฐานข้อมูลคำศัพท์ดาราศาสตร์ (Astronomical Glossary Database)
+         ============================================================ */
+      const glossaryData = [
+        {
+          id: 1,
+          termCode: 'TERM // 01',
+          category: 'unit',
+          categoryName: 'หน่วยวัดระยะทาง',
+          theme: 'theme-cyan',
+          icon: 'fa-ruler-horizontal',
+          titleTh: 'ระยะทาง 1 หน่วยดาราศาสตร์ (AU)',
+          titleEn: 'Astronomical Unit (1 AU)',
+          preview: 'ระยะทางเฉลี่ยจากโลกถึงดวงอาทิตย์ ประมาณ 149.6 ล้านกิโลเมตร มาตรวัดหลักของระบบสุริยะ',
+          definition: 'มีค่าเท่ากับ <span class="highlight-badge">149,597,870.7 กิโลเมตร</span> เป็นค่าที่อ้างอิงจากระยะทางเฉลี่ยจากโลกถึงดวงอาทิตย์ นิยมใช้ในการบอกระยะทางดาราศาสตร์',
+          extraTitle: '<i class="fa-solid fa-circle-info"></i> ความสำคัญและการใช้งาน',
+          extraContent: `
+            <div class="detail-text-content">
+              เนื่องจากระยะทางในอวกาศมีขนาดมหึมา การบอกระยะทางเป็นกิโลเมตรจะทำให้ตัวเลขยาวเกินไป นักดาราศาสตร์จึงกำหนดให้ 1 AU เป็นหน่วยมาตรฐานในการบอกระยะห่างของดาวเคราะห์และวัตถุต่างๆ ภายในระบบสุริยะ
+            </div>
+          `,
+          fact: 'แสงจากดวงอาทิตย์ใช้เวลาเดินทางข้ามระยะทาง 1 AU มาถึงโลกประมาณ 8 นาที 20 วินาที',
+          speechText: 'ระยะทาง 1 หน่วยดาราศาสตร์ หรือ 1 AU มีค่าเท่ากับ 149,597,870.7 กิโลเมตร เป็นค่าที่อ้างอิงจากระยะทางเฉลี่ยจากโลกถึงดวงอาทิตย์ นิยมใช้ในการบอกระยะทางดาราศาสตร์'
+        },
+        {
+          id: 2,
+          termCode: 'TERM // 02',
+          category: 'stars-planets',
+          categoryName: 'วัตถุศูนย์กลาง',
+          theme: 'theme-gold',
+          icon: 'fa-sun',
+          titleTh: 'ดาวฤกษ์ (Stars)',
+          titleEn: 'Stars',
+          preview: 'เทห์ฟากฟ้าที่สามารถส่องแสงสว่างและปลดปล่อยพลังงานได้ด้วยตัวเองจากปฏิกิริยานิวเคลียร์ฟิวชัน',
+          definition: 'คือ <span style="color:#ffb703;font-weight:600;">ดาวที่ส่องแสงได้ด้วยตัวเองจากปฏิกิริยานิวเคลียร์ฟิวชัน</span> (Nuclear Fusion) ที่แกนกลาง ซึ่งหลอมอะตอมของไฮโดรเจนให้กลายเป็นฮีเลียม ปลดปล่อยความร้อนและรังสีออกมาอย่างมหาศาล',
+          extraTitle: '<i class="fa-solid fa-atom"></i> บทบาทในระบบสุริยะ',
+          extraContent: `
+            <div class="detail-text-content">
+              ดวงอาทิตย์ (The Sun) เป็นดาวฤกษ์เพียงดวงเดียวในระบบสุริยะ มีมวลคิดเป็น 99.86% ของมวลสารทั้งหมดในระบบสุริยะ และมีแรงโน้มถ่วงมหาศาลคอยยึดเหนี่ยวให้ดาวเคราะห์ทุกดวงโคจรอยู่โดยรอบ
+            </div>
+          `,
+          fact: 'ดวงอาทิตย์เป็นดาวฤกษ์ชนิดดาวยักษ์แคระเหลือง (Yellow Dwarf) มีอุณหภูมิพื้นผิวประมาณ 5,500 องศาเซลเซียส',
+          speechText: 'ดาวฤกษ์ คือ ดาวที่ส่องแสงได้ด้วยตัวเองจากปฏิกิริยานิวเคลียร์ฟิวชัน เช่น ดวงอาทิตย์ศูนย์กลางของระบบสุริยะ'
+        },
+        {
+          id: 3,
+          termCode: 'TERM // 03',
+          category: 'stars-planets',
+          categoryName: 'นิยามหลัก IAU',
+          theme: 'theme-blue',
+          icon: 'fa-globe',
+          titleTh: 'ดาวเคราะห์ (Planets)',
+          titleEn: 'Planets',
+          preview: 'วัตถุท้องฟ้า 8 ดวงตามเกณฑ์มติสหพันธ์ดาราศาสตร์สากล (IAU) ค.ศ. 2006',
+          definition: 'คือ วัตถุที่สหพันธ์ดาราศาสตร์สากล (IAU) กำหนดในปี ค.ศ. 2006 ให้มีคุณสมบัติครบทั้ง 3 ประการดังต่อไปนี้:',
+          extraTitle: '<i class="fa-solid fa-list-check"></i> คุณสมบัติ 3 ประการของดาวเคราะห์ (IAU Definition)',
+          extraContent: `
+            <ul class="modal-points-list">
+              <li class="modal-point-item">
+                <span class="modal-point-num">01.</span>
+                <span><strong>โคจรรอบดาวฤกษ์</strong> (ในระบบสุริยะคือโคจรรอบดวงอาทิตย์ และไม่เป็นดาวบริวารของวัตถุอื่น)</span>
+              </li>
+              <li class="modal-point-item">
+                <span class="modal-point-num">02.</span>
+                <span><strong>มีมวลมากพอ</strong> จนแรงโน้มถ่วงทำให้วัตถุดังกล่าวมีสัณฐานเป็นทรงกลมหรือเกือบกลม (Hydrostatic equilibrium)</span>
+              </li>
+              <li class="modal-point-item">
+                <span class="modal-point-num">03.</span>
+                <span><strong>ทำให้บริเวณวงโคจรของมันปราศจากวัตถุอื่นที่มีขนาดใกล้เคียงกัน</strong> (Clearing the neighborhood around its orbit)</span>
+              </li>
+            </ul>
+          `,
+          fact: 'มตินี้ส่งผลให้ดาวพลูโตถูกปรับสถานะจากดาวเคราะห์ไปเป็น "ดาวเคราะห์แคระ" เนื่องจากไม่ผ่านคุณสมบัติข้อที่ 3',
+          speechText: 'ดาวเคราะห์ คือ วัตถุที่สหพันธ์ดาราศาสตร์สากล IAU กำหนดในปี ค.ศ. 2006 ให้มีคุณสมบัติ 1. โคจรรอบดาวฤกษ์ 2. มีมวลมากพอจนมีสัณฐานเป็นทรงกลม และ 3. ทำให้บริเวณวงโคจรของมันปราศจากวัตถุอื่นที่มีขนาดใกล้เคียงกัน'
+        },
+        {
+          id: 4,
+          termCode: 'TERM // 04',
+          category: 'stars-planets',
+          categoryName: 'กลุ่มดาวเคราะห์หิน',
+          theme: 'theme-red',
+          icon: 'fa-mountain',
+          titleTh: 'ดาวเคราะห์ชั้นใน (Inner Planets)',
+          titleEn: 'Terrestrial Planets',
+          preview: 'ดาวเคราะห์หินที่มีองค์ประกอบเป็นหินและเหล็ก พื้นผิวแข็งชัดเจน ได้แก่ พุธ, ศุกร์, โลก, อังคาร',
+          definition: 'หรือ <strong>ดาวเคราะห์หิน (Terrestrial Planets)</strong> คือ ดาวเคราะห์ที่มีองค์ประกอบส่วนใหญ่เป็นหินและเหล็ก ได้แก่ ดาวพุธ ดาวศุกร์ โลก และดาวอังคาร',
+          extraTitle: '<i class="fa-solid fa-cubes"></i> ลักษณะเด่นประจำกลุ่ม',
+          extraContent: `
+            <div class="detail-text-content">
+              ตั้งอยู่ภายในแถบดาวเคราะห์น้อย มีพื้นผิวที่เป็นของแข็งชัดเจน มีความหนาแน่นสูง แกนกลางประกอบด้วยโลหะหนัก มีขนาดค่อนข้างเล็กเมื่อเทียบกับดาวเคราะห์ชั้นนอก และมีจำนวนดวงจันทร์บริวารน้อยหรือไม่มีเลย
+            </div>
+          `,
+          fact: 'โลกเป็นดาวเคราะห์หินดวงเดียวในกลุ่มนี้ที่พบน้ำในสถานะของเหลวและมีสิ่งมีชีวิตอาศัยอยู่',
+          speechText: 'ดาวเคราะห์ชั้นใน หรือดาวเคราะห์หิน คือ ดาวเคราะห์ที่มีองค์ประกอบส่วนใหญ่เป็นหินและเหล็ก ได้แก่ ดาวพุธ ดาวศุกร์ โลก และดาวอังคาร'
+        },
+        {
+          id: 5,
+          termCode: 'TERM // 05',
+          category: 'stars-planets',
+          categoryName: 'กลุ่มดาวยักษ์แก๊ส',
+          theme: 'theme-purple',
+          icon: 'fa-ring',
+          titleTh: 'ดาวเคราะห์ชั้นนอก (Outer Planets)',
+          titleEn: 'Gas Giants & Ice Giants',
+          preview: 'ดาวเคราะห์ขนาดใหญ่ที่มีองค์ประกอบหลักเป็นแก๊ส ได้แก่ พฤหัสบดี, เสาร์, ยูเรนัส, เนปจูน',
+          definition: 'หรือ <strong>ดาวเคราะห์แก๊สยักษ์ (Gas Giants)</strong> คือ ดาวเคราะห์ขนาดใหญ่ที่มีองค์ประกอบส่วนใหญ่เป็นแก๊ส ได้แก่ ดาวพฤหัสบดี ดาวเสาร์ ดาวยูเรนัส และดาวเนปจูน',
+          extraTitle: '<i class="fa-solid fa-wind"></i> องค์ประกอบและโครงสร้าง',
+          extraContent: `
+            <div class="detail-text-content">
+              ส่วนใหญ่ประกอบด้วยไฮโดรเจน ฮีเลียม มีเทน และแอมโมเนีย ไม่มีพื้นผิวของแข็งชัดเจน มีขนาดมหึมา มีระบบวงแหวนล้อมรอบทุกดวง และมีดวงจันทร์บริวารโคจรอยู่เป็นจำนวนมาก
+            </div>
+          `,
+          fact: 'ดาวพฤหัสบดีมีขนาดใหญ่ที่สุด สามารถบรรจุโลกไว้ข้างในได้มากกว่า 1,300 ดวง',
+          speechText: 'ดาวเคราะห์ชั้นนอก หรือดาวเคราะห์แก๊สยักษ์ คือ ดาวเคราะห์ขนาดใหญ่ที่มีองค์ประกอบส่วนใหญ่เป็นแก๊ส ได้แก่ ดาวพฤหัสบดี ดาวเสาร์ ดาวยูเรนัส และดาวเนปจูน'
+        },
+        {
+          id: 6,
+          termCode: 'TERM // 06',
+          category: 'minor-objects',
+          categoryName: 'เศษซากกำเนิดระบบ',
+          theme: 'theme-gold',
+          icon: 'fa-meteor',
+          titleTh: 'ดาวเคราะห์น้อย (Asteroids)',
+          titleEn: 'Asteroids',
+          preview: 'เศษซากวัตถุหินขนาดเล็กที่เหลือจากการกำเนิดระบบสุริยะ พบมากระหว่างอังคารและพฤหัสบดี',
+          definition: 'คือ วัตถุขนาดเล็กที่อยู่ไม่เกินวงโคจรของดาวพฤหัสบดี เป็นเศษซากที่เหลือจากการก่อตัวของระบบสุริยะ มีมวลไม่มากพอที่จะก่อตัวเป็นดาวเคราะห์ พบมากระหว่างวงโคจรของดาวอังคารและดาวพฤหัสบดี',
+          extraTitle: '<i class="fa-solid fa-layer-group"></i> แถบดาวเคราะห์น้อยหลัก (Main Asteroid Belt)',
+          extraContent: `
+            <div class="detail-text-content">
+              บริเวณระหว่างวงโคจรของดาวอังคารและดาวพฤหัสบดีเต็มไปด้วยดาวเคราะห์น้อยนับล้านดวง โดยแรงโน้มถ่วงมหาศาลของดาวพฤหัสบดีเป็นตัวการที่รบกวนไม่ให้มวลสารเหล่านี้รวมตัวกันกลายเป็นดาวเคราะห์ได้
+            </div>
+          `,
+          fact: 'ดาวเคราะห์น้อยที่ใหญ่ที่สุดคือ ซีรีส (Ceres) ซึ่งมีสัณฐานทรงกลมและได้รับการยกฐานะเป็นดาวเคราะห์แคระ',
+          speechText: 'ดาวเคราะห์น้อย คือ วัตถุขนาดเล็กที่อยู่ไม่เกินวงโคจรของดาวพฤหัสบดี เป็นเศษซากที่เหลือจากการก่อตัวของระบบสุริยะ มีมวลไม่มากพอที่จะก่อตัวเป็นดาวเคราะห์ พบมากระหว่างวงโคจรของดาวอังคารและดาวพฤหัสบดี'
+        },
+        {
+          id: 7,
+          termCode: 'TERM // 07',
+          category: 'stars-planets',
+          categoryName: 'วัตถุทรงกลมซ้อนทับ',
+          theme: 'theme-emerald',
+          icon: 'fa-compact-disc',
+          titleTh: 'ดาวเคราะห์แคระ (Dwarf Planets)',
+          titleEn: 'Dwarf Planets',
+          preview: 'วัตถุทรงกลมที่โคจรรอบดวงอาทิตย์ แต่วงโคจรยังซ้อนทับกับวัตถุอื่น เช่น พลูโต และ ซีรีส',
+          definition: 'คือ วัตถุที่โคจรรอบดวงอาทิตย์ ไม่เป็นดาวบริวาร และมีสัณฐานเป็นทรงกลมเช่นเดียวกับดาวเคราะห์ แต่มีวงโคจรรอบดวงอาทิตย์ที่ซ้อนทับกับวัตถุอื่น ส่วนมากพบที่วงโคจรถัดจากดาวเนปจูน',
+          extraTitle: '<i class="fa-solid fa-asterisk"></i> ตัวอย่างดาวเคราะห์แคระที่สำคัญ',
+          extraContent: `
+            <div class="detail-text-content">
+              วัตถุที่ได้รับการรับรองอย่างเป็นทางการ ได้แก่ พลูโต (Pluto), อีริส (Eris), เฮาเมอา (Haumea), มาคีมาคี (Makemake) ซึ่งอยู่พ้นวงโคจรเนปจูน และซีรีส (Ceres) ซึ่งอยู่ในแถบดาวเคราะห์น้อย
+            </div>
+          `,
+          fact: 'ดาวพลูโตมีดวงจันทร์บริวารขนาดใหญ่ชื่อ คารอน (Charon) ที่มีขนาดเกือบครึ่งหนึ่งของพลูโตเอง',
+          speechText: 'ดาวเคราะห์แคระ คือ วัตถุที่โคจรรอบดวงอาทิตย์ ไม่เป็นดาวบริวาร และมีสัณฐานเป็นทรงกลมเช่นเดียวกับดาวเคราะห์ แต่มีวงโคจรรอบดวงอาทิตย์ที่ซ้อนทับกับวัตถุอื่น ส่วนมากพบที่วงโคจรถัดจากดาวเนปจูน'
+        },
+        {
+          id: 8,
+          termCode: 'TERM // 08',
+          category: 'minor-objects',
+          categoryName: 'ก้อนน้ำแข็งอวกาศ',
+          theme: 'theme-cyan',
+          icon: 'fa-wand-magic-sparkles',
+          titleTh: 'ดาวหาง (Comets)',
+          titleEn: 'Comets',
+          preview: 'ก้อนน้ำแข็งและฝุ่นอวกาศที่ระเหิดเป็นหางยาวเมื่อเข้าใกล้ดวงอาทิตย์ กำเนิดจากขอบนอกสุด',
+          definition: 'คือ วัตถุที่มีองค์ประกอบหลักเป็นน้ำแข็ง เมื่อเข้าใกล้ดวงอาทิตย์จะถูกแผดเผาจนระเหิดออก เกิดเป็นหางแก๊สและหางฝุ่นฟุ้งกระจายไปในอวกาศ ส่วนมากมีแหล่งกำเนิดอยู่ที่แถบไคเปอร์และเมฆออร์ต',
+          extraTitle: '<i class="fa-solid fa-wind"></i> โครงสร้างและทิศทางของหาง',
+          extraContent: `
+            <div class="detail-text-content">
+              ดาวหางประกอบด้วยนิวเคลียส (ใจกลางน้ำแข็ง), หัวโคมา (กลุ่มแก๊สและฝุ่นรอบนิวเคลียส), หางไอออน (หางแก๊ส) และหางฝุ่น โดยลมสุริยะและรังสีจากดวงอาทิตย์จะพัดให้หางของดาวหางชี้ออกจากทิศทางดวงอาทิตย์เสมอ
+            </div>
+          `,
+          fact: 'ดาวหางฮัลเลย์ (Halley) เป็นดาวหางคาบสั้นที่มีชื่อเสียงที่สุด จะโคจรกลับมาให้เห็นทุกๆ ประมาณ 75-76 ปี',
+          speechText: 'ดาวหาง คือ วัตถุที่มีองค์ประกอบหลักเป็นน้ำแข็ง เมื่อเข้าใกล้ดวงอาทิตย์จะถูกแผดเผาจนระเหิดออก เกิดเป็นหางแก๊สและหางฝุ่นฟุ้งกระจายไปในอวกาศ ส่วนมากมีแหล่งกำเนิดอยู่ที่แถบไคเปอร์และเมฆออร์ต'
+        },
+        {
+          id: 9,
+          termCode: 'TERM // 09',
+          category: 'stars-planets',
+          categoryName: 'บริวารดวงดาว',
+          theme: 'theme-purple',
+          icon: 'fa-moon',
+          titleTh: 'ดาวบริวาร (Natural Satellites)',
+          titleEn: 'Natural Satellites / Moons',
+          preview: 'ดวงจันทร์บริวารที่โคจรรอบดาวเคราะห์หรือดาวเคราะห์แคระ เช่น ดวงจันทร์ของโลก, ไททัน, ยูโรปา',
+          definition: 'หรือ <strong>ดวงจันทร์บริวาร</strong> คือ วัตถุที่โคจรรอบวัตถุที่ใหญ่กว่าที่ไม่ใช่ดวงอาทิตย์ เช่น โคจรรอบดาวเคราะห์ โคจรรอบดาวเคราะห์แคระ เป็นต้น',
+          extraTitle: '<i class="fa-solid fa-satellite-dish"></i> ความหลากหลายของดวงจันทร์บริวาร',
+          extraContent: `
+            <div class="detail-text-content">
+              ในระบบสุริยะมีดาวบริวารมากกว่า 290 ดวง เช่น ดวงจันทร์ไททันของดาวเสาร์มีบรรยากาศหนาแน่นและทะเลมีเทนเหลว, ดวงจันทร์ยูโรปาของดาวพฤหัสบดีมีมหาสมุทรใต้เปลือกน้ำแข็ง, และดวงจันทร์ไอโอมีภูเขาไฟที่คุกรุ่นตลอดเวลา
+            </div>
+          `,
+          fact: 'แกนีมีด (Ganymede) ดวงจันทร์ของดาวพฤหัสบดี เป็นดวงจันทร์ที่ใหญ่ที่สุดในระบบสุริยะ มีขนาดใหญ่กว่าดาวพุธ',
+          speechText: 'ดาวบริวาร หรือดวงจันทร์บริวาร คือ วัตถุที่โคจรรอบวัตถุที่ใหญ่กว่าที่ไม่ใช่ดวงอาทิตย์ เช่น โคจรรอบดาวเคราะห์ โคจรรอบดาวเคราะห์แคระ เป็นต้น'
+        },
+        {
+          id: 10,
+          termCode: 'TERM // 10',
+          category: 'minor-objects',
+          categoryName: 'ขอบนอกระบบสุริยะ',
+          theme: 'theme-blue',
+          icon: 'fa-infinity',
+          titleTh: 'วัตถุพ้นดาวเนปจูน (TNOs)',
+          titleEn: 'Trans-Neptunian Objects',
+          preview: 'อาณาจักรวัตถุเยือกแข็งที่โคจรถัดจากดาวเนปจูน ครอบคลุมตั้งแต่แถบไคเปอร์ถึงเมฆออร์ต',
+          definition: 'คือ วัตถุใดก็ตามที่มีวงโคจรรอบดวงอาทิตย์ถัดจากดาวเนปจูน ครอบคลุมตั้งแต่วัตถุในแถบไคเปอร์ไปจนถึงสุดขอบเขตเมฆออร์ต',
+          extraTitle: '<i class="fa-solid fa-shuttle-space"></i> แถบไคเปอร์และเมฆออร์ต',
+          extraContent: `
+            <div class="detail-text-content">
+              <strong>แถบไคเปอร์ (Kuiper Belt)</strong> อยู่ห่างตั้งแต่ 30 ถึง 55 AU เต็มไปด้วยวัตถุเยือกแข็งและดาวเคราะห์แคระ<br>
+              <strong>เมฆออร์ต (Oort Cloud)</strong> เป็นโครงสร้างทรงกลมขนาดยักษ์ที่ห่อหุ้มระบบสุริยะ ยื่นออกไปไกลถึง 50,000 - 100,000 AU เป็นแหล่งกำเนิดของดาวหางคาบยาว
+            </div>
+          `,
+          fact: 'ยานสำรวจนิวฮอไรซันส์ (New Horizons) เป็นยานอวกาศลำแรกของมนุษยชาติที่เดินทางไปสำรวจวัตถุพ้นดาวเนปจูนอย่างใกล้ชิด',
+          speechText: 'วัตถุพ้นดาวเนปจูน คือ วัตถุใดก็ตามที่มีวงโคจรรอบดวงอาทิตย์ถัดจากดาวเนปจูน ครอบคลุมตั้งแต่วัตถุในแถบไคเปอร์ไปจนถึงสุดขอบเขตเมฆออร์ต'
+        }
+      ];
+
+      /* ============================================================
+         2. Web Audio SFX Synthesizer
+         ============================================================ */
+      let audioCtx = null;
+      function initAudio() {
+        if (!audioCtx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) audioCtx = new AudioContext();
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+      }
+
+      function playSciFiChirp(type = 'click') {
+        try {
+          initAudio();
+          if (!audioCtx) return;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+
+          if (type === 'start') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+            osc.frequency.exponentialRampToValueAtTime(783.99, audioCtx.currentTime + 0.12); // G5
+            gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.18);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.18);
+          } else if (type === 'open') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
+            gain.gain.setValueAtTime(0.07, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.2);
+          } else if (type === 'stop') {
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(659.25, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(329.63, audioCtx.currentTime + 0.14);
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.16);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.16);
+          } else { // click / copy
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.08);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.08);
+          }
+        } catch (e) {}
+      }
+
+      /* ============================================================
+         3. Audio Narrator Engine (HTML5 MP3 Audio + Web Speech Fallback)
+         ============================================================ */
+      const synth = window.speechSynthesis;
+
+      // Modal Speech elements
+      const modalVoiceControls = document.getElementById('modalVoiceControls');
+      const modalSpeechBtn = document.getElementById('modalSpeechBtn');
+      const modalSpeechIcon = document.getElementById('modalSpeechIcon');
+      const modalSpeechText = document.getElementById('modalSpeechText');
+      const modalStopSpeechBtn = document.getElementById('modalStopSpeechBtn');
+      const modalSpeedBtn = document.getElementById('modalSpeedBtn');
+      const modalSpeedText = document.getElementById('modalSpeedText');
+      const modalVoiceStatus = document.getElementById('modalVoiceStatus');
+
+      // Floating Stop Bar elements
+      const floatingStopBar = document.getElementById('floatingStopBar');
+      const floatStatusText = document.getElementById('floatStatusText');
+      const floatStopBtn = document.getElementById('floatStopBtn');
+
+      const speechRates = [1.0, 1.25, 0.85];
+      let speedIdx = 0;
+      let currentRate = 1.0;
+      let thaiVoice = null;
+      let currentlySpeakingId = null;
+      let currentAudioPlayer = null;
+
+      function findThaiVoice() {
+        if (!synth) return;
+        const voices = synth.getVoices();
+        thaiVoice = voices.find(v => v.lang === 'th-TH' || v.lang === 'th_TH' || v.lang.startsWith('th')) || null;
+      }
+      findThaiVoice();
+      if (synth && synth.onvoiceschanged !== undefined) {
+        synth.onvoiceschanged = findThaiVoice;
+      }
+
+      function stopAllSpeech() {
+        if (currentAudioPlayer) {
+          try {
+            currentAudioPlayer.pause();
+            currentAudioPlayer.currentTime = 0;
+          } catch (e) {}
+          currentAudioPlayer = null;
+        }
+
+        if (synth) {
+          try {
+            synth.cancel();
+          } catch (e) {}
+        }
+
+        currentlySpeakingId = null;
+
+        // Reset cards
+        document.querySelectorAll('.topic-card').forEach(c => {
+          c.classList.remove('is-card-speaking');
+          const quickBtn = c.querySelector('.btn-quick-voice');
+          if (quickBtn) {
+            quickBtn.classList.remove('active-playing');
+            quickBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+          }
+        });
+
+        // Hide Floating Stop Bar
+        if (floatingStopBar) floatingStopBar.classList.remove('show-bar');
+
+        // Reset Modal Speech Bar
+        if (modalVoiceControls) modalVoiceControls.classList.remove('is-speaking');
+        if (modalSpeechBtn) {
+          modalSpeechBtn.classList.remove('playing');
+          modalSpeechIcon.className = 'fa-solid fa-volume-high';
+          modalSpeechText.textContent = 'ฟังเสียงบรรยาย';
+        }
+        if (modalVoiceStatus) modalVoiceStatus.textContent = 'AI AUDIO NARRATOR READY';
+      }
+
+      function finishSpeaking(item, onFinishCallback = null) {
+        const activeCard = document.querySelector(`.topic-card[data-id="${item.id}"]`);
+        if (activeCard) {
+          activeCard.classList.remove('is-card-speaking');
+          const qBtn = activeCard.querySelector('.btn-quick-voice');
+          if (qBtn) {
+            qBtn.classList.remove('active-playing');
+            qBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+          }
+        }
+
+        if (floatingStopBar) floatingStopBar.classList.remove('show-bar');
+
+        if (modalVoiceControls) modalVoiceControls.classList.remove('is-speaking');
+        if (modalSpeechBtn) {
+          modalSpeechBtn.classList.remove('playing');
+          modalSpeechIcon.className = 'fa-solid fa-volume-high';
+          modalSpeechText.textContent = 'ฟังเสียงบรรยาย';
+        }
+        if (modalVoiceStatus) modalVoiceStatus.textContent = `บรรยาย "${item.titleTh}" จบแล้ว`;
+
+        currentlySpeakingId = null;
+        if (onFinishCallback) {
+          onFinishCallback();
+        }
+      }
+
+      function fallbackSpeechSynthesis(item, onFinishCallback = null) {
+        if (!synth) {
+          finishSpeaking(item, onFinishCallback);
+          return;
+        }
+
+        try {
+          synth.cancel();
+          const text = item.speechText || item.titleTh + '. ' + item.preview;
+          const utter = new SpeechSynthesisUtterance(text);
+          utter.lang = 'th-TH';
+          if (thaiVoice) utter.voice = thaiVoice;
+          utter.rate = currentRate;
+          utter.pitch = 1.0;
+
+          utter.onend = () => {
+            finishSpeaking(item, onFinishCallback);
+          };
+
+          utter.onerror = () => {
+            finishSpeaking(item, onFinishCallback);
+          };
+
+          synth.speak(utter);
+        } catch (e) {
+          finishSpeaking(item, onFinishCallback);
+        }
+      }
+
+      function speakTopic(item, onFinishCallback = null) {
+        stopAllSpeech();
+        playSciFiChirp('start');
+        currentlySpeakingId = item.id;
+
+        // Visual indicator on card
+        document.querySelectorAll('.topic-card').forEach(c => {
+          c.classList.remove('is-card-speaking');
+          const qBtn = c.querySelector('.btn-quick-voice');
+          if (qBtn) {
+            qBtn.classList.remove('active-playing');
+            qBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+          }
+        });
+
+        const activeCard = document.querySelector(`.topic-card[data-id="${item.id}"]`);
+        if (activeCard) {
+          activeCard.classList.add('is-card-speaking');
+          const qBtn = activeCard.querySelector('.btn-quick-voice');
+          if (qBtn) {
+            qBtn.classList.add('active-playing');
+            qBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+          }
+        }
+
+        // Floating Quick Stop Bar UI
+        if (floatingStopBar) floatingStopBar.classList.add('show-bar');
+        if (floatStatusText) floatStatusText.innerHTML = `<i class="fa-solid fa-volume-high" style="color:#00f0ff;"></i> กำลังบรรยาย: <strong>${item.titleTh}</strong>`;
+
+        // Modal speech UI
+        if (modalVoiceControls) modalVoiceControls.classList.add('is-speaking');
+        if (modalSpeechBtn) {
+          modalSpeechBtn.classList.add('playing');
+          modalSpeechIcon.className = 'fa-solid fa-volume-xmark';
+          modalSpeechText.textContent = 'หยุดเสียง';
+        }
+        if (modalVoiceStatus) modalVoiceStatus.textContent = `NARRATING: ${item.titleTh}`;
+
+        // 1. ลองเล่นผ่านไฟล์เสียง MP3 ในโฟลเดอร์ audio/termX.mp3
+        const audioPath = `audio/term${item.id}.mp3`;
+        const audio = new Audio(audioPath);
+        audio.playbackRate = currentRate;
+        currentAudioPlayer = audio;
+
+        audio.onended = () => {
+          finishSpeaking(item, onFinishCallback);
+        };
+
+        audio.onerror = () => {
+          // 2. ถ้าโหลดไฟล์ไม่ได้ ให้ fallback ไปยัง Web Speech API
+          fallbackSpeechSynthesis(item, onFinishCallback);
+        };
+
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((err) => {
+            console.warn('HTML5 Audio playback note, attempting Web Speech fallback:', err);
+            fallbackSpeechSynthesis(item, onFinishCallback);
+          });
+        }
+      }
+
+      // Modal Speed Button Listener
+      if (modalSpeedBtn) {
+        modalSpeedBtn.addEventListener('click', () => {
+          playSciFiChirp('click');
+          speedIdx = (speedIdx + 1) % speechRates.length;
+          currentRate = speechRates[speedIdx];
+          const rateLabel = currentRate.toFixed(currentRate % 1 === 0 ? 1 : 2) + 'x';
+          if (modalSpeedText) modalSpeedText.textContent = rateLabel;
+          showToast(`ความเร็วเสียงพูด: ${rateLabel}`);
+
+          if (currentAudioPlayer) {
+            try {
+              currentAudioPlayer.playbackRate = currentRate;
+            } catch (e) {}
+          } else if (currentlySpeakingId && synth && synth.speaking) {
+            const currentItem = glossaryData.find(d => d.id === currentlySpeakingId);
+            if (currentItem) speakTopic(currentItem);
+          }
+        });
+      }
+
+      /* ============================================================
+         4. Render Topic Preview Cards & Modal Detail Engine
+         ============================================================ */
+      const vocabGrid = document.getElementById('vocabGrid');
+      const detailModal = document.getElementById('detailModal');
+      const detailModalCloseBtn = document.getElementById('detailModalCloseBtn');
+
+      // Modal inner elements
+      const modalTermId = document.getElementById('modalTermId');
+      const modalCategoryPill = document.getElementById('modalCategoryPill');
+      const modalTitleTh = document.getElementById('modalTitleTh');
+      const modalTitleEn = document.getElementById('modalTitleEn');
+      const modalIcon = document.getElementById('modalIcon');
+      const modalDefinitionText = document.getElementById('modalDefinitionText');
+      const modalExtraTitle = document.getElementById('modalExtraTitle');
+      const modalExtraContent = document.getElementById('modalExtraContent');
+      const modalFactText = document.getElementById('modalFactText');
+      const modalPrevBtn = document.getElementById('modalPrevBtn');
+      const modalNextBtn = document.getElementById('modalNextBtn');
+      const modalCopyBtn = document.getElementById('modalCopyBtn');
+
+      let currentActiveModalItem = null;
+
+      function renderTopicCards() {
+        if (!vocabGrid) return;
+        vocabGrid.innerHTML = '';
+
+        glossaryData.forEach(item => {
+          const card = document.createElement('article');
+          card.className = `topic-card ${item.theme}`;
+          card.setAttribute('data-id', item.id);
+          card.setAttribute('data-category', item.category);
+          card.setAttribute('data-title', item.titleTh.toLowerCase());
+          card.setAttribute('data-en', item.titleEn.toLowerCase());
+
+          card.innerHTML = `
+            <div class="card-laser"></div>
+            <span class="card-corner c-corner-tl"></span>
+            <span class="card-corner c-corner-tr"></span>
+            <span class="card-corner c-corner-bl"></span>
+            <span class="card-corner c-corner-br"></span>
+
+            <div class="card-top-row">
+              <div class="card-icon-container">
+                <div class="card-icon-orbit-ring"></div>
+                <div class="card-icon-orb">
+                  <i class="fa-solid ${item.icon}"></i>
+                </div>
+              </div>
+              <div class="card-meta-wrap">
+                <span class="card-id-pill">${item.termCode}</span>
+                <span class="card-category-tag">${item.categoryName}</span>
+              </div>
+            </div>
+
+            <h3 class="card-title-th">${item.titleTh}</h3>
+            <div class="card-title-en">
+              <i class="fa-solid fa-satellite"></i> ${item.titleEn}
+            </div>
+
+            <div class="card-preview-text">
+              ${item.preview}
+            </div>
+
+            <div class="card-bottom-bar">
+              <button class="btn-open-detail" type="button">
+                <span>เปิดดูข้อมูลฉบับเต็ม</span>
+                <i class="fa-solid fa-arrow-right"></i>
+              </button>
+              <button class="btn-quick-voice" type="button" title="ฟังเสียงบรรยายหัวข้อนี้">
+                <i class="fa-solid fa-volume-high"></i>
+              </button>
+            </div>
+          `;
+
+          // Click anywhere on card (except quick voice) opens modal
+          card.addEventListener('click', (e) => {
+            if (e.target.closest('.btn-quick-voice')) return;
+            openTopicModal(item);
+          });
+
+          // Quick voice button
+          const quickVoiceBtn = card.querySelector('.btn-quick-voice');
+          if (quickVoiceBtn) {
+            quickVoiceBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const isCurrentlyPlaying = currentlySpeakingId === item.id && (currentAudioPlayer || (synth && synth.speaking));
+              if (isCurrentlyPlaying) {
+                stopAllSpeech();
+              } else {
+                speakTopic(item);
+              }
+            });
+          }
+
+          vocabGrid.appendChild(card);
+        });
+      }
+
+      function openTopicModal(item) {
+        currentActiveModalItem = item;
+        playSciFiChirp('open');
+
+        // Populate Modal Fields
+        modalTermId.textContent = item.termCode;
+        modalCategoryPill.textContent = item.categoryName;
+        modalTitleTh.textContent = item.titleTh;
+        modalTitleEn.innerHTML = `<i class="fa-solid fa-satellite"></i> ${item.titleEn}`;
+        modalIcon.className = `fa-solid ${item.icon}`;
+
+        modalDefinitionText.innerHTML = item.definition;
+        modalExtraTitle.innerHTML = item.extraTitle;
+        modalExtraContent.innerHTML = item.extraContent;
+        modalFactText.textContent = item.fact;
+
+        // Check if currently speaking this topic
+        const isCurrentlyPlaying = currentlySpeakingId === item.id && (currentAudioPlayer || (synth && synth.speaking));
+        if (isCurrentlyPlaying) {
+          modalVoiceControls.classList.add('is-speaking');
+          modalSpeechBtn.classList.add('playing');
+          modalSpeechIcon.className = 'fa-solid fa-volume-xmark';
+          modalSpeechText.textContent = 'หยุดเสียง';
+          modalVoiceStatus.textContent = `NARRATING: ${item.titleTh}`;
+        } else {
+          modalVoiceControls.classList.remove('is-speaking');
+          modalSpeechBtn.classList.remove('playing');
+          modalSpeechIcon.className = 'fa-solid fa-volume-high';
+          modalSpeechText.textContent = 'ฟังเสียงบรรยาย';
+          modalVoiceStatus.textContent = 'AI AUDIO NARRATOR READY';
+        }
+
+        // Show Modal
+        detailModal.classList.add('active');
+        detailModal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeTopicModal() {
+        if (!detailModal) return;
+        playSciFiChirp('click');
+        stopAllSpeech(); // หยุดเสียงพูดทันทีเมื่อปิดหน้าต่าง Modal
+        detailModal.classList.remove('active');
+        detailModal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+
+      if (detailModalCloseBtn) {
+        detailModalCloseBtn.addEventListener('click', closeTopicModal);
+      }
+
+      if (detailModal) {
+        detailModal.addEventListener('click', (e) => {
+          if (e.target === detailModal) closeTopicModal();
+        });
+      }
+
+      // Modal Speech Play/Toggle Button Listener
+      if (modalSpeechBtn) {
+        modalSpeechBtn.addEventListener('click', () => {
+          if (!currentActiveModalItem) return;
+          const isCurrentlyPlaying = currentlySpeakingId === currentActiveModalItem.id && (currentAudioPlayer || (synth && synth.speaking));
+          if (isCurrentlyPlaying) {
+            stopAllSpeech();
+          } else {
+            speakTopic(currentActiveModalItem);
+          }
+        });
+      }
+
+      // Modal Stop Speech Button (ปุ่มหยุดพูดแยกเฉพาะใน Modal)
+      if (modalStopSpeechBtn) {
+        modalStopSpeechBtn.addEventListener('click', () => {
+          playSciFiChirp('stop');
+          stopAllSpeech();
+        });
+      }
+
+      // Floating Stop Button (ปุ่มหยุดพูดลอยตัวบนหน้าจอ)
+      if (floatStopBtn) {
+        floatStopBtn.addEventListener('click', () => {
+          playSciFiChirp('stop');
+          stopAllSpeech();
+        });
+      }
+
+      // Modal Prev & Next Navigation
+      if (modalPrevBtn) {
+        modalPrevBtn.addEventListener('click', () => {
+          if (!currentActiveModalItem) return;
+          stopAllSpeech(); // หยุดเสียงเก่าก่อนสลับหัวข้อ
+          const currIdx = glossaryData.findIndex(d => d.id === currentActiveModalItem.id);
+          const prevIdx = (currIdx - 1 + glossaryData.length) % glossaryData.length;
+          openTopicModal(glossaryData[prevIdx]);
+        });
+      }
+
+      if (modalNextBtn) {
+        modalNextBtn.addEventListener('click', () => {
+          if (!currentActiveModalItem) return;
+          stopAllSpeech(); // หยุดเสียงเก่าก่อนสลับหัวข้อ
+          const currIdx = glossaryData.findIndex(d => d.id === currentActiveModalItem.id);
+          const nextIdx = (currIdx + 1) % glossaryData.length;
+          openTopicModal(glossaryData[nextIdx]);
+        });
+      }
+
+      // Modal Copy Full Info Button
+      if (modalCopyBtn) {
+        modalCopyBtn.addEventListener('click', () => {
+          if (!currentActiveModalItem) return;
+          playSciFiChirp('click');
+          const fullInfo = `[${currentActiveModalItem.termCode}] ${currentActiveModalItem.titleTh} (${currentActiveModalItem.titleEn})\n${currentActiveModalItem.speechText}\nเกร็ดน่ารู้: ${currentActiveModalItem.fact}`;
+
+          navigator.clipboard.writeText(fullInfo).then(() => {
+            showToast(`คัดลอก: "${currentActiveModalItem.titleTh}" สำเร็จแล้ว`);
+          }).catch(() => {
+            showToast('คัดลอกข้อความเรียบร้อย');
+          });
+        });
+      }
+
+      // Escape key to close modal & Arrow keys to navigate
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && detailModal && detailModal.classList.contains('active')) {
+          closeTopicModal();
+        } else if (detailModal && detailModal.classList.contains('active')) {
+          if (e.key === 'ArrowLeft') {
+            modalPrevBtn.click();
+          } else if (e.key === 'ArrowRight') {
+            modalNextBtn.click();
+          }
+        }
+      });
+
+      /* ============================================================
+         5. Search & Filter System
+         ============================================================ */
+      const searchInput = document.getElementById('glossarySearchInput');
+      const clearBtn = document.getElementById('clearSearchBtn');
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const emptyState = document.getElementById('emptySearchState');
+      const shownCountSpan = document.getElementById('shownCount');
+
+      let currentFilter = 'all';
+      let currentQuery = '';
+
+      function applyFilterAndSearch() {
+        let visibleCount = 0;
+        const q = currentQuery.trim().toLowerCase();
+        const cards = document.querySelectorAll('.topic-card');
+
+        cards.forEach(card => {
+          const category = card.getAttribute('data-category');
+          const titleTh = card.getAttribute('data-title');
+          const titleEn = card.getAttribute('data-en');
+          const text = card.textContent.toLowerCase();
+
+          const matchesCategory = (currentFilter === 'all') || (category === currentFilter);
+          const matchesSearch = !q || titleTh.includes(q) || titleEn.includes(q) || text.includes(q);
+
+          if (matchesCategory && matchesSearch) {
+            card.style.display = 'flex';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        if (shownCountSpan) {
+          shownCountSpan.textContent = visibleCount;
+        }
+
+        if (emptyState) {
+          emptyState.style.display = (visibleCount === 0) ? 'block' : 'none';
+        }
+      }
+
+      // Search input handler
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          currentQuery = e.target.value;
+          if (clearBtn) {
+            clearBtn.style.display = currentQuery.length > 0 ? 'block' : 'none';
+          }
+          applyFilterAndSearch();
+        });
+      }
+
+      // Clear search button
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          playSciFiChirp('click');
+          if (searchInput) {
+            searchInput.value = '';
+            searchInput.focus();
+          }
+          currentQuery = '';
+          clearBtn.style.display = 'none';
+          applyFilterAndSearch();
+        });
+      }
+
+      // Category filter buttons
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          playSciFiChirp('click');
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentFilter = btn.getAttribute('data-filter');
+          applyFilterAndSearch();
+        });
+      });
+
+      /* ============================================================
+         6. Toast Notification Utility
+         ============================================================ */
+      let toastTimer = null;
+      function showToast(msg) {
+        const toast = document.getElementById('glossaryToast');
+        const toastText = document.getElementById('glossaryToastText');
+        if (!toast || !toastText) return;
+
+        toastText.textContent = msg;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toast.classList.remove('show');
+        }, 2800);
+      }
+
+      // Initialize render
+      renderTopicCards();
+
+    });
+  </script>
+  <script src="navScroll.js?v=2"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
